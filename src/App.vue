@@ -37,10 +37,34 @@ export default {
                 {
                     label: 'Home',
                     items: [{
-                        label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'
+                        label: 'Administrador', icon: 'pi pi-fw pi-home', to: '/admin'
                     }]
                 },
-				{
+                {
+                    label: 'Gestión Alumno', icon: 'pi pi-fw pi-search',
+                    items: [
+                        {
+                            label: 'Alumnos', icon: 'pi pi-fw pi-bookmark', to: '/admin/alumno',
+                        }
+                    ]
+                 },
+                 {
+                    label: 'Gestión Profesor', icon: 'pi pi-fw pi-search',
+                    items: [
+                        {
+                            label: 'Profesores', icon: 'pi pi-fw pi-bookmark', to: '/admin/profesor',
+                        }
+                    ]
+                 },
+                 {
+                    label: 'Gestión Apoderado', icon: 'pi pi-fw pi-search',
+                    items: [
+                        {
+                            label: 'Apoderado', icon: 'pi pi-fw pi-bookmark', to: '/admin/apoderado',
+                        }
+                    ]
+                 },
+				/*{
 					label: 'UI Components', icon: 'pi pi-fw pi-sitemap',
 					items: [
 						{label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/formlayout'},
@@ -139,7 +163,7 @@ export default {
                         {label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => {window.location = "#/documentation"}},
                         {label: 'View Source', icon: 'pi pi-fw pi-search', command: () => {window.location = "https://github.com/primefaces/sakai-vue"}}
                     ]
-                }
+                } */
             ]
         }
     },

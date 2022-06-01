@@ -7,12 +7,12 @@
 		<button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle">
 			<i class="pi pi-bars"></i>
 		</button>
-
 		<button class="p-link layout-topbar-menu-button layout-topbar-button"
 			v-styleclass="{ selector: '@next', enterClass: 'hidden', enterActiveClass: 'scalein', 
 			leaveToClass: 'hidden', leaveActiveClass: 'fadeout', hideOnOutsideClick: true}">
 			<i class="pi pi-ellipsis-v"></i>
 		</button>
+		<span>{{ $store.state.usuario }}</span>
 		<ul class="layout-topbar-menu hidden lg:flex origin-top">
 			<li>
 				<button class="p-link layout-topbar-button">
