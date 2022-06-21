@@ -125,56 +125,56 @@
                         <p style="min-width:16rem"> {{ profesor.pro_nom }} </p>
                     </div>
                     <div class="field col">
-                        <label for="pro_app">A. Paterno:</label>
+                        <label for="pro_app"><b>A. Paterno:</b></label>
                         <p style="min-width:16rem">{{ profesor.pro_app }}</p>
                     </div>
                     <div class="field col">
-                        <label for="pro_apm">A. Materno:</label>
+                        <label for="pro_apm"><b>A. Materno:</b></label>
                         <p style="min-width:16rem">{{ profesor.pro_apm }}</p>          
                     </div>
                 </div>
                     
                 <div class="formgrid grid">
                     <div class="field col">
-                        <label for="pro_dire">Dirección:</label>
+                        <label for="pro_dire"><b>Dirección:</b></label>
                         <p style="min-width:16rem">{{ profesor.pro_dire }}</p>          
                     </div>
                     <div class="field col">
-                        <label for="pro_telf">Telefóno:</label>
+                        <label for="pro_telf"><b>Telefóno:</b></label>
                         <p style="min-width:16rem">{{ profesor.pro_telf }}</p>          
                     </div>
                     <div class="field col">
-                        <label for="pro_sexo">Sexo:</label>
+                        <label for="pro_sexo"><b>Sexo:</b></label>
                         <p style="min-width:16rem">{{ profesor.pro_sexo }}</p>          
                     </div>
                     
                 </div>
                 <div class="formgrid grid">
                     <div class="field col">
-                        <label for="pro_dni">DNI:</label>
+                        <label for="pro_dni"><b>DNI:</b></label>
                         <p style="min-width:16rem">{{ profesor.pro_dni }}</p>          
                     </div>
                     <div class="field col">
-                        <label for="pro_grado_instruccion">Grado de instrucción:</label>
+                        <label for="pro_grado_instruccion"><b>Grado de instrucción:</b></label>
                         <p style="min-width:16rem">{{ profesor.pro_grado_instruccion }}</p>
                     </div>
                     <div class="field col">
-                        <label for="pro_especialidad">Especialidad:</label>
+                        <label for="pro_especialidad"><b>Especialidad:</b></label>
                         <p style="min-width:16rem">{{ profesor.pro_especialidad }}</p>
                     </div>
                     
                 </div>
                 <div class="formgrid grid">
                     <div class="field col">
-                        <label for="pro_pais">Pais:</label>
+                        <label for="pro_pais"><b>Pais:</b></label>
                         <p style="min-width:16rem">{{ profesor.pro_pais }}</p>
                     </div>
                     <div class="field col">
-                        <label for="pro_fnac">Fecha de nacimiento:</label>
+                        <label for="pro_fnac"><b>Fecha de nacimiento:</b></label>
                         <p style="min-width:16rem">{{ profesor.pro_fnac }}</p>
                     </div>
                     <div class="field col">
-                        <label for="pro_distrito">Número de hermanos:</label>
+                        <label for="pro_distrito"><b>Número de hermanos:</b></label>
                         <p style="min-width:16rem">{{ profesor.pro_distrito }}</p>
                     </div>                                   
                 </div>                                        
@@ -218,6 +218,7 @@ export default {
         },
         abrirDialog() {
             this.dialog = true;
+            this.profesor = {};
         },
         cerrarDialog() {
             this.dialog = false;

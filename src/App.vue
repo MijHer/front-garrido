@@ -38,17 +38,24 @@ export default {
                     label: 'Home',
                     items: [{
                         label: 'Administrador', icon: 'pi pi-fw pi-home', to: '/admin'
-                    }]
+                    }
+                    ]
                 },
                 {
-                    label: 'Gestión Alumno', icon: 'pi pi-fw pi-search',
+                    label: 'Gestinar Registros', icon: 'pi pi-fw pi-search',
                     items: [
                         {
                             label: 'Alumnos', icon: 'pi pi-fw pi-bookmark', to: '/admin/alumno',
+                        },
+                        {
+                            label: 'Profesores', icon: 'pi pi-fw pi-bookmark', to: '/admin/profesor',
+                        },
+                        {
+                            label: 'Apoderado', icon: 'pi pi-fw pi-bookmark', to: '/admin/apoderado',
                         }
                     ]
                  },
-                 {
+                 /* {
                     label: 'Gestión Profesor', icon: 'pi pi-fw pi-search',
                     items: [
                         {
@@ -63,7 +70,49 @@ export default {
                             label: 'Apoderado', icon: 'pi pi-fw pi-bookmark', to: '/admin/apoderado',
                         }
                     ]
+                 }, */
+                 {
+                    label: 'Pagos', icon: 'pi pi-fw pi-search',
+                    items: [
+                        {
+                            label: 'Realizar Pago', icon: 'pi pi-fw pi-bookmark', to: '/admin/pago',
+                        },
+                        {
+                            label: 'Buscar Pago', icon: 'pi pi-fw pi-bookmark', to: '/admin/pago',
+                        }
+                    ]
                  },
+                 {
+                    label: 'Gestionar Detalle Academico', icon: 'pi pi-fw pi-search',
+                    items: [
+                        {
+                            label: 'Año Academico', icon: 'pi pi-fw pi-bookmark', to: '/admin/anioacademico',
+                        },
+                        {
+                            label: 'Nivel', icon: 'pi pi-fw pi-bookmark', to: '/admin/nivel',
+                        },
+                        {
+                            label: 'Grado', icon: 'pi pi-fw pi-bookmark', to: '/admin/grado',
+                        }/*,
+                        {
+                            label: 'Grado', icon: 'pi pi-fw pi-bookmark', to: '/admin/anioacademico',
+                        } */
+                    ]
+                 },
+                 {
+                    label: 'Gestion de Lugar', icon: 'pi pi-fw pi-search',
+                    items: [
+                        {
+                            label: 'Departamento', icon: 'pi pi-fw pi-bookmark', to: '/admin/departamento',
+                        },
+                        {
+                            label: 'Provincia', icon: 'pi pi-fw pi-bookmark', to: '/admin/provincia',
+                        },
+                        {
+                            label: 'Distrito', icon: 'pi pi-fw pi-bookmark', to: '/admin/distrito',
+                        }
+                    ]
+                 }
 				/*{
 					label: 'UI Components', icon: 'pi pi-fw pi-sitemap',
 					items: [

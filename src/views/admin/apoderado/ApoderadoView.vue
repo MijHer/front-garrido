@@ -191,7 +191,7 @@ export default {
     created() {
         this.initFilters();
     },
-    mounted() {
+    mounted() {        
         this.listaApoderado()
     },
     methods: {
@@ -199,7 +199,6 @@ export default {
             const { data } = await apoderadoService.listarApoderados();
             this.apoderados = data.data;
             const alu = await alumnoService.listarAlumnos();
-            console.log(alu);
             this.alumnos = alu.data.data;
         },
         abrirDialog() {
