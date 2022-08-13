@@ -29,10 +29,7 @@
             <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
             <Column field="apo_nom" header="Nombres" :sortable="true" style="min-width:16rem"></Column>
             <Column field="apo_app" header="A. Paterno" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="apo_apm" header="A. Materno" :sortable="true" style="min-width:16rem"></Column>
-
-            <Column field="alumno.alu_nom" header="Familiar" :sortable="true" optionLabel="label" optionValue="value" style="min-width:16rem"></Column>            
-
+            <Column field="apo_apm" header="A. Materno" :sortable="true" style="min-width:16rem"></Column>            
             <Column field="apo_vinculo" header="Vínculo" :sortable="true" style="min-width:16rem"></Column>            
             <Column field="apo_dni" header="DNI" :sortable="true" style="min-width:16rem"></Column>
             <Column field="apo_telf" header="Telefono" :sortable="true" style="min-width:16rem"></Column>
@@ -97,12 +94,6 @@
                     <small class="p-error" v-if="submitted && !apoderado.apo_grado_inst">Apellido requerido.</small>
                 </div>
             </div>
-
-            <div class="field col">
-                <label for="alumno_id" class="mb-3">Apoderado de</label>
-                <Dropdown id="alumno_id" v-model="apoderado.alumno_id" :options="alumnos" optionLabel="alu_nom" optionValue="id" placeholder="Seleciona la apoderado">              
-                </Dropdown>         
-            </div>
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardaApoderado" />
@@ -152,13 +143,7 @@
                         <label for="apo_grado_inst">Grado de instrucción:</label>
                         <p style="min-width:16rem">{{ apoderado.apo_grado_inst }}</p>
                     </div>                    
-                </div>
-                <div class="formgrid grid">                    
-                    <div class="field col">
-                        <label for="alumno_id">Apoderado de:</label>
-                        <p style="min-width:16rem">{{ apoderado.alumno.alu_nom }}</p>
-                    </div>                                   
-                </div>                                        
+                </div>                                       
             </div>
             <template #footer>
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarVerDialog()"/>
@@ -172,7 +157,6 @@
 
 import { FilterMatchMode } from 'primevue/api';
 import * as apoderadoService from '../../../services/apoderado.service';
-import * as alumnoService from '../../../services/alumno.service';
 
 export default {
     data() {
@@ -184,8 +168,7 @@ export default {
             apoderado: {},
             submitted: false,
             estadoEdicion: false,
-            verDialog: false,
-            alumnos: {}
+            verDialog: false
         }
     },
     created() {
@@ -197,9 +180,7 @@ export default {
     methods: {
         async listaApoderado() {
             const { data } = await apoderadoService.listarApoderados();
-            this.apoderados = data.data;
-            const alu = await alumnoService.listarAlumnos();
-            this.alumnos = alu.data.data;
+            this.apoderados = data.data;           
         },
         abrirDialog() {
             this.apoderado = {};
@@ -213,14 +194,15 @@ export default {
             if (this.estadoEdicion) {
                 datos= await apoderadoService.modificarApoderados(this.apoderado.id, this.apoderado);
                 this.apoderado = datos;
-                this.cerrarDialog();
-                this.listaApoderado();
             }
             else {
                 datos = await apoderadoService.guardarApoderados(this.apoderado);
                 this.apoderado = datos;
-                this.cerrarDialog();
+            }
+            if(!datos.data.error) {
                 this.listaApoderado();
+                this.cerrarDialog();
+                this.estadoEdicion = false;
                 this.apoderado = {};
             }
         },

@@ -23,7 +23,8 @@
         </template>
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
         <Column field="dist_nom" header="Distrito" :sortable="true" style="min-width:16rem"></Column>
-        <Column field="provincia_id" header="Provincia" :sortable="true" style="min-width:16rem"></Column>
+        <Column field="provincia.prov_nom" header="Provincia" :sortable="true" style="min-width:16rem"></Column>
+        <Column field="departamento.depa_nom" header="Departamento" :sortable="true" style="min-width:16rem"></Column>
         <Column :exportable="false" style="min-width:8rem">
             <template #body="slotProps">
                 <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editDistrito(slotProps.data)" />
@@ -45,7 +46,6 @@
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
             <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarDistrito" />
         </template>
-        {{provincia}}
     </Dialog>
   </div>
 </template>
@@ -53,8 +53,9 @@
 <script>
 
 import { FilterMatchMode } from 'primevue/api';
-import * as provinciaService from '../../../services/provincia.service';
-import * as distritoService from '../../../services/distrito.service';
+import * as provinciaService from '@/services/provincia.service';
+import * as distritoService from '@/services/distrito.service';
+import * as departamentoService from '@/services/departamento.service';
 
 export default {
     data() {
@@ -65,6 +66,7 @@ export default {
             distrito: {},
             Dialog: false,
             provincia: {},
+            departamento: {},
             estadoEdicion: false
         }
     },
@@ -80,6 +82,8 @@ export default {
             this.distritos = data;
             const prov = await provinciaService.listarProvincias();
             this.provincia = prov.data.data;
+            const depa = await departamentoService.listarDepartamentos();
+            this.departamento = depa.data.data;
         },
         nuevoDistrito() {
             this.Dialog = true;
@@ -92,15 +96,17 @@ export default {
             let datos;
             if (this.estadoEdicion) {
                 datos = await distritoService.modificarDistritos(this.distrito.id, this.distrito);
-                this.distrito = datos;                
-                this.listaDistrito();
-                this.cerrarDialog();
+                this.distrito = datos;
             }
             else {
                 datos = await distritoService.guardarDistritos(this.distrito);
                 this.distrito = datos;
+            }
+            if(!datos.data.error) {
                 this.listaDistrito();
                 this.cerrarDialog();
+                this.estadoEdicion = false;
+                this.distrito = {};
             }
         },
         editDistrito(data) {

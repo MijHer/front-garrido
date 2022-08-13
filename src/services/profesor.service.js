@@ -1,4 +1,4 @@
-import { http } from './http.js';
+import { http } from './http';
 
 export function listarProfesores(page=1)
 {

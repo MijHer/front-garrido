@@ -1,22 +1,22 @@
-import {http} from './http'
+import { http } from "./http";
 
-export function listarDepartamentos()
+export function listarDepartamentos(page=1)
 {
-    return http().get('/v1/departamento');
+    return http().get(`/v1/departamento?page=${page}`);
 }
 export function guardarDepartamentos(datos)
 {
     return http().post('/v1/departamento', datos);
 }
-export function mostrarDepartamentos(id)
+export function mostarDepartamentos(id)
 {
     return http().get('/v1/departamento/'+id);
 }
-export function mofidicarDepartamentos(id, datos)
+export function modificarDepartamentos(id, datos)
 {
     return http().patch('/v1/departamento/'+id, datos);
 }
 export function eliminarDepartamentos(id)
 {
-    return http().delete('/v1/departamento/'+id)
+    return http().delete(`/v1/departamento/${id}`);
 }

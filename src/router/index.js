@@ -7,12 +7,15 @@ import AlumnoView from '../views/admin/alumno/AlumnoView.vue'
 import ProfesorView from '../views/admin/profesor/ProfesorView.vue'
 import ApoderadoView from '../views/admin/apoderado/ApoderadoView.vue'
 import PagoView from '../views/admin/pago/PagoView.vue'
+import PagadosView from '../views/admin/pago/PagadosView.vue'
 import AnioacademicoView from '../views/admin/anioacademico/AnioacademicoView.vue'
-import NivelView from '../views/admin/nivel/NivelView.vue'
-import GradoView from '../views/admin/grado/GradoView.vue'
+import CursoView from '../views/admin/curso/CursoView.vue'
 import DepartamentoView from '../views/admin/departamento/DepartamentoView.vue'
 import ProvinciaView from '../views/admin/provincia/ProvinciaView.vue'
 import DistritoView from '../views/admin/distrito/DistritoView.vue'
+import MatriculadosView from '../views/admin/matricula/MatriculadosView.vue'
+import MatriculaView from '../views/admin/matricula/MatriculaView.vue'
+import AsistenciaView from '../views/admin/asistencia/AsistenciaView.vue'
 
 const routes = [
   {
@@ -37,24 +40,24 @@ const routes = [
         component: ApoderadoView
       },
       {
+        path: 'pagados',
+        name: 'Pagados',
+        component: PagadosView
+      },
+      {
         path: 'pago',
         name: 'Pago',
         component: PagoView
-      },
+      },      
       {
         path: 'anioacademico',
         name: 'Anioacademico',
         component: AnioacademicoView
       },
       {
-        path: 'nivel',
-        name: 'Nivel',
-        component: NivelView        
-      },
-      {
-        path: 'grado',
-        name: 'Grado',
-        component: GradoView        
+        path: 'curso',
+        name: 'Curso',
+        component: CursoView        
       },
       {
         path: 'departamento',
@@ -70,6 +73,21 @@ const routes = [
         path: 'distrito',
         name: 'Distrito',
         component: DistritoView        
+      },
+      {
+        path: 'matriculados',
+        name: 'Matriculados',
+        component: MatriculadosView        
+      },
+      {
+        path: 'matricula',
+        name: 'Matricula',
+        component: MatriculaView        
+      },
+      {
+        path: 'asistencia',
+        name: 'Asistencia',
+        component: AsistenciaView        
       }
     ]
   },

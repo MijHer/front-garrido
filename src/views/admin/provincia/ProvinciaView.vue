@@ -5,7 +5,7 @@
     <h1>Provincias</h1>
     <Toolbar class="mb-4">
         <template #start>
-            <Button label="Nueva Provincia" icon="pi pi-plus" class="p-button-success mr-2" @click="nuevaProvincia" />
+            <Button label="Nueva Provincia" icon="pi pi-plus" class="p-button-success mr-2" @click="abrirDialog" />
         </template>
     </Toolbar>
     <DataTable ref="dt" :value="provincias" v-model:selection="selectedPronvicias" dataKey="id" 
@@ -34,7 +34,7 @@
     <Dialog v-model:visible="Dialog" :style="{width: '450px'}" header="Provincia Nueva" :modal="true" class="p-fluid">        
         <div class="field">
             <label for="prov_nom">Nombre</label>
-            <InputText  id="prov_nom" v-model="provincia.prov_nom" required="true"/>
+            <InputText  id="prov_nom" v-model="provincia.prov_nom" required="true" autofocus :class="{'p-invalid': submitted && !publicacion.titulo}"/>
         </div>
         <div class="field">
             <label for="departamento_id" class="mb-3">Departamento</label>
@@ -63,6 +63,7 @@ export default {
             filters: {},
             provincia: {},
             Dialog: false,
+            submitted: false,
             departamentos: {},
             estadoEdicion: false
         }
@@ -80,28 +81,31 @@ export default {
             const depa = await departamentoService.listarDepartamentos();
             this.departamentos = depa.data;
         },
-        nuevaProvincia() {
-            this.Dialog = true;
+        //nuevaProvincia = abrirDialog
+        abrirDialog () {
             this.provincia = {};
+            this.submitted =false;
+            this.Dialog = true;            
         },
         cerrarDialog() {
             this.Dialog = false;
+            this.submitted = false;
         },
         async guardarProvincia() {
             let datos;
             if (this.estadoEdicion) {
                 datos = await provinciaService.modificarProvincias(this.provincia.id, this.provincia);
-                this.provincia = datos;                
-                this.listaProvincia();
-                this.cerrarDialog();
-            }
-            else {
+                this.provincia = datos;
+            } else {
                 datos = await provinciaService.guardarProvincias(this.provincia);
                 this.provincia = datos;
+            }
+            if(!datos.data.error) {
                 this.listaProvincia();
                 this.cerrarDialog();
+                this.estadoEdicion = false;
+                this.provincia = {};
             }
-            this.provincia = {};
         },
         editProvincia(data) {
             this.provincia = data;

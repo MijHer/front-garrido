@@ -78,25 +78,33 @@ export default {
                             label: 'Realizar Pago', icon: 'pi pi-fw pi-bookmark', to: '/admin/pago',
                         },
                         {
-                            label: 'Buscar Pago', icon: 'pi pi-fw pi-bookmark', to: '/admin/pago',
+                            label: 'Pagos Realizados', icon: 'pi pi-fw pi-bookmark', to: '/admin/pagados',
                         }
                     ]
                  },
                  {
-                    label: 'Gestionar Detalle Academico', icon: 'pi pi-fw pi-search',
+                    label: 'Detalles Academicos', icon: 'pi pi-fw pi-search',
                     items: [
                         {
-                            label: 'Año Academico', icon: 'pi pi-fw pi-bookmark', to: '/admin/anioacademico',
+                            label: 'Detalles', icon: 'pi pi-fw pi-bookmark', to: '/admin/anioacademico',
                         },
                         {
-                            label: 'Nivel', icon: 'pi pi-fw pi-bookmark', to: '/admin/nivel',
-                        },
+                            label: 'Cursos', icon: 'pi pi-fw pi-bookmark', to: '/admin/curso',
+                        },/*
                         {
                             label: 'Grado', icon: 'pi pi-fw pi-bookmark', to: '/admin/grado',
-                        }/*,
+                        },
                         {
                             label: 'Grado', icon: 'pi pi-fw pi-bookmark', to: '/admin/anioacademico',
                         } */
+                    ]
+                 },
+                 {
+                    label: 'Asistencia', icon: 'pi pi-fw pi-search',
+                    items: [
+                        {
+                            label: 'Lista de Asistencia', icon: 'pi pi-fw pi-bookmark', to: '/admin/asistencia',
+                        }
                     ]
                  },
                  {
@@ -111,6 +119,17 @@ export default {
                         {
                             label: 'Distrito', icon: 'pi pi-fw pi-bookmark', to: '/admin/distrito',
                         }
+                    ]
+                 },
+                 {
+                    label:'Gestion Matricula', icon: 'pi pi-fw pi-search',
+                    items: [
+                        {
+                            label: 'Matricula', icon: 'pi pi-fw pi-bookmark', to: '/admin/matricula',
+                        },
+                        {
+                            label: 'Matriculados', icon: 'pi pi-fw pi-bookmark', to: '/admin/matriculados',
+                        }                       
                     ]
                  }
 				/*{

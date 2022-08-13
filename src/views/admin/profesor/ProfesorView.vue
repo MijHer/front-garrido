@@ -226,16 +226,17 @@ export default {
         async guardaProfesor() {
             let datos;
             if (this.estadoEdicion) {
-                datos= await profesorService.modificarProfesores(this.profesor.id, this.profesor);
-                this.profesor = datos;
-                this.cerrarDialog();
-                this.listaProfesor();
+                datos = await profesorService.modificarProfesores(this.profesor.id, this.profesor);
+                this.profesor = datos;              
             }
             else {
                 datos = await profesorService.guardarProfesores(this.profesor);
                 this.profesor = datos;
-                this.cerrarDialog();
+            }
+            if(!datos.data.error) {
                 this.listaProfesor();
+                this.cerrarDialog();
+                this.estadoEdicion = false;
                 this.profesor = {};
             }
         },

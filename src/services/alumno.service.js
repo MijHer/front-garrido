@@ -20,3 +20,6 @@ export function eliminarAlumnos(id)
 {
     return http().delete(`/v1/alumno/${id}`);
 }
+export function buscar(dni) {
+    return http().get(`/v1/alumno/buscar?q=${dni}`);
+}

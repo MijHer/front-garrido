@@ -387,6 +387,12 @@
           <InputText id="alu_religion_padre" v-model="alumno.alu_religion_padre" required="true" rows="3" cols="20" />
       </div>      
     </div>
+    <h3>APODERADO</h3>
+    <div class="field">
+        <label for="apoderado_id" class="mb-3"></label>
+        <Dropdown id="apoderado_id" v-model="alumno.apoderado_id" :options="apoderados" optionLabel="apo_nom" optionValue="id" placeholder="Selecione Apoderado">                        
+        </Dropdown>
+    </div>    
     <template #footer>
       <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
       <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarAlumnos" />
@@ -411,9 +417,11 @@
       <Column field="alu_app" header="A. Paterno" :sortable="true" style="min-width:16rem"></Column>
       <Column field="alu_apm" header="A. Materno" :sortable="true" style="min-width:16rem"></Column>
       <Column field="alu_nmr_doc" header="DNI" :sortable="true" style="min-width:16rem"></Column>
+
+      <Column field="apoderado.apo_nom" header="Apoderado" :sortable="true" style="min-width:16rem"></Column>
+
       <Column field="alu_grado" header="Grado" :sortable="true" style="min-width:16rem"></Column>
       <Column field="alu_distrito" header="Distrito" :sortable="true" style="min-width:16rem"></Column>
-      <Column field="alu_sexo" header="Sexo" :sortable="true" style="min-width:16rem"></Column>            
       <Column :exportable="false" style="min-width:8rem">
         <template #body="slotProps">
             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarAlumnos(slotProps.data)" />
@@ -624,6 +632,11 @@
           <div class="field col">            
           </div>
         </div>
+        <h5><b>Apoderado</b></h5>
+        <div class="field col">          
+          <label for="alumno.apo_nom">Nombre y Apellido:</label>
+          <p style="min-width:16rem">{{ alumno.apoderado.apo_nom +" "+ alumno.apoderado.apo_app +" "+ alumno.apoderado.apo_apm}}</p>
+        </div>
     </div>
     <template #footer>
       <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarVerDialog()"/>
@@ -636,6 +649,7 @@
 
 import { FilterMatchMode } from 'primevue/api';
 import * as alumnoService from '../../../services/alumno.service';
+import * as apoderadoService from '@/services/apoderado.service';
 
 export default {
   data() {
@@ -794,7 +808,8 @@ export default {
       ],
       submitted: false,
       estadoEdicion: false,
-      verDialog: null
+      verDialog: null,
+      apoderados: {}
     }
   },
   created() {     
@@ -807,6 +822,8 @@ export default {
     async listaAlumnos() {
       const { data } = await alumnoService.listarAlumnos();
       this.alumnos = data.data;
+      const apo = await apoderadoService.listarApoderados();
+      this.apoderados = apo.data.data;
     },
     abrirDialog() {
       this.alumno = {};
@@ -825,15 +842,16 @@ export default {
       if (this.estadoEdicion) {
         datos = await alumnoService.modificarAlumnos(this.alumno.id, this.alumno);
         this.alumno = datos;
-        this.cerrarDialog();
-        this.listaAlumnos()
       }
       else {
         datos = await alumnoService.guardarAlumnos(this.alumno);
-        this.alumno = datos;
-        this.cerrarDialog();
+        this.alumno = datos;        
+      }
+      if(!datos.data.error) {
         this.listaAlumnos();
-        this.alumno = {}
+        this.cerrarDialog();
+        this.estadoEdicion = false;
+        this.alumno = {};
       }
     },
     editarAlumnos(data) {
