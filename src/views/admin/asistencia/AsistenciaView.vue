@@ -1,13 +1,12 @@
 <template>
   <div class="card">
-    <h4>Lista de cursos</h4>
-    <DataTable ref="dt" :value="asistencias" v-model:selection="selectedAsistencias" dataKey="id" 
+    <DataTable ref="dt" :value="cursos" v-model:selection="selectedAsistencias" dataKey="id" 
         :paginator="true" :rows="10" :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
         <template #header>
           <div class="table-header flex flex-column md:flex-row md:justiify-content-between">
-            <h5 class="mb-2 md:m-0 p-as-md-center">Manage Products</h5>
+            <h5 class="mb-2 md:m-0 p-as-md-center">Lista de cursos</h5>
             <span class="p-input-icon-left">
                 <i class="pi pi-search" />
                 <InputText v-model="filters['global'].value" placeholder="Search..." />
@@ -15,8 +14,8 @@
           </div>
         </template>
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-        <Column field="curso.cur_nom" header="Curso" :sortable="true" style="min-width:12rem"></Column>
-        <Column field="grado.gra_nom" header="Grado" :sortable="true" style="min-width:16rem"></Column>           
+        <Column field="cur_nom" header="Curso" :sortable="true" style="min-width:12rem"></Column>
+        <!-- <Column field="grado.gra_nom" header="Grado" :sortable="true" style="min-width:16rem"></Column> -->           
         <Column :exportable="false" style="min-width:8rem">
             <template #body="slotProps">
                 <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editProduct(slotProps.data)" />
@@ -25,8 +24,8 @@
         </Column>
     </DataTable>
   </div>
-  <li>{{curso}}</li>
-  <li>{{grado}}</li>
+  <li>{{cursos}}</li>
+  <li>{{grados}}</li>
 </template>
 
 <script>
@@ -41,8 +40,8 @@ export default {
       return {       
         asistencias: null,
         selectedAsistencias: null,
-        curso: {},
-        grado: {}
+        cursos: [],
+        grados: {}
       }
     },
     created() {
@@ -54,10 +53,9 @@ export default {
     methods: {
       async listaAsistencias() {
         const cur = await cursoService.listarCursos();
-        this.curso = cur.data;
-        console.log(this.curso);
+        this.cursos = cur.data;        
         const gra = await gradoService.listarGrados();
-        this.grado = gra.data;
+        this.grados = gra.data;
       },
       initFilters() {
         this.filters = {

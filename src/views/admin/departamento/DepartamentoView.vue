@@ -7,12 +7,27 @@
             <template #start>
                 <Button label="Departamento Nuevo" icon="pi pi-plus" class="p-button-success mr-2" @click="departamentoNuevo" />                
             </template>>
-        </Toolbar>
-        <DataTable :value="departamentos" responsiveLayout="scroll">
-            <Column field="depa_nom" header="Nombre"></Column>            
-            <Column :exportable="false" style="min-width:8rem" header="Acción">
-                <template #body="slotProps">
-                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProduct(slotProps.data)" />
+        </Toolbar>        
+        <DataTable ref="dt" :value="departamentos" v-model:selection="selectedDepartamentos" dataKey="id" 
+            :paginator="true" :rows="10" :filters="filters"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
+            <template #header>
+                <div class="table-header flex flex-column md:flex-row md:justiify-content-between">
+                    <h5 class="mb-2 md:m-0 p-as-md-center">Departamentos</h5>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" />
+                        <InputText v-model="filters['global'].value" placeholder="Search..." />
+                    </span>
+                </div>
+            </template>
+            <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>            
+            <Column field="depa_nom" header="Nombre" :sortable="true" style="min-width:16rem"></Column>
+            <Column field="dape_rgst" header="Registro" :sortable="true" style="min-width:16rem"></Column>
+            <Column></Column>                
+            <Column :exportable="false" style="min-width:4rem">
+                <template #body="slotProps">                    
+                    <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="confirmDeleteProduct(slotProps.data)" />
                 </template>
             </Column>
         </DataTable>
@@ -20,7 +35,8 @@
             <div class="field">
                 <label for="depa_nom">Nombre</label>
                 <InputText id="depa_nom" v-model.trim="departamento.depa_nom" required="true" autofocus :class="{'p-invalid': submitted && !departamento.depa_nom}" />
-                <small class="p-error" v-if="submitted && !departamento.depa_nom">Nombre es requerido.</small>
+                <label for="dape_rgst">Registro</label>
+                <InputText id="dape_rgst" v-model.trim="departamento.dape_rgst" required="true" autofocus :class="{'p-invalid': submitted && !departamento.dape_rgst}" />
             </div>           
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
@@ -32,6 +48,7 @@
 
 <script>
 
+import { FilterMatchMode } from 'primevue/api';
 import * as departamentoService from '../../../services/departamento.service'
 
 export default {
@@ -40,7 +57,11 @@ export default {
             departamentos: null,
             departamento: {},
             Dialog: false,
+            selectedDepartamentos: null
         }
+    },
+    created() {
+        this.initFilters();
     },
     mounted() {
         this.listaDepartamento()
@@ -77,7 +98,12 @@ export default {
             this.$toast.add({severity:'error', summary:'Cancelado', detail:'Aceptaste Cancelar', life: 3000});
             }
         });
-       }
+       },
+       initFilters() {
+            this.filters = {
+                'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
+            }
+        }
     },
 }
 </script>

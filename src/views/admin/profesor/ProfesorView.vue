@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card">    
         <Toast />
         <ConfirmDialog></ConfirmDialog>
         <Toolbar class="mb-4">
@@ -35,51 +35,67 @@
                 <div class="field col">
                     <label for="pro_dire">Dirección</label>
                     <InputText id="pro_dire" v-model.trim="profesor.pro_dire" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_dire}" />
-                    <small class="p-error" v-if="submitted && !profesor.pro_dire">Nombre es requerido.</small>
+                    <small class="p-error" v-if="submitted && !profesor.pro_dire">direccion es requerido.</small>
                 </div>
                 <div class="field col">
                     <label for="pro_telf">Teléfono</label>
                     <InputText id="pro_telf" v-model.trim="profesor.pro_telf" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_telf}" />
-                    <small class="p-error" v-if="submitted && !profesor.pro_telf">Apellido requerido.</small>
+                    <small class="p-error" v-if="submitted && !profesor.pro_telf">Telefono requerido.</small>
                 </div>
                 <div class="field col">
-                    <label for="pro_sexo">Sexo</label>
-                    <InputText id="pro_sexo" v-model.trim="profesor.pro_sexo" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_sexo}" />
-                    <small class="p-error" v-if="submitted && !profesor.pro_sexo">Apellido requerido.</small>
-                </div>
+                    <label for="pro_correo">Correo</label>
+                    <InputText id="pro_correo" v-model.trim="profesor.pro_correo" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_correo}" />
+                    <small class="p-error" v-if="submitted && !profesor.pro_correo">Correo requerido.</small>
+                </div>                
             </div>
-            <div class="formgrid grid">            
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="pro_sexo">Sexo</label>
+                    <Dropdown id="pro_sexo" v-model="profesor.pro_sexo" :options="statusSexo" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                        
+                    </Dropdown>                    
+                </div>
                 <div class="field col">
                     <label for="pro_dni">DNI</label>
                     <InputText id="pro_dni" v-model.trim="profesor.pro_dni" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_dni}" />
-                    <small class="p-error" v-if="submitted && !profesor.pro_dni">Nombre es requerido.</small>
+                    <small class="p-error" v-if="submitted && !profesor.pro_dni">DNI es requerido.</small>
                 </div>
                 <div class="field col">
                     <label for="pro_grado_instruccion">Grado de instruccion</label>
-                    <InputText id="pro_grado_instruccion" v-model.trim="profesor.pro_grado_instruccion" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_grado_instruccion}" />
-                    <small class="p-error" v-if="submitted && !profesor.pro_grado_instruccion">Apellido requerido.</small>
-                </div>
+                    <Dropdown id="pro_grado_instruccion" v-model="profesor.pro_grado_instruccion" :options="statusInstruc" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                        
+                    </Dropdown>                    
+                </div>                
+            </div>
+            <div class="formgrid grid">
                 <div class="field col">
                     <label for="pro_especialidad">Especialidad</label>
                     <InputText id="pro_especialidad" v-model.trim="profesor.pro_especialidad" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_especialidad}" />
-                    <small class="p-error" v-if="submitted && !profesor.pro_especialidad">Apellido requerido.</small>
+                    <small class="p-error" v-if="submitted && !profesor.pro_especialidad">Campo Requerido.</small>
                 </div>
-            </div>
-            <div class="formgrid grid">            
                 <div class="field col">
                     <label for="pro_pais">Pais</label>
-                    <InputText id="pro_pais" v-model.trim="profesor.pro_pais" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_pais}" />
-                    <small class="p-error" v-if="submitted && !profesor.pro_pais">Nombre es requerido.</small>
+                    <Dropdown id="pro_pais" v-model="profesor.pro_pais" :options="statusPais" optionLabel="label" optionValue="value" placeholder="Selecione Pais">                        
+                    </Dropdown>                    
                 </div>
                 <div class="field col">
-                    <label for="pro_fnac">Fecha de nacimiento</label>
-                    <InputText id="pro_fnac" v-model.trim="profesor.pro_fnac" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_fnac}" />
-                    <small class="p-error" v-if="submitted && !profesor.pro_fnac">Apellido requerido.</small>
+                    <label for="pro_fnac">Fecha de nacimiento</label>                    
+                    <Calendar id="pro_fnac" v-model="profesor.pro_fnac" :showIcon="true" />
                 </div>
+            </div>
+            <div class="formgrid grid">
                 <div class="field col">
                     <label for="pro_distrito">Distrito</label>
                     <InputText id="pro_distrito" v-model.trim="profesor.pro_distrito" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_distrito}" />
-                    <small class="p-error" v-if="submitted && !profesor.pro_distrito">Apellido requerido.</small>
+                    <small class="p-error" v-if="submitted && !profesor.pro_distrito">Campo Requerido.</small>
+                </div>
+                <div class="field col">
+                    <label for="user_id">Usuario</label>
+                    <InputText id="user_id" v-model.trim="profesor.user_id" required="true" autofocus :class="{'p-invalid': submitted && !profesor.user_id}" />
+                    <small class="p-error" v-if="submitted && !profesor.user_id">Campo Requerido.</small>
+                </div>
+                <div class="field col">
+                    <label for="pro_estado">Estado</label>
+                    <Dropdown id="pro_estado" v-model="profesor.pro_estado" :options="status" optionLabel="label" optionValue="value" placeholder="Selecione Pais">                        
+                    </Dropdown>                    
                 </div>
             </div>
             <template #footer>
@@ -104,15 +120,18 @@
             <Column field="pro_nom" header="Nombres" :sortable="true" style="min-width:16rem"></Column>
             <Column field="pro_app" header="A. Paterno" :sortable="true" style="min-width:16rem"></Column>
             <Column field="pro_apm" header="A. Materno" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="pro_dire" header="Dirección" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="pro_telf" header="Telefono" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="pro_dni" header="DNI" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="pro_especialidad" header="Especialidad" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="pro_distrito" header="Distrito" :sortable="true" style="min-width:16rem"></Column>            
-            <Column :exportable="false" style="min-width:8rem">
+            <Column field="pro_estado" header="Estado" :sortable="true" style="min-width:16rem">
+                <template #body="slotProps">
+                    {{slotProps.data.pro_estado == 1?"Activo":"Inactivo"}}
+                </template>
+            </Column>
+            <Column field="pro_telf" header="Telefono" :sortable="true" style="min-width:16rem"></Column>            
+            <Column field="pro_especialidad" header="Especialidad" :sortable="true" style="min-width:16rem"></Column>            
+            <Column :exportable="false" style="min-width:16rem">
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarProfesores(slotProps.data)" />
-                    <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" @click="verProfesores(slotProps.data)" />
+                    <Button icon="pi pi-bookmark" class="p-button-rounded p-button-secondary mr-2" @click="verProfesores(slotProps.data)" />
+                    <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" @click="asignarRol(slotProps.data)" />
                     <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="confirmDeleteProduct(slotProps.data)" />
                 </template>
             </Column>            
@@ -122,62 +141,66 @@
                 <div class="formgrid grid">                     
                     <div class="field col">
                         <label for="pro_nom"><b>Nombre:</b></label>
-                        <p style="min-width:16rem"> {{ profesor.pro_nom }} </p>
+                        <p style="min-width:16rem" v-text="profesor.pro_nom"></p>
                     </div>
                     <div class="field col">
                         <label for="pro_app"><b>A. Paterno:</b></label>
-                        <p style="min-width:16rem">{{ profesor.pro_app }}</p>
+                        <p style="min-width:16rem" v-text="profesor.pro_app"></p>
                     </div>
                     <div class="field col">
                         <label for="pro_apm"><b>A. Materno:</b></label>
-                        <p style="min-width:16rem">{{ profesor.pro_apm }}</p>          
+                        <p style="min-width:16rem" v-text="profesor.pro_apm"></p>          
                     </div>
                 </div>
                     
                 <div class="formgrid grid">
                     <div class="field col">
                         <label for="pro_dire"><b>Dirección:</b></label>
-                        <p style="min-width:16rem">{{ profesor.pro_dire }}</p>          
+                        <p style="min-width:16rem" v-text="profesor.pro_dire"></p>          
                     </div>
                     <div class="field col">
                         <label for="pro_telf"><b>Telefóno:</b></label>
-                        <p style="min-width:16rem">{{ profesor.pro_telf }}</p>          
+                        <p style="min-width:16rem" v-text="profesor.pro_telf"></p>          
                     </div>
                     <div class="field col">
                         <label for="pro_sexo"><b>Sexo:</b></label>
-                        <p style="min-width:16rem">{{ profesor.pro_sexo }}</p>          
+                        <p style="min-width:16rem" v-text="profesor.pro_sexo"></p>          
                     </div>
                     
                 </div>
                 <div class="formgrid grid">
                     <div class="field col">
                         <label for="pro_dni"><b>DNI:</b></label>
-                        <p style="min-width:16rem">{{ profesor.pro_dni }}</p>          
+                        <p style="min-width:16rem" v-text="profesor.pro_dni"></p>          
                     </div>
                     <div class="field col">
                         <label for="pro_grado_instruccion"><b>Grado de instrucción:</b></label>
-                        <p style="min-width:16rem">{{ profesor.pro_grado_instruccion }}</p>
+                        <p style="min-width:16rem" v-text="profesor.pro_grado_instruccion"></p>
                     </div>
                     <div class="field col">
                         <label for="pro_especialidad"><b>Especialidad:</b></label>
-                        <p style="min-width:16rem">{{ profesor.pro_especialidad }}</p>
+                        <p style="min-width:16rem" v-text="profesor.pro_especialidad"></p>
                     </div>
                     
                 </div>
                 <div class="formgrid grid">
                     <div class="field col">
                         <label for="pro_pais"><b>Pais:</b></label>
-                        <p style="min-width:16rem">{{ profesor.pro_pais }}</p>
+                        <p style="min-width:16rem" v-text="profesor.pro_pais"></p>
                     </div>
                     <div class="field col">
                         <label for="pro_fnac"><b>Fecha de nacimiento:</b></label>
-                        <p style="min-width:16rem">{{ profesor.pro_fnac }}</p>
+                        <p style="min-width:16rem" v-text="profesor.pro_fnac"></p>
                     </div>
                     <div class="field col">
-                        <label for="pro_distrito"><b>Número de hermanos:</b></label>
-                        <p style="min-width:16rem">{{ profesor.pro_distrito }}</p>
+                        <label for="pro_distrito"><b>Distrito:</b></label>
+                        <p style="min-width:16rem" v-text="profesor.pro_distrito"></p>
                     </div>                                   
-                </div>                                        
+                </div>
+                <div class="field">
+                    <label for="pro_estado">Estado</label>
+                    <p style="min-width:16rem" v-text="profesor.pro_estado"></p>
+                </div>                                       
             </div>
             <template #footer>
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarVerDialog()"/>
@@ -202,7 +225,33 @@ export default {
             profesor: {},
             submitted: false,
             estadoEdicion: false,
-            verDialog: false
+            verDialog: false,
+            statusSexo: [
+                {label: 'MASCULINO', value: 'masculino'},
+                {label: 'FEMENINO', value:'femenino'}
+            ],
+            statusInstruc: [
+                {label: 'PRIMARIA', value: 'primaria'},
+                {label: 'SECUNDARIA', value: 'secundaria'},
+                {label: 'TECNICO', value: 'tecnico'},
+                {label: 'UNIVERSITARIA', value: 'universitaria'},
+            ],
+            statusPais: [
+                {label: 'AGENTINA', value: 'AGENTINA'},
+                {label: 'BOLIVIA', value: 'BOLIVIA'},
+                {label: 'BRASIL', value: 'BRASIL'},
+                {label: 'COLOMBIA', value: 'COLOMBIA'},
+                {label: 'CHILE', value: 'CHILE'},
+                {label: 'ECUADOR', value: 'ECUADOR'},
+                {label: 'PARAGUAY', value: 'PARAGUAY'},                
+                {label: 'PERÚ', value: 'PERÚ'},
+                {label: 'VENEZUELA', value: 'VENEZUELA'},
+                {label: 'URUGUAY', value: 'URUGUAY'},
+            ],
+            status: [
+                {label: 'ACTIVO', value:'1'},
+                {label: 'INACTIVO', value:'0'}
+            ]
         }
     },
     created() {

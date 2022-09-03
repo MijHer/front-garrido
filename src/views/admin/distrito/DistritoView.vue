@@ -22,25 +22,30 @@
             </div>
         </template>
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-        <Column field="dist_nom" header="Distrito" :sortable="true" style="min-width:16rem"></Column>
-        <Column field="provincia.prov_nom" header="Provincia" :sortable="true" style="min-width:16rem"></Column>
-        <Column field="departamento.depa_nom" header="Departamento" :sortable="true" style="min-width:16rem"></Column>
+        <Column field="dist_nom" header="Distrito" :sortable="true" style="min-width:16rem"></Column>        
+        <Column field="provincia.prov_nom" header="Provincia" :sortable="true" style="min-width:16rem"></Column>        
+        <Column field="provincia.departamento.depa_nom" header="Departamento"  :sortable="true" style="min-width:16rem"></Column>
+        <Column field="dist_rgst" header="Registro" :sortable="true" style="min-width:16rem"></Column>
         <Column :exportable="false" style="min-width:8rem">
             <template #body="slotProps">
                 <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editDistrito(slotProps.data)" />
                 <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="confirmDeleteProduct(slotProps.data)" />
             </template>
-        </Column>
+        </Column>        
     </DataTable>
     <Dialog v-model:visible="Dialog" :style="{width: '450px'}" header="Distrito Nuevo" :modal="true" class="p-fluid">        
         <div class="field">
             <label for="dist_nom">Nombre</label>
-            <InputText  id="dist_nom" v-model="distrito.dist_nom" required="true"/>
+            <InputText  id="dist_nom" autofocus v-model="distrito.dist_nom" required="true"/>
         </div>
         <div class="field">
             <label for="provincia_id" class="mb-3">Provincia</label>
             <Dropdown id="provincia_id" v-model="distrito.provincia_id" :options="provincia" optionLabel="prov_nom" optionValue="id" placeholder="Selecione Provincia">               
             </Dropdown>
+        </div>
+        <div class="field">
+            <label for="dis_rgst" class="mb-3">Registro</label>
+            <InputText  id="dist_rgst" autofocus v-model="distrito.dist_rgst" required="true"/>
         </div>
         <template #footer>
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
@@ -76,14 +81,14 @@ export default {
     mounted() {
         this.listaDistrito();
     },
-    methods: {
+    methods: {        
         async listaDistrito() {
             const {data} = await distritoService.listarDistritos();
             this.distritos = data;
             const prov = await provinciaService.listarProvincias();
             this.provincia = prov.data.data;
             const depa = await departamentoService.listarDepartamentos();
-            this.departamento = depa.data.data;
+            this.departamento = depa.data;
         },
         nuevoDistrito() {
             this.Dialog = true;

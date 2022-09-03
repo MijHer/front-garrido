@@ -90,10 +90,10 @@ export default {
                         },
                         {
                             label: 'Cursos', icon: 'pi pi-fw pi-bookmark', to: '/admin/curso',
-                        },/*
-                        {
-                            label: 'Grado', icon: 'pi pi-fw pi-bookmark', to: '/admin/grado',
                         },
+                        {
+                            label: 'Asignar Curso', icon: 'pi pi-fw pi-bookmark', to: '/admin/asignacion',
+                        },/*
                         {
                             label: 'Grado', icon: 'pi pi-fw pi-bookmark', to: '/admin/anioacademico',
                         } */
@@ -130,6 +130,17 @@ export default {
                         {
                             label: 'Matriculados', icon: 'pi pi-fw pi-bookmark', to: '/admin/matriculados',
                         }                       
+                    ]
+                 },
+                 {
+                    label:'Usuario', icon: 'pi pi-fw pi-search',
+                    items: [
+                        {
+                            label: 'Registrar Usuario', icon: 'pi pi-fw pi-bookmark', to: '/admin/usuario',
+                        },
+                        {
+                            label: 'Tipo de Usuario', icon: 'pi pi-fw pi-bookmark', to: '/admin/tipousuario',
+                        }                      
                     ]
                  }
 				/*{

@@ -3,16 +3,15 @@
         <h1>Realizar Pago</h1>
         <div class="p-fluid">
             <div class="field" >
-                <label >Imgrese nombre del alumno</label>
-                <InputText  v-model="dni" required="true" rows="3" cols="20" />
+                <label >Imgrese DNI del alumno</label>
+                <InputText  v-model="dni" autofocus required="true" rows="3" cols="20" />
             </div>
             <Button label="Buscar" @click="buscarPersona()" />
         </div>
         <Dialog v-model:visible="Dialog" :style="{width: '900px'}" header="Buscar Alumno" :modal="true" class="p-fluid">
             <div class="field">
                 <label for="alumno_id">Alumno</label>
-                <InputText id="alumno_id" v-model="pago.alumno_id" required="true" rows="3" cols="20" />
-                <label style="min-width:16rem" optionValue="id"> {{ alumno.alu_nom}} </label>
+                <InputText id="alumno_id" v-bind:value="alumno.alu_nom" required="true" rows="3" cols="20" />                
             </div>
             <div class="field">
                 <label for="pago_fecha">Fecha de Pago</label>
@@ -31,11 +30,10 @@
                 <InputText id="pago_periodo" v-model="pago.pago_periodo" required="true" rows="3" cols="20" />                
             </div>
              <div class="field">
-                <label for="matricula_id">Apoderado</label>
-                <InputText id="matricula_id" v-model="pago.matricula_id" required="true" rows="3" cols="20" />
-                <label style="min-width:16rem" optionValue="id" optionLabel="apoderado.apo_nom"> {{ alumno.apoderado_id}} </label>
+                <label >Apoderado</label>
+                <InputText id="matricula_id" v-bind:value="alumno.apoderado.apo_nom" required="true" rows="3" cols="20" />                
             </div>            
-            {{alumno}}        
+            {{pago}}        
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarPago" />
@@ -57,7 +55,6 @@ export default {
     return {
         dni: '',
         alumno: null,
-        pagos: null,
         pago: {},
         matriculas: {},
         filters: {},
@@ -71,6 +68,9 @@ export default {
     async buscarPersona() {
         const {data} = await alumnoService.buscar(this.dni);
         this.alumno = data;
+        this.pago.alumno_id = this.alumno.id;
+        this.pago.matricula_id = this.alumno.apoderado_id;
+    
         this.Dialog = true;
     },
     async guardarPago () {

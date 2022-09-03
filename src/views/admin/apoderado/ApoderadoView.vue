@@ -32,8 +32,11 @@
             <Column field="apo_apm" header="A. Materno" :sortable="true" style="min-width:16rem"></Column>            
             <Column field="apo_vinculo" header="Vínculo" :sortable="true" style="min-width:16rem"></Column>            
             <Column field="apo_dni" header="DNI" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="apo_telf" header="Telefono" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="apo_dir" header="Dirección" :sortable="true" style="min-width:16rem"></Column>            
+            <Column field="apo_estado" header="Estado" :sortable="true" style="min-width:16rem">
+                <template #body="slotProps">
+                    {{slotProps.data.apo_estado == 1?"Activo":"Inactivo"}}
+                </template>
+            </Column>            
             <Column :exportable="false" style="min-width:8rem">
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarApoderados(slotProps.data)" />
@@ -79,9 +82,8 @@
             </div>
             <div class="formgrid grid">            
                 <div class="field col">
-                    <label for="apo_fnac">Fecha de nacimiento</label>
-                    <InputText id="apo_fnac" v-model.trim="apoderado.apo_fnac" required="true" autofocus :class="{'p-invalid': submitted && !apoderado.apo_fnac}" />
-                    <small class="p-error" v-if="submitted && !apoderado.apo_fnac">Nombre es requerido.</small>
+                    <label for="apo_fnac">Fecha de nacimiento</label>                    
+                    <Calendar id="apo_fnac" v-model="apoderado.apo_fnac" :showIcon="true" />
                 </div>
                 <div class="field col">
                     <label for="apo_vinculo">Vínculo</label>
@@ -94,6 +96,13 @@
                     <small class="p-error" v-if="submitted && !apoderado.apo_grado_inst">Apellido requerido.</small>
                 </div>
             </div>
+            <div class="formgrdi grid">
+                <div class="field col">
+                    <label for="apo_estado">Estado</label>                    
+                    <Dropdown id="apo_estado" v-model="apoderado.apo_estado" :options="status" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                                            
+                    </Dropdown>
+                </div>              
+            </div>
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardaApoderado" />
@@ -104,46 +113,55 @@
                 <div class="formgrid grid">                     
                     <div class="field col">
                         <label for="apo_nom"><b>Nombre:</b></label>
-                        <p style="min-width:16rem"> {{ apoderado.apo_nom }} </p>
+                        <p style="min-width:16rem" v-text="apoderado.apo_nom"></p>
                     </div>
                     <div class="field col">
                         <label for="apo_app">A. Paterno:</label>
-                        <p style="min-width:16rem">{{ apoderado.apo_app }}</p>
+                        <p style="min-width:16rem" v-text="apoderado.apo_app"></p>
                     </div>
                     <div class="field col">
                         <label for="apo_apm">A. Materno:</label>
-                        <p style="min-width:16rem">{{ apoderado.apo_apm }}</p>          
+                        <p style="min-width:16rem" v-text="apoderado.apo_apm"></p>          
                     </div>
                 </div>                    
                 <div class="formgrid grid">
                     <div class="field col">
                         <label for="apo_dni">DNI:</label>
-                        <p style="min-width:16rem">{{ apoderado.apo_dni }}</p>          
+                        <p style="min-width:16rem" v-text="apoderado.apo_dni"></p>          
                     </div>
                     <div class="field col">
                         <label for="apo_telf">Telefóno:</label>
-                        <p style="min-width:16rem">{{ apoderado.apo_telf }}</p>          
+                        <p style="min-width:16rem" v-text="apoderado.apo_telf"></p>          
                     </div>
                     <div class="field col">
                         <label for="apo_dir">Dirección:</label>
-                        <p style="min-width:16rem">{{ apoderado.pro_sexo }}</p>          
+                        <p style="min-width:16rem" v-text="apoderado.pro_sexo"></p>          
                     </div>
                     
                 </div>
                 <div class="formgrid grid">
                     <div class="field col">
                         <label for="apo_fnac">Fecha de nacimiento:</label>
-                        <p style="min-width:16rem">{{ apoderado.apo_fnac }}</p>          
+                        <p style="min-width:16rem" v-text="apoderado.apo_fnac"></p>
                     </div>
                     <div class="field col">
                         <label for="apo_vinculo">Vínculo:</label>
-                        <p style="min-width:16rem">{{ apoderado.apo_vinculo }}</p>
+                        <p style="min-width:16rem" v-text="apoderado.apo_vinculo"></p>
                     </div>
                     <div class="field col">
                         <label for="apo_grado_inst">Grado de instrucción:</label>
-                        <p style="min-width:16rem">{{ apoderado.apo_grado_inst }}</p>
+                        <p style="min-width:16rem" v-text="apoderado.apo_grado_inst"></p>
                     </div>                    
-                </div>                                       
+                </div>
+                <div class="formgrid grid">
+                    <div class="field col">
+                        <label for="apo_estado">Estado:</label>                      
+                        <p style="min-width:16rem" v-text="apoderado.apo_estado" >
+                        </p>                                                
+                    </div>
+                    <div class="field col"></div>
+                    <div class="field col"></div>
+                </div>
             </div>
             <template #footer>
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarVerDialog()"/>
@@ -168,7 +186,11 @@ export default {
             apoderado: {},
             submitted: false,
             estadoEdicion: false,
-            verDialog: false
+            verDialog: false,
+            status: [
+                    {label: 'ACTIVO', value: '1'},
+                    {label: 'INACTIVO', value: '0'}
+                ]
         }
     },
     created() {

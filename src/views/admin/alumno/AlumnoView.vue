@@ -35,9 +35,9 @@
       </div>
     </div>
     <div class="formgrid grid">
-      <div class="field col">
+      <div class="field col">            
           <label for="alu_fnac">Fecha de Nacimiento</label>
-          <InputText id="alu_fnac" v-model="alumno.alu_fnac" required="true" rows="3" cols="20" />
+          <Calendar id="alu_fnac" v-model="alumno.alu_fnac" :showIcon="true"/>            
       </div>
       <div class="field col">
         <label for="alu_tipo_doc" class="mb-3">Tipo de Documento</label>
@@ -177,23 +177,15 @@
         </div>
       </div>
       <div class="field col">
-          <label for="alu_lengua_materna">Lengua Materna 1</label>
+          <label for="alu_lengua_materna">Lengua Materna</label>
           <InputText id="alu_lengua_materna" v-model="alumno.alu_lengua_materna" required="true" rows="3" cols="20" />
-      </div>
-      <div class="field col">
-          <label for="alu_lengua_materna2">Lengua Materna 2</label>
-          <InputText id="alu_lengua_materna2" v-model="alumno.alu_lengua_materna2" required="true" rows="3" cols="20" />
-      </div>
+      </div>      
     </div>
     <div class="formgrid grid">
       <div class="field col">
           <label for="alu_tipo_sangre">Tipo de Sangre</label>
           <InputText id="alu_tipo_sangre" v-model="alumno.alu_tipo_sangre" required="true" rows="3" cols="20" />
-      </div>
-      <div class="field col">
-          <label for="alu_nacimiento_registrado">Fecha de Nacimiento Registrado</label>
-          <InputText id="alu_nacimiento_registrado" v-model="alumno.alu_nacimiento_registrado" required="true" rows="3" cols="20" />
-      </div>
+      </div>      
       <div class="field col">
           <label for="alu_religion">Religión</label>
           <InputText id="alu_religion" v-model="alumno.alu_religion" required="true" rows="3" cols="20" />
@@ -249,7 +241,7 @@
       </div>
       <div class="field col">
         <label for="alu_vive_con_este_madre" class="mb-3">Vive con la madre</label>
-        <Dropdown id="alu_vive_con_este_madre" v-model="alumno.alu_vive_con_este_madre" :options="statuses9" optionLabel="label" optionValue="value" placeholder="Selecciona">
+        <Dropdown id="alu_vive_con_este_madre" v-model="alumno.alu_vive_con_madre" :options="statuses9" optionLabel="label" optionValue="value" placeholder="Selecciona">
           <template #value="slotProps">
             <div v-if="slotProps.value && slotProps.value.value">
               <span :class="'product-badge status-' +slotProps.value.value">{{slotProps.value.label}}</span>
@@ -276,7 +268,7 @@
       </div>
       <div class="field col">
           <label for="alu_fnca_madre">Fecha de nacimiento</label>
-          <InputText id="alu_fnca_madre" v-model="alumno.alu_fnca_madre" required="true" rows="3" cols="20" />
+          <Calendar id="alu_fnca_madre" v-model="alumno.alu_fnca_madre" :showIcon="true" />
       </div>
     </div>
     <div class="formgrid grid">    
@@ -343,7 +335,7 @@
       </div>
       <div class="field col">
         <label for="alu_vive_con_este_padre" class="mb-3">Vive con el padre</label>
-        <Dropdown id="alu_vive_con_este_padre" v-model="alumno.alu_vive_con_este_padre" :options="statuses12" optionLabel="label" optionValue="value" placeholder="Selecciona">
+        <Dropdown id="alu_vive_con_este_padre" v-model="alumno.alu_vive_con_padre" :options="statuses12" optionLabel="label" optionValue="value" placeholder="Selecciona">
           <template #value="slotProps">
             <div v-if="slotProps.value && slotProps.value.value">
               <span :class="'product-badge status-' +slotProps.value.value">{{slotProps.value.label}}</span>
@@ -369,8 +361,8 @@
           <InputText id="alu_vive_padre" v-model="alumno.alu_vive_padre" required="true" rows="3" cols="20" />
       </div>
       <div class="field col">
-          <label for="alu_fnca_padre">Fecha de nacimiento</label>
-          <InputText id="alu_fnca_padre" v-model="alumno.alu_fnca_padre" required="true" rows="3" cols="20" />
+          <label for="alu_fnca_padre">Fecha de nacimiento</label>          
+          <Calendar id="alu_fnca_padre" v-model="alumno.alu_fnca_padre" :showIcon="true" />
       </div>
     </div>
     <div class="formgrid grid">    
@@ -426,7 +418,7 @@
         <template #body="slotProps">
             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarAlumnos(slotProps.data)" />
             <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" @click="verAlumnos(slotProps.data)" />
-            <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="confirmDeleteProduct(slotProps.data)" />
+            <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProduct(slotProps.data)" />
         </template>
       </Column>
   </DataTable>
@@ -511,10 +503,7 @@
         </div>
       </div>
       <div class="formgrid grid">
-        <div class="field col">
-          <label for="alu_nacimiento_registrado ">Registro de nacimiento:</label>
-          <p style="min-width:16rem">{{ alumno.alu_nacimiento_registrado }}</p>
-        </div>
+        
         <div class="field col">
           <label for="alu_religion ">Religión:</label>
           <p style="min-width:16rem">{{ alumno.alu_religion }}</p>
@@ -558,7 +547,7 @@
           </div>
           <div class="field col">
             <label for="alu_lengua_materna ">Vive con la madre:</label>
-            <p style="min-width:16rem">{{ alumno.alu_vive_con_este_madre }}</p>
+            <p style="min-width:16rem">{{ alumno.alu_vive_con_madre }}</p>
           </div>
           <div class="field col">
             <label for="alu_tipo_sangre ">Grado de instrucción:</label>
@@ -613,7 +602,7 @@
           </div>
           <div class="field col">
             <label for="alu_vive_con_este_padre ">Vive con el padre:</label>
-            <p style="min-width:16rem">{{ alumno.alu_vive_con_este_padre }}</p>
+            <p style="min-width:16rem">{{ alumno.alu_vive_con_padre }}</p>
           </div>
           <div class="field col">
             <label for="alu_grado_inst_padre ">Grado de instrucción:</label>
@@ -648,6 +637,7 @@
 <script>
 
 import { FilterMatchMode } from 'primevue/api';
+import Calendar from 'primevue/calendar';
 import * as alumnoService from '../../../services/alumno.service';
 import * as apoderadoService from '@/services/apoderado.service';
 

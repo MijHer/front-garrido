@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    usuario: null
+    usuario: null    
   },
   mutations: {
     actualizaUsuario(state, user) {

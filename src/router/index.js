@@ -16,6 +16,9 @@ import DistritoView from '../views/admin/distrito/DistritoView.vue'
 import MatriculadosView from '../views/admin/matricula/MatriculadosView.vue'
 import MatriculaView from '../views/admin/matricula/MatriculaView.vue'
 import AsistenciaView from '../views/admin/asistencia/AsistenciaView.vue'
+import TipousuarioView from '../views/admin/usuario/TipousuarioView.vue'
+import UsuarioView from '../views/admin/usuario/UsuarioView.vue'
+import AsignacionVuew from '../views/admin/asignacion/AsignacionVuew.vue'
 
 const routes = [
   {
@@ -88,6 +91,21 @@ const routes = [
         path: 'asistencia',
         name: 'Asistencia',
         component: AsistenciaView        
+      },
+      {
+        path: 'tipousuario',
+        name: 'Tipousuario',
+        component: TipousuarioView 
+      },
+      {
+        path: 'usuario',
+        name: 'Usuario',
+        component: UsuarioView 
+      },
+      {
+        path: 'asignacion',
+        name: 'Asignacion',
+        component: AsignacionVuew 
       }
     ]
   },

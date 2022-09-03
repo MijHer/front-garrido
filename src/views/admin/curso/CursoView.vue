@@ -24,11 +24,15 @@
                 </span>
             </div>
         </template>
-
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
         <Column field="cur_nom" header="Nombre" :sortable="true" style="min-width:12rem"></Column>
         <Column field="cur_descripcion" header="Descripción" :sortable="true" style="min-width:16rem"></Column>
-        <Column field="cur_grado" header="Grado" :sortable="true" style="min-width:16rem"></Column>        
+        <Column field="cur_grado" header="Estado" :sortable="true" style="min-width:16rem">
+        <Column field="cur_registro" header="Registro" :sortable="true" style="min-width:16rem"></Column>
+            <template #body ="slotProps">
+                {{slotProps.data.cur_estado == 1?"Activo":"Inactico"}}
+            </template>            
+        </Column>        
         <Column :exportable="false" style="min-width:8rem">
             <template #body="slotProps">
                 <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editCurso(slotProps.data)" />
@@ -39,27 +43,26 @@
     <Dialog v-model:visible="Dialog" :style="{width: '450px'}" header="Curso Nuevo" :modal="true" class="p-fluid">
         <div class="field">
             <label for="cur_nom">Nombre</label>
-            <InputText id="cur_nom" v-model.trim="curso.cur_nom" required="true" autofocus :class="{'p-invalid': submitted && !curso.cur_nom}" />
-            <small class="p-error" v-if="submitted && !curso.cur_nom">Name is required.</small>
+            <InputText id="cur_nom" v-model.trim="curso.cur_nom" required="true" autofocus :class="{'p-invalid': submitted && !curso.cur_nom}" />            
         </div>
         <div class="field">
             <label for="cur_descripcion">Descripción</label>
-            <InputText id="cur_descripcion" v-model.trim="curso.cur_descripcion" required="true" autofocus :class="{'p-invalid': submitted && !curso.cur_descripcion}" />
-            <small class="p-error" v-if="submitted && !curso.cur_descripcion">Name is required.</small>
+            <InputText id="cur_descripcion" v-model.trim="curso.cur_descripcion" required="true" autofocus :class="{'p-invalid': submitted && !curso.cur_descripcion}" />            
         </div>
         <div class="field">
-            <label for="cur_grado">Grado</label>
-            <InputText id="cur_grado" v-model.trim="curso.cur_grado" required="true" autofocus :class="{'p-invalid': submitted && !curso.cur_grado}" />
-            <small class="p-error" v-if="submitted && !curso.cur_grado">Name is required.</small>
+            <label for="cur_estado">Estado</label>
+            <Dropdown v-model.trim="curso.cur_estado" :options="status" optionLabel="label" optionValue="value" required="true">
+            </Dropdown>            
         </div>
-        <!-- <div class="field">
-            <label for="description">Description</label>
-            <Textarea id="description" v-model="product.description" required="true" rows="3" cols="20" />
-        </div> -->
+        <div class="field">
+            <label for="cur_registro">Registro</label>
+            <InputText id="cur_registro" v-model="curso.cur_registro" required="true" rows="3" cols="20" />
+        </div>
         <template #footer>
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
             <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarCurso" />
         </template>
+        {{curso}}
     </Dialog>
   </div>
 </template>
@@ -76,7 +79,11 @@ export default {
             selectedCursos: null,
             Dialog: false,
             curso: {},
-            estado: false
+            estado: false,
+            status: [
+                {label: "Activo", value: '1'},
+                {label: "Inactivo", value: '0'}
+            ]
         }
     },
     created() {        

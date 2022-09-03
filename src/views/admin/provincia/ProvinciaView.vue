@@ -24,6 +24,7 @@
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
         <Column field="prov_nom" header="Provincia" :sortable="true" style="min-width:16rem"></Column>
         <Column field="departamento.depa_nom" header="Departamento" :sortable="true" style="min-width:16rem"></Column>
+        <Column field="prov_rgst" header="Registro" :sortable="true" style="min-width:16rem"></Column>        
         <Column :exportable="false" style="min-width:8rem">
             <template #body="slotProps">
                 <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editProvincia(slotProps.data)" />
@@ -34,12 +35,16 @@
     <Dialog v-model:visible="Dialog" :style="{width: '450px'}" header="Provincia Nueva" :modal="true" class="p-fluid">        
         <div class="field">
             <label for="prov_nom">Nombre</label>
-            <InputText  id="prov_nom" v-model="provincia.prov_nom" required="true" autofocus :class="{'p-invalid': submitted && !publicacion.titulo}"/>
-        </div>
+            <InputText  id="prov_nom" v-model="provincia.prov_nom" required="true" autofocus />
+        </div>        
         <div class="field">
             <label for="departamento_id" class="mb-3">Departamento</label>
             <Dropdown id="departamento_id" v-model="provincia.departamento_id" :options="departamentos" optionLabel="depa_nom" optionValue="id" placeholder="Selecione Departamento">               
             </Dropdown>
+        </div>
+        <div class="field">
+            <label for="prov_rgst">Registro</label>
+            <InputText  id="prov_rgst" v-model="provincia.prov_rgst" required="true" autofocus />
         </div>
         <template #footer>
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>

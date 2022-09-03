@@ -1,4 +1,6 @@
 <template>
+<Toast />
+    <ConfirmDialog></ConfirmDialog>
     <div class="surface-0 flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
         <div class="grid justify-content-center p-2 lg:p-0" style="min-width:80%">
             <div class="col-12 mt-5 xl:mt-0 text-center">
@@ -59,7 +61,8 @@ export default {
   },
   methods: {
     async ingresar() {
-      const { data } = await userService.login(this.usuario);      
+      const { data } = await userService.login(this.usuario);
+      console.log(data);
       if (!data.error) {
         this.$store.dispatch("ingresaUsuario", data.user.name);
         this.$router.push({name: 'Admin'});
