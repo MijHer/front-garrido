@@ -82,8 +82,9 @@
             </div>
             <div class="formgrid grid">            
                 <div class="field col">
-                    <label for="apo_fnac">Fecha de nacimiento</label>                    
-                    <Calendar id="apo_fnac" v-model="apoderado.apo_fnac" :showIcon="true" />
+                    <label for="apo_fnac">Fecha de nacimiento</label>
+                    <!-- <InputText id="apo_dir" v-model="apoderado.apo_fnac" required="true" /> -->
+                    <Calendar id="apo_fnac" v-model="apoderado.apo_fnac" :showIcon="true"  hourFormat="12" dateFormat="dd/mm/yy" />
                 </div>
                 <div class="field col">
                     <label for="apo_vinculo">Vínculo</label>
@@ -107,6 +108,7 @@
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardaApoderado" />
             </template>
+            {{apoderado}}
         </Dialog>        
         <Dialog v-model:visible="verDialog" :style="{width: '1000px', text: 'center'}" header="Datos del Apoderado" :modal="true" class="p-fluid">
             <div class="card">

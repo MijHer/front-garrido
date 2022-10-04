@@ -44,8 +44,8 @@
             </Dropdown>
         </div>
         <div class="field">
-            <label for="dis_rgst" class="mb-3">Registro</label>
-            <InputText  id="dist_rgst" autofocus v-model="distrito.dist_rgst" required="true"/>
+            <label for="dis_rgst" class="mb-3">Fecha de Registro</label>
+            <Calendar inputId="icon" v-model="distrito.dist_rgst" :showIcon="true" />
         </div>
         <template #footer>
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>

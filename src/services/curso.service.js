@@ -15,3 +15,9 @@ export function modificarCursos(id, datos) {
 export function eliminarCursos(id) {
     return http().delete('/v1/curso/'+id);
 }
+export function asignarProfesor(id, datos) {
+    return http().post(`/v1/curso/${id}/asignar-profesor`, datos);
+}
+export function quitarProfesor(id, datos) {
+    return http().post(`/v1/curso/${id}/quitar-profesor`, datos);
+}

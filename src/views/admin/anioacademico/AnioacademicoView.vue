@@ -35,12 +35,12 @@
                 <InputText id="anio_detalle" v-model="anioacademico.anio_detalle" required="true" rows="3" cols="20" />
             </div>
             <div class="field">
-                <label for="anio_inicio">Fecha Inicio</label>
-                <InputText id="anio_inicio" v-model="anioacademico.anio_inicio" required="true" rows="3" cols="20" />
+                <label for="anio_inicio">Fecha Inicio</label>                
+                <Calendar inputId="icon" v-model="anioacademico.anio_inicio" :showIcon="true" />
             </div>
             <div class="field">
                 <label for="anio_fin">Fecha Fin</label>
-                <InputText id="anio_fin" v-model="anioacademico.anio_fin" required="true" rows="3" cols="20" />
+                <Calendar inputId="icon" v-model="anioacademico.anio_fin" :showIcon="true" />
             </div>
             <div class="field">
                 <label for="anio_estado" class="mb-3">Estado</label>
@@ -103,8 +103,8 @@
                     <Dropdown id="gra_nivel" v-model="grado.gra_nivel" :options="nivel" optionLabel="label" optionValue="value"  placeholder="Selecione Nivel Academico">                        
                     </Dropdown>
                 </div>
-                <label for="gra_registro">Registro</label>
-                <InputText id="gra_registro" v-model="grado.gra_registro" required="true" autofocus />
+                <label for="gra_registro">Fecha de Registro</label>
+                <Calendar inputId="icon" v-model="grado.gra_registro" :showIcon="true" />
                 <div class="field">
                     <label for="gra_estado" class="mb-3">Estado</label>
                     <Dropdown id="gra_estado" v-model="grado.gra_estado" :options="statusGra" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                        

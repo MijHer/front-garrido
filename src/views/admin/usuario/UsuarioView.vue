@@ -72,9 +72,9 @@
         </div>
         <div class="field col">
           <div class="field col">
-            <label for="usu_rgst">Fecha de Registro</label>
-            <InputText id="usu_dir" v-model.trim="user.usu_rgst" required="true" autofocus />          
-            <!-- <Calendar id="icon" v-model="user.usu_rgst" :showIcon="true" /> -->
+            <label for="usu_rgst">Fecha y Hora de Registro</label>
+            <!-- <InputText id="usu_dir" v-model.trim="user.usu_rgst" required="true" autofocus /> -->          
+            <Calendar inputId="usu_rgst" v-model="user.usu_rgst" :showTime="true" :showSeconds="true" :showIcon="true" />
           </div>
         </div>
         <div class="field col"></div>
@@ -90,6 +90,7 @@
           <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
           <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarUsers" />
       </template>
+      {{user}}
     </Dialog>     
   </div>
 </template>
@@ -139,6 +140,7 @@ export default {
     },
     cerrarDialog() {
       this.Dialog = false;
+      this.user = {};
     },
     async guardarUsers() {
       let datos;

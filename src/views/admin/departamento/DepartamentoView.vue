@@ -35,8 +35,8 @@
             <div class="field">
                 <label for="depa_nom">Nombre</label>
                 <InputText id="depa_nom" v-model.trim="departamento.depa_nom" required="true" autofocus :class="{'p-invalid': submitted && !departamento.depa_nom}" />
-                <label for="dape_rgst">Registro</label>
-                <InputText id="dape_rgst" v-model.trim="departamento.dape_rgst" required="true" autofocus :class="{'p-invalid': submitted && !departamento.dape_rgst}" />
+                <label for="dape_rgst">Fecha de Registro</label>
+                <Calendar inputId="icon" v-model="departamento.dape_rgst" :showIcon="true" />
             </div>           
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>

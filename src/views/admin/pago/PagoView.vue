@@ -11,11 +11,17 @@
         <Dialog v-model:visible="Dialog" :style="{width: '900px'}" header="Buscar Alumno" :modal="true" class="p-fluid">
             <div class="field">
                 <label for="alumno_id">Alumno</label>
-                <InputText id="alumno_id" v-bind:value="alumno.alu_nom" required="true" rows="3" cols="20" />                
+                <InputText id="alumno_id" readonly v-bind:value="alumno.alu_nom" required="true" rows="3" cols="20" />                
             </div>
-            <div class="field">
-                <label for="pago_fecha">Fecha de Pago</label>
-                <InputText id="pago_fecha" v-model="pago.pago_fecha" required="true" rows="3" cols="20" />                
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="pago_fecha">Fecha de Pago</label>
+                    <InputText id="pago_fecha"  v-model="pago.pago_fecha"  dateFormat="yy-dd-mm" required="true" rows="3" cols="20" />                
+                </div>
+                <div class="field col">
+                    <label for="pago_hora">Hora de Pago</label>
+                    <InputText id="pago_fecha" readonly v-model="pago.pago_hora" required="true" rows="3" cols="20" />                
+                </div>
             </div>
              <div class="field">
                 <label for="pago_monto">Precio de Pensión</label>
@@ -31,9 +37,9 @@
             </div>
              <div class="field">
                 <label >Apoderado</label>
-                <InputText id="matricula_id" v-bind:value="alumno.apoderado.apo_nom" required="true" rows="3" cols="20" />                
+                <InputText id="matricula_id" readonly v-bind:value="alumno.apoderado.apo_nom" required="true" rows="3" cols="20" />                
             </div>            
-            {{pago}}        
+            {{pago}}       
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarPago" />
@@ -58,11 +64,14 @@ export default {
         pago: {},
         matriculas: {},
         filters: {},
-        Dialog: false
+        Dialog: false,
+        date: '',
+        time: ''
     }
   },
   mounted() {
-
+    this.printdate();
+    this.printTime();
   },
   methods: {    
     async buscarPersona() {
@@ -70,8 +79,17 @@ export default {
         this.alumno = data;
         this.pago.alumno_id = this.alumno.id;
         this.pago.matricula_id = this.alumno.apoderado_id;
-    
+        this.pago.pago_fecha = this.date;
+        this.pago.pago_hora = this.time;
         this.Dialog = true;
+    },
+    printdate() {
+        const date = new Date().toLocaleDateString();
+        this.date=date;
+    },
+    printTime() {
+        const time = new Date().toLocaleTimeString();
+        this.time = time;
     },
     async guardarPago () {
         const { data } = await pagoService.guardarPagos(this.pago);

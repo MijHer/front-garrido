@@ -23,9 +23,9 @@
       <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
       <Column field="tipo_nom" header="Nombre" :sortable="true" style="min-width:12rem"></Column>
       <Column field="tipo_descripcion" header="Descripción" :sortable="true" style="min-width:16rem"></Column>
-      <Column field="estado" header="Estado" :sortable="true" style="min-width:16rem">
+      <Column field="tipo_estado" header="Estado" :sortable="true" style="min-width:16rem">
         <template #body="slotProps">
-            {{slotProps.data.estado == 1?"Activo":"Inactivo"}}
+            {{slotProps.data.tipo_estado == 1?"Activo":"Inactivo"}}
         </template>
       </Column>      
       <Column :exportable="false" style="min-width:8rem">
@@ -46,7 +46,7 @@
         </div>
         <div class="field">
           <label for="estado" class="mb-3">Estado</label>
-          <Dropdown id="estado" v-model="tipousuario.estado" :options="statuses" optionLabel="label" optionValue="value" placeholder="Seleciones Estado">            
+          <Dropdown id="estado" v-model="tipousuario.tipo_estado" :options="statuses" optionLabel="label" optionValue="value" placeholder="Seleciones Estado">            
           </Dropdown>
         </div>
           <template #footer>

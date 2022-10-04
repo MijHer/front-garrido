@@ -33,13 +33,15 @@
                 {{slotProps.data.cur_estado == 1?"Activo":"Inactico"}}
             </template>            
         </Column>        
-        <Column :exportable="false" style="min-width:8rem">
+        <Column :exportable="false" style="min-width:10rem">
             <template #body="slotProps">
                 <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editCurso(slotProps.data)" />
-                <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="confirmDeleteCurso(slotProps.data)" />
+                <Button icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2" @click="confirmDeleteCurso(slotProps.data)" /> <br> 
+                <Button label="Asignar" class="p-button-rounded p-button-info mt-2" @click="modalAsignar(slotProps.data.profesores)" />
             </template>
         </Column>
     </DataTable>
+    <!-- DIALOG PARA REGISTRAR CURSO NUEVO -->
     <Dialog v-model:visible="Dialog" :style="{width: '450px'}" header="Curso Nuevo" :modal="true" class="p-fluid">
         <div class="field">
             <label for="cur_nom">Nombre</label>
@@ -55,35 +57,141 @@
             </Dropdown>            
         </div>
         <div class="field">
-            <label for="cur_registro">Registro</label>
-            <InputText id="cur_registro" v-model="curso.cur_registro" required="true" rows="3" cols="20" />
+            <label for="cur_registro">Fecha de Registro</label>
+            <Calendar inputId="icon" v-model="curso.cur_registro" :showIcon="true" />
         </div>
         <template #footer>
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
             <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarCurso" />
         </template>
-        {{curso}}
+    </Dialog>
+    <!-- DIALOG PARA ASGANR DOCENTE AL CURSO -->
+    <Dialog header="Asignar Docente al Curso" v-model:visible="dialogAsignar" :style="{width: '1000px'}" :modal="true" class="p-fluid">
+        <div>
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="profesor_id">Nombre</label>
+                    <Dropdown id="profesor_id" v-model="pivot.profesor_id" :options="profesor" optionLabel="pro_nom" optionValue="id" placeholder="Selecione Docente">
+                    </Dropdown>            
+                </div>
+                <!-- <div class="field col">
+                    <label for="profesor_id">A. Paterno</label>
+                    <Dropdown id="profesor_id" v-model="profesor.profesor_id" :options="profesor" optionLabel="pro_app" optionValue="id" placeholder="Selecione Docente">
+                    </Dropdown>            
+                </div>
+                <div class="field col">
+                    <label for="profesor_id">A. Materno</label>
+                    <Dropdown id="profesor_id" v-model="profesor.profesor_id" :options="profesor" optionLabel="pro_apm" optionValue="id" placeholder="Selecione Docente">
+                    </Dropdown>            
+                </div> -->
+                <div>
+                    <label for="">curso</label>
+                    <InputText  id="curso_id"  readonly v-bind:value="cursos.curso_id" required="true"/>
+                </div>
+            </div>
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="grado_id">Grado</label>
+                    <Dropdown id="grado_id" v-model="pivot.grado_id" :options="grados" optionLabel="gra_nom" optionValue="id" placeholder="Selecione Grado">
+                        
+                    </Dropdown>
+                </div>
+                <!-- <div class="field col">
+                    <label for="grado_id">Sección</label>
+                    <Dropdown id="grado_id.seccion" v-bind="gra_seccion" :options="grados" optionLabel="gra_seccion" placeholder="Selecione Sección">
+                    </Dropdown>            
+                </div> -->
+                <div class="field col">
+                    <label for="anioacademico_id">Periodo</label>
+                    <Dropdown id="anioacademico_id" v-model="pivot.anioacademico_id" :options="anioacademicos" optionLabel="anio_inicio" optionValue="id" placeholder="Selecione Periodo">
+                    </Dropdown>            
+                </div>
+            </div>
+            <div class="field">
+                <label for="estado">Estado</label>
+                <Dropdown id="estado" v-model="pivot.estado" :options="status2" optionLabel="label" optionValue="value" placeholder="Selecione Estado">
+                </Dropdown>            
+            </div>
+            {{pivot}}            
+            <div>
+                <!-- BOTON PARA AGREGAR DOCENTES AL CURSO -->
+                <Button label="Agregar docente al curso" class="p-button-success" @click="agregarAsignacion()" /> <br> 
+            </div>
+        </div>       
+        
+        <h5>Lista de Docentes Asignados al Curso</h5>
+        <DataTable :value="profesores" responsiveLayout="scroll">            
+            <Column field="id" header="N°"></Column>
+            <Column field="pro_nom" header="Nombre" style="min-width:10rem"></Column>
+            <Column field="pro_app" header="A. Paterno" style="min-width:8rem"></Column>
+            <Column field="pro_apm" header="A. Materno" style="min-width:8rem"></Column>
+            <Column field="grado_id" header="Grado" style="min-width:8rem">
+                <template #body ="slotProps">
+                    {{getgrado(slotProps.data.pivot.grado_id)}}
+                </template>
+            </Column>
+            <Column field="seccion" header="Sección" style="min-width:6rem; text-align: center;">
+                <template #body ="slotProps">
+                    {{getseccion(slotProps.data.pivot.grado_id)}}
+                </template>
+            </Column>
+            <Column field="seccion" header="Periodo" style="min-width:8rem">
+                <template #body ="slotProps">
+                    {{getanio(slotProps.data.pivot.anioacademico_id)}}                    
+                </template>
+            </Column>
+            <Column field="pivot.estado" header="Estado" style="min-width:8rem">
+                <template #body ="slotProps">
+                    {{slotProps.data.pivot.estado == 1?"Activo":"Inactivo"}}
+                </template>
+            </Column>
+            <!-- boton para eliminar a los docentes asignado a un curso -->
+            <Column header="Acción" :exportable="false" style="min-width:6rem">
+                <template #body="slotProps">
+                    <Button icon="pi pi-times" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteCurso(slotProps.data)" /> <br> 
+                </template>
+            </Column>
+        </DataTable>
+        <template #footer>
+            <Button label="Cancelar" icon="pi pi-times" @click="cerrarAsignar" class="p-button-text"/>
+            <Button label="Guardar" icon="pi pi-check" @click="guardarAsignar" autofocus />
+        </template>
     </Dialog>
   </div>
 </template>
 
 <script>
 
-import { FilterMatchMode } from 'primevue/api';
+import { FilterMatchMode } from 'primevue/api'
 import * as cursoService from '@/services/curso.service'
+import * as gradoService from '@/services/grado.service'
+import * as anioacademicoService from '@/services/anioacademico.service'
+import * as profesorService from '@/services/profesor.service'
 
 export default {
     data() {
         return {
             cursos: null,
             selectedCursos: null,
+            selectedProfesores: null,
             Dialog: false,
-            curso: {},
-            estado: false,
+            filters: {},
+            dialogAsignar: false,
+            curso: {}, // Objeto para llenar la tabla curso
+            estado: false, // Estado para editar los cursos creados
             status: [
                 {label: "Activo", value: '1'},
                 {label: "Inactivo", value: '0'}
-            ]
+            ],
+            status2: [
+                {label: "Activo", value: '1'},
+                {label: "Inactivo", value: '0'}
+            ],
+            profesores: [],
+            grados: [],
+            anioacademicos: [],
+            profesor: {},
+            pivot: {}
         }
     },
     created() {        
@@ -96,6 +204,45 @@ export default {
         async listaCurso () {
             const {data} = await cursoService.listarCursos();
             this.cursos = data;
+
+            const grad = await gradoService.listarGrados();
+            this.grados = grad.data;
+
+            const anio = await anioacademicoService.listarAnioacademicos();
+            this.anioacademicos = anio.data;
+
+            const profe = await profesorService.listarProfesores();
+            this.profesor = profe.data.data;
+        },
+        getgrado(id) {
+            let nom = '';
+            for (let i = 0; i < this.grados.length; i++) {
+                const grado = this.grados[i];
+                if (grado.id == id) {
+                    nom = grado.gra_nom;
+                }
+            }
+            return nom;
+        },
+        getseccion(id) {
+            let sec = '';                     
+            for (let i = 0; i < this.grados.length; i++) {
+                const grado = this.grados[i];
+                if (grado.id == id) {
+                    sec = grado.gra_seccion;
+                }
+            }
+            return sec;
+        },        
+        getanio(id) {
+            let fecha = '';                     
+            for (let i = 0; i < this.anioacademicos.length; i++) {
+                const anioacademico = this.anioacademicos[i];
+                if (anioacademico.id == id) {
+                    fecha = anioacademico.anio_inicio;
+                }
+            }
+            return fecha;
         },
         nuevoCurso() {
             this.Dialog = true;
@@ -140,6 +287,22 @@ export default {
                 this.$toast.add({severity:'error', summary:'Cancelado', detail:'Aceptaste Cancelar', life: 3000});
                 }      
             });
+        },
+        async agregarAsignacion() {
+            let piv;
+            piv = await cursoService.asignarProfesor(this.pivot.id, this.pivot);
+            this.pivot = piv;            
+            this.pivot.curso_id = this.cursos.curso_id;
+            this.listaCurso();
+            
+        },
+        modalAsignar(prof) {
+            this.profesores = prof;
+            this.dialogAsignar = true;
+        },
+        cerrarAsignar() {
+            this.dialogAsignar = false;
+            this.profesores = [];
         },
         initFilters() {
             this.filters = {

@@ -43,8 +43,8 @@
             </Dropdown>
         </div>
         <div class="field">
-            <label for="prov_rgst">Registro</label>
-            <InputText  id="prov_rgst" v-model="provincia.prov_rgst" required="true" autofocus />
+            <label for="prov_rgst">Fecha de Registro</label>
+            <Calendar inputId="icon" v-model="provincia.prov_rgst" :showIcon="true" />
         </div>
         <template #footer>
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
