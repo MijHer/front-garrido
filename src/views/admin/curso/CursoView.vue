@@ -86,7 +86,7 @@
                 </div> -->
                 <div>
                     <label for="">curso</label>
-                    <InputText  id="curso_id"  readonly v-bind:value="cursos.curso_id" required="true"/>
+                    <InputText  id="curso_id"  readonly v-bind:value="cursos.cur_nom" required="true"/>
                 </div>
             </div>
             <div class="formgrid grid">
@@ -112,6 +112,8 @@
                 <Dropdown id="estado" v-model="pivot.estado" :options="status2" optionLabel="label" optionValue="value" placeholder="Selecione Estado">
                 </Dropdown>            
             </div>
+            {{curso}}
+            {{cursos}}
             {{pivot}}            
             <div>
                 <!-- BOTON PARA AGREGAR DOCENTES AL CURSO -->
@@ -204,7 +206,7 @@ export default {
         async listaCurso () {
             const {data} = await cursoService.listarCursos();
             this.cursos = data;
-
+            console.log(this.cursos);
             const grad = await gradoService.listarGrados();
             this.grados = grad.data;
 
@@ -291,8 +293,8 @@ export default {
         async agregarAsignacion() {
             let piv;
             piv = await cursoService.asignarProfesor(this.pivot.id, this.pivot);
-            this.pivot = piv;            
-            this.pivot.curso_id = this.cursos.curso_id;
+            /* this.pivot = piv;            
+            this.pivot.curso_id = this.profesores.cursos.curso_id; */
             this.listaCurso();
             
         },
@@ -302,7 +304,7 @@ export default {
         },
         cerrarAsignar() {
             this.dialogAsignar = false;
-            this.profesores = [];
+            this.pivot = {};
         },
         initFilters() {
             this.filters = {

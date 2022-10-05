@@ -92,7 +92,7 @@ export default {
                             label: 'Cursos', icon: 'pi pi-fw pi-bookmark', to: '/admin/curso',
                         },
                         {
-                            label: 'Asignar Curso', icon: 'pi pi-fw pi-bookmark', to: '/admin/asignacion',
+                            label: 'Grado', icon: 'pi pi-fw pi-bookmark', to: '/admin/grado',
                         },/*
                         {
                             label: 'Grado', icon: 'pi pi-fw pi-bookmark', to: '/admin/anioacademico',

@@ -15,10 +15,9 @@ import ProvinciaView from '../views/admin/provincia/ProvinciaView.vue'
 import DistritoView from '../views/admin/distrito/DistritoView.vue'
 import MatriculadosView from '../views/admin/matricula/MatriculadosView.vue'
 import MatriculaView from '../views/admin/matricula/MatriculaView.vue'
-import AsistenciaView from '../views/admin/asistencia/AsistenciaView.vue'
 import TipousuarioView from '../views/admin/usuario/TipousuarioView.vue'
 import UsuarioView from '../views/admin/usuario/UsuarioView.vue'
-import AsignacionVuew from '../views/admin/asignacion/AsignacionVuew.vue'
+import GradoView from '../views/admin/grado/GradoView.vue'
 
 const routes = [
   {
@@ -86,12 +85,7 @@ const routes = [
         path: 'matricula',
         name: 'Matricula',
         component: MatriculaView        
-      },
-      {
-        path: 'asistencia',
-        name: 'Asistencia',
-        component: AsistenciaView        
-      },
+      },      
       {
         path: 'tipousuario',
         name: 'Tipousuario',
@@ -103,9 +97,9 @@ const routes = [
         component: UsuarioView 
       },
       {
-        path: 'asignacion',
-        name: 'Asignacion',
-        component: AsignacionVuew 
+        path: 'grado',
+        name: 'Grado',
+        component: GradoView 
       }
     ]
   },

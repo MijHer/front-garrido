@@ -20,3 +20,10 @@ export function eliminarGrados(id)
 {
     return http().delete('/v1/grado/'+id)
 }
+export function asignarCurso(id, datos) 
+{
+    return http().post(`/v1/grado/${id}/asignar-curso`, datos);
+}
+ export function quitarCurso(id) {
+    return http().post(`/v1/grado/${id}/quitar-curso`, datos);
+ }
