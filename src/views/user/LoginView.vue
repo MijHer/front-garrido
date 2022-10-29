@@ -62,7 +62,6 @@ export default {
   methods: {
     async ingresar() {
       const { data } = await userService.login(this.usuario);
-      console.log(data);
       if (!data.error) {
         this.$store.dispatch("ingresaUsuario", data.user.name);
         this.$router.push({name: 'Admin'});

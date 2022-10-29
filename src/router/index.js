@@ -18,6 +18,7 @@ import MatriculaView from '../views/admin/matricula/MatriculaView.vue'
 import TipousuarioView from '../views/admin/usuario/TipousuarioView.vue'
 import UsuarioView from '../views/admin/usuario/UsuarioView.vue'
 import GradoView from '../views/admin/grado/GradoView.vue'
+import AsistenciaView from '../views/admin/asistencia/AsistenciaView'
 
 const routes = [
   {
@@ -100,6 +101,11 @@ const routes = [
         path: 'grado',
         name: 'Grado',
         component: GradoView 
+      },
+      {
+        path: 'asistencia',
+        name: 'Asistencia',
+        component: AsistenciaView 
       }
     ]
   },

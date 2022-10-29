@@ -41,7 +41,7 @@
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarApoderados(slotProps.data)" />
                     <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" @click="verApoderados(slotProps.data)" />
-                    <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="confirmDeleteProduct(slotProps.data)" />
+                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProduct(slotProps.data)" />
                 </template>
             </Column>
         </DataTable>

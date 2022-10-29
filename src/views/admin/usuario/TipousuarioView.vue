@@ -31,7 +31,7 @@
       <Column :exportable="false" style="min-width:8rem">
           <template #body="slotProps">
               <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editTipousuario(slotProps.data)" />
-              <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="confirmDeleteTipousuario(slotProps.data)" />
+              <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteTipousuario(slotProps.data)" />
           </template>
       </Column>
     </DataTable>

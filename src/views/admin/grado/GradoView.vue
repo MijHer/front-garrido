@@ -12,6 +12,7 @@
                 <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)"  />
             </template>
         </Toolbar>
+        <!-- TABLA PARA MOTRAR LA LISTA DE LOS GRADOS -->
         <DataTable ref="dt" :value="grados" v-model:selection="selectedGrados" dataKey="id" 
             :paginator="true" :rows="10" :filters="filters"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
@@ -32,15 +33,14 @@
             <Column field="gra_registro" header="Registro" :sortable="true"  style="min-width:12rem"></Column>
             <Column field="gra_estado" header="Estado" :sortable="true"  style="min-width:12rem">
                 <template #body="slotProps">
-                    {{slotProps.data.gra_estado == 1?"Activo":"Inactivo"}}
-                    {{slotProps.data.grados}}
+                    {{slotProps.data.gra_estado == 1?"Activo":"Inactivo"}}                    
                 </template>
             </Column>
             <Column :exportable="false" style="min-width:8rem">
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarGrado(slotProps.data)" />
-                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="borrarGrado(slotProps.data)" />
-                    <!-- <Button label="Asignar C" class="p-button-rounded p-button-info mt-2" @click="cursoAsignar(slotProps.data.cursos)" /> -->
+                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="borrarGrado(slotProps.data)" /> <br>
+                    <Button label="Asignar" class="p-button-rounded p-button-info mt-2" @click="cursoAsignar(slotProps.data.cursos)" />
                 </template>
             </Column>
         </DataTable>
@@ -71,24 +71,63 @@
         </Dialog>
         <!-- DIALOG PARA ASIGNAR CURSO AL GRADO -->
         <Dialog header="Asignar Curso para Grado" v-model:visible="dialogAsignar" :style="{width: '1000px'}" :modal="true" class="p-fluid">
+        <div>
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="curso_id">Curso</label>
+                    <Dropdown id="curso_id" v-model="pivot.curso_id" :options="curso" optionLabel="cur_nom" optionValue="id" placeholder="Selecione Docente">
+                    </Dropdown>
+                </div>                
+                <div class="field col">
+                    <label for="grado_id">Grado</label>
+                    <!-- <InputText  id="grado_id" v-model="pivot.grado_id" required="true"/> -->
+                    <Dropdown id="grado_id" v-model="pivot.grado_id" :options="grados" optionLabel="gra_nom" optionValue="id" placeholder="Selecione Docente">
+                    </Dropdown>
+                </div>
+            </div>
+            <div class="formgrid grid">                
+                <div class="field col">
+                    <label for="anioacademico">Periodo</label>
+                    <Dropdown id="anioacademico" v-model="pivot.anioacademico" :options="anioacademicos" optionLabel="anio_inicio" optionValue="id" placeholder="Selecione Periodo">
+                    </Dropdown>            
+                </div>
+            </div>
+            <div class="field col">
+                <label for="estado">Estado</label>
+                <Dropdown id="estado" v-model="pivot.estado" :options="status2" optionLabel="label" optionValue="value" placeholder="Selecione Estado">
+                </Dropdown>            
+            </div>                       
+            <div>
+                <!-- BOTON PARA AGREGAR DOCENTES AL CURSO -->
+                <Button label="Agregar curso" class="p-button-success" @click="agregarAsignacion()" /> <br> 
+            </div>
+            {{pivot}}
+        </div> 
         <h5>Lista de Cursos Asignados</h5>
-        <DataTable :value="cursos" responsiveLayout="scroll">            
-            <!-- <Column field="id" header="N°"></Column>
-            <Column field="grado_id" header="Grado" style="min-width:10rem"></Column>
-            <Column field="curso_id" header="Curso" style="min-width:8rem"></Column>
-            <Column field="anoiacademico" header="Periodo" style="min-width:8rem"></Column>            
-            <Column field="estado" header="Estado" style="min-width:8rem">                
-            </Column> -->
+        <DataTable :value="cursos" responsiveLayout="scroll">
+            <label for="">{{grados}}</label>
+            <Column field="gra_nom" header="Grado" style="min-width:8rem"></Column>
+            <Column field="pivot.curso_id" header="Curso" style="min-width:8rem">
+                <!-- <template #body ="slotProps">
+                    {{getCurso(slotProps.data.pivot.curso_id)}}
+                </template> -->
+            </Column>
+            <Column field="pivot.anioacademico" header="Periodo" style="min-width:8rem"></Column>            
+            <Column field="pivot.estado" header="Estado" style="min-width:8rem">
+                <template #body=slotProps>
+                    {{slotProps.data.pivot.estado == 1?"Activo":"Inactivo"}}
+                </template>
+            </Column>
             <!-- boton para eliminar a los docentes asignado a un curso -->
-            <!-- <Column header="Acción" :exportable="false" style="min-width:6rem">
+            <Column header="Acción" :exportable="false" style="min-width:6rem">
                 <template #body="slotProps">
                     <Button icon="pi pi-times" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteCurso(slotProps.data)" /> <br> 
                 </template>
-            </Column> -->
+            </Column>
         </DataTable>
         <template #footer>
-            <Button label="Cancelar" icon="pi pi-times" @click="cerrarAsignar" class="p-button-text"/>
-            <Button label="Guardar" icon="pi pi-check" @click="guardarAsignar" autofocus />
+            <Button label="Cancelar" class="p-button-danger mr-2" @click="cerrarAsignar" />
+            <Button label="Aceptar" class="p-button-info mr-2" @click="cerrarAsignar" /> 
         </template>
     </Dialog>   
     </div>
@@ -98,6 +137,7 @@
 import { FilterMatchMode } from 'primevue/api'
 import * as gradoService from '@/services/grado.service'
 import * as cursoService from '@/services/curso.service'
+import * as anioacademicoService from '@/services/anioacademico.service'
 
 export default {
     data() {
@@ -116,10 +156,16 @@ export default {
                 {label: 'ACTIVO', value: '1'},
                 {label: 'INACTIVO', value: '0'}
             ],
+            status2: [
+                {label: "Activo", value: '1'},
+                {label: "Inactivo", value: '0'}
+            ],
             estadoedicion: false,
             dialogAsignar: false,
             cursos: [],
-            curso: {}
+            curso: {},
+            anioacademicos: {}, /* OBJETO PARA RECIBIR Y MOSTRAR LA LISTA DE LOS AÑOS ACADEMICOS */
+            pivot: {}
         }
     },
     created() {
@@ -130,13 +176,23 @@ export default {
     },
     methods: {
         async listaGrado() {
-        const {data} = await gradoService.listarGrados();
-        this.grados = data;
-        const cur = await cursoService.listarCursos();
-        this.curso = cur.data;
+            const {data} = await gradoService.listarGrados();
+            this.grados = data;
+            const cur = await cursoService.listarCursos();
+            this.curso = cur.data;
+            const anio = await anioacademicoService.listarAnioacademicos();
+            this.anioacademicos = anio.data;
+       },
+       cerrarDialog() {
+            this.DialogGrado = false;
+       },
+       cerrarAsignar() {
+            this.dialogAsignar = false;
+            this.pivot = {};
        },
        gradoNuevo() {
             this.DialogGrado = true;
+            this.grado = {};
         },
         async guardarGrado() {
             let datos;
@@ -175,9 +231,10 @@ export default {
             }
         });
        },
+       /* FUNCIONES PARA AGREGAR CURSO A LOS GRADOS */       
        cursoAsignar(curs) {
-        this.cursos = curs;
-        this.dialogAsignar = true;
+            this.cursos = curs;        
+            this.dialogAsignar = true;
        },
        initFilters() {
             this.filters = {

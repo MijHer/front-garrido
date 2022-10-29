@@ -23,3 +23,6 @@ export function eliminarAlumnos(id)
 export function buscar(dni) {
     return http().get(`/v1/alumno/buscar?q=${dni}`);
 }
+export function asistenciaAlumno(id, datos) {
+    return http().post(`/v1/alumno/${id}/llamar-asistencia`, datos);
+}

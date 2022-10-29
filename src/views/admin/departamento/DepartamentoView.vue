@@ -27,7 +27,7 @@
             <Column></Column>                
             <Column :exportable="false" style="min-width:4rem">
                 <template #body="slotProps">                    
-                    <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="confirmDeleteProduct(slotProps.data)" />
+                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProduct(slotProps.data)" />
                 </template>
             </Column>
         </DataTable>

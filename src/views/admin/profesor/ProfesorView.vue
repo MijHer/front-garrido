@@ -132,7 +132,7 @@
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarProfesores(slotProps.data)" />
                     <Button icon="pi pi-bookmark" class="p-button-rounded p-button-secondary mr-2" @click="verProfesores(slotProps.data)" />
                     <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" @click="asignarRol(slotProps.data)" />
-                    <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="confirmDeleteProduct(slotProps.data)" />
+                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProduct(slotProps.data)" />
                 </template>
             </Column>            
         </DataTable>
