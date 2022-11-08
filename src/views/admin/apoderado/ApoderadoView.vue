@@ -27,24 +27,25 @@
                 </div>
             </template>
             <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-            <Column field="apo_nom" header="Nombres" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="apo_app" header="A. Paterno" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="apo_apm" header="A. Materno" :sortable="true" style="min-width:16rem"></Column>            
-            <Column field="apo_vinculo" header="Vínculo" :sortable="true" style="min-width:16rem"></Column>            
-            <Column field="apo_dni" header="DNI" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="apo_estado" header="Estado" :sortable="true" style="min-width:16rem">
+            <Column field="apo_nom" header="Nombres" :sortable="true" style="min-width:10rem"></Column>
+            <Column field="apo_app" header="A. Paterno" :sortable="true" style="min-width:10rem"></Column>
+            <Column field="apo_apm" header="A. Materno" :sortable="true" style="min-width:10rem"></Column>            
+            <Column field="apo_vinculo" header="Vínculo" :sortable="true" style="min-width:10rem"></Column>            
+            <Column field="apo_dni" header="DNI" :sortable="true" style="min-width:10rem"></Column>
+            <Column field="apo_estado" header="Estado" :sortable="true" style="min-width:10rem">
                 <template #body="slotProps">
                     {{slotProps.data.apo_estado == 1?"Activo":"Inactivo"}}
                 </template>
             </Column>            
-            <Column :exportable="false" style="min-width:8rem">
+            <Column :exportable="false" style="min-width:10rem">
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarApoderados(slotProps.data)" />
                     <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" @click="verApoderados(slotProps.data)" />
-                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProduct(slotProps.data)" />
+                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteProduct(slotProps.data)" />
                 </template>
             </Column>
         </DataTable>
+        <!-- DIALOG PARA CREAR UN APODERADO NUEVO -->
         <Dialog v-model:visible="dialog" :style="{width: '1000px'}" header="Nuevo Apoderado" :modal="true" class="p-fluid">            
             <div class="formgrid grid">            
                 <div class="field col">
@@ -108,8 +109,8 @@
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardaApoderado" />
             </template>
-            {{apoderado}}
-        </Dialog>        
+        </Dialog>
+        <!-- DIALOG PARA MOSTRAR DATOS DEL APODERADO -->
         <Dialog v-model:visible="verDialog" :style="{width: '1000px', text: 'center'}" header="Datos del Apoderado" :modal="true" class="p-fluid">
             <div class="card">
                 <div class="formgrid grid">                     
@@ -157,9 +158,11 @@
                 </div>
                 <div class="formgrid grid">
                     <div class="field col">
-                        <label for="apo_estado">Estado:</label>                      
-                        <p style="min-width:16rem" v-text="apoderado.apo_estado" >
-                        </p>                                                
+                        <label for="apo_estado">Estado:</label>                         
+                        <p style="min-width:16rem" v-if="apoderado.apo_estado == 1" >Activo
+                        </p>
+                        <p style="min-width:16rem" v-else>Inactivo
+                        </p>
                     </div>
                     <div class="field col"></div>
                     <div class="field col"></div>

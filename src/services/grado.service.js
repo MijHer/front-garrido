@@ -26,4 +26,4 @@ export function asignarCurso(id, datos)
 }
  export function quitarCurso(id) {
     return http().post(`/v1/grado/${id}/quitar-curso`, datos);
- }
+}

@@ -27,11 +27,11 @@
                 </div>
             </template>
             <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-            <Column field="gra_nom" header="Nombre" :sortable="true"  style="min-width:12rem"></Column>
-            <Column field="gra_seccion" header="Sección" :sortable="true"  style="min-width:12rem"></Column>
-            <Column field="gra_nivel" header="Nivel" :sortable="true"  style="min-width:12rem"></Column>
-            <Column field="gra_registro" header="Registro" :sortable="true"  style="min-width:12rem"></Column>
-            <Column field="gra_estado" header="Estado" :sortable="true"  style="min-width:12rem">
+            <Column field="gra_nom" header="Grado" :sortable="true"  style="min-width:10rem"></Column>
+            <Column field="gra_seccion" header="Sección" :sortable="true"  style="min-width:10rem"></Column>
+            <Column field="gra_nivel" header="Nivel" :sortable="true"  style="min-width:10rem"></Column>
+            <Column field="gra_registro" header="Registro" :sortable="true"  style="min-width:10rem"></Column>
+            <Column field="gra_estado" header="Estado" :sortable="true"  style="min-width:10rem">
                 <template #body="slotProps">
                     {{slotProps.data.gra_estado == 1?"Activo":"Inactivo"}}                    
                 </template>
@@ -39,8 +39,8 @@
             <Column :exportable="false" style="min-width:8rem">
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarGrado(slotProps.data)" />
-                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="borrarGrado(slotProps.data)" /> <br>
-                    <Button label="Asignar" class="p-button-rounded p-button-info mt-2" @click="cursoAsignar(slotProps.data.cursos)" />
+                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="borrarGrado(slotProps.data)" />
+                    <Button label="Asignar" class="p-button-rounded p-button-info mt-2" @click="modalAsignar(slotProps.data)" />
                 </template>
             </Column>
         </DataTable>
@@ -70,49 +70,59 @@
             </template>          
         </Dialog>
         <!-- DIALOG PARA ASIGNAR CURSO AL GRADO -->
-        <Dialog header="Asignar Curso para Grado" v-model:visible="dialogAsignar" :style="{width: '1000px'}" :modal="true" class="p-fluid">
+        <Dialog header="Asignar Curso para Grado" v-model:visible="dialogAsignar" :style="{width: '950px'}" :modal="true" class="p-fluid">
         <div>
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="curso_id">Curso</label>
-                    <Dropdown id="curso_id" v-model="pivot.curso_id" :options="curso" optionLabel="cur_nom" optionValue="id" placeholder="Selecione Docente">
+                    <Dropdown id="curso_id" v-model="pivot.curso_id" :options="curso" optionLabel="cur_nom" optionValue="id" placeholder="Selecione Curso">
                     </Dropdown>
                 </div>                
+            </div>
+            <div class="formgrid grid">
                 <div class="field col">
                     <label for="grado_id">Grado</label>
-                    <!-- <InputText  id="grado_id" v-model="pivot.grado_id" required="true"/> -->
-                    <Dropdown id="grado_id" v-model="pivot.grado_id" :options="grados" optionLabel="gra_nom" optionValue="id" placeholder="Selecione Docente">
-                    </Dropdown>
+                    <InputText id="gra_id" readonly  v-bind:value="graNom" required="true" />
+                    <!-- <Dropdown id="grado_id" disabled v-model="pivot.grado_id" :options="grados" optionLabel="gra_nom" optionValue="id" >
+                    </Dropdown> -->
+                </div>
+                <div class="field col">
+                    <label for="seccion">Sección</label>
+                    <InputText id="seccion" readonly  v-bind:value="secNom" required="true" />
+                    <!-- <Dropdown id="seccion" disabled v-model="pivot.seccion" :options="grados" optionLabel="gra_seccion" optionValue="gra_seccion" placeholder="Selecione Sección">
+                    </Dropdown> -->
+                </div>
+                <div class="field col">
+                    <label for="nivel">Nivel</label>
+                    <InputText id="nivel" readonly  v-bind:value="nivNom" required="true" />
+                    <!-- <Dropdown id="nivel" disabled v-model="pivot.nivel" :options="grados" optionLabel="gra_nivel" optionValue="gra_nivel" placeholder="Selecione Nivel">
+                    </Dropdown> -->            
                 </div>
             </div>
             <div class="formgrid grid">                
                 <div class="field col">
                     <label for="anioacademico">Periodo</label>
-                    <Dropdown id="anioacademico" v-model="pivot.anioacademico" :options="anioacademicos" optionLabel="anio_inicio" optionValue="id" placeholder="Selecione Periodo">
+                    <Dropdown id="anioacademico" v-model="pivot.anioacademico" :options="anioacademicos" optionLabel="anio_inicio" optionValue="anio_inicio" placeholder="Selecione Periodo">
+                    </Dropdown>            
+                </div>
+                <div class="field col">
+                    <label for="estado">Estado</label>
+                    <Dropdown id="estado" v-model="pivot.estado" :options="status2" optionLabel="label" optionValue="value" placeholder="Selecione Estado">
                     </Dropdown>            
                 </div>
             </div>
-            <div class="field col">
-                <label for="estado">Estado</label>
-                <Dropdown id="estado" v-model="pivot.estado" :options="status2" optionLabel="label" optionValue="value" placeholder="Selecione Estado">
-                </Dropdown>            
-            </div>                       
             <div>
                 <!-- BOTON PARA AGREGAR DOCENTES AL CURSO -->
-                <Button label="Agregar curso" class="p-button-success" @click="agregarAsignacion()" /> <br> 
+                <Button label="Agregar curso" class="p-button-success" @click="agregarAsignacion" /> <br> 
             </div>
-            {{pivot}}
         </div> 
-        <h5>Lista de Cursos Asignados</h5>
-        <DataTable :value="cursos" responsiveLayout="scroll">
-            <label for="">{{grados}}</label>
-            <Column field="gra_nom" header="Grado" style="min-width:8rem"></Column>
-            <Column field="pivot.curso_id" header="Curso" style="min-width:8rem">
-                <!-- <template #body ="slotProps">
-                    {{getCurso(slotProps.data.pivot.curso_id)}}
-                </template> -->
+        <h5>Lista de Cursos Asignados: {{graNom}}</h5>
+        <DataTable :value="cursos" responsiveLayout="scroll">           
+            <Column field="cur_nom" header="Curso" style="min-width:8rem">                
             </Column>
-            <Column field="pivot.anioacademico" header="Periodo" style="min-width:8rem"></Column>            
+            <Column field="pivot.seccion" header="Sección" style="min-width:8rem"></Column>
+            <Column field="pivot.nivel" header="Nivel" style="min-width:8rem"></Column>
+            <Column field="pivot.anioacademico" header="Periodo" style="min-width:8rem"></Column>
             <Column field="pivot.estado" header="Estado" style="min-width:8rem">
                 <template #body=slotProps>
                     {{slotProps.data.pivot.estado == 1?"Activo":"Inactivo"}}
@@ -124,12 +134,11 @@
                     <Button icon="pi pi-times" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteCurso(slotProps.data)" /> <br> 
                 </template>
             </Column>
-        </DataTable>
+        </DataTable>      
         <template #footer>
-            <Button label="Cancelar" class="p-button-danger mr-2" @click="cerrarAsignar" />
-            <Button label="Aceptar" class="p-button-info mr-2" @click="cerrarAsignar" /> 
+            <Button label="Salir" class="p-button-danger mr-2 " style="min-width:100%" @click="cerrarAsignar" />
         </template>
-    </Dialog>   
+        </Dialog>   
     </div>
 </template>
 
@@ -165,7 +174,10 @@ export default {
             cursos: [],
             curso: {},
             anioacademicos: {}, /* OBJETO PARA RECIBIR Y MOSTRAR LA LISTA DE LOS AÑOS ACADEMICOS */
-            pivot: {}
+            pivot: {},
+            graNom: '',
+            secNom: '',
+            nivnom: ''
         }
     },
     created() {
@@ -232,10 +244,27 @@ export default {
         });
        },
        /* FUNCIONES PARA AGREGAR CURSO A LOS GRADOS */       
-       cursoAsignar(curs) {
-            this.cursos = curs;        
-            this.dialogAsignar = true;
+        async agregarAsignacion() {
+            const { data } = await gradoService.asignarCurso(this.grado.id, this.pivot);
+            this.cursos = data.data;
+            this.listaGrado();
+            this.pivot = {};
        },
+       modalAsignar(datos) {
+            this.cursos = datos.cursos;
+            this.grado.id = datos.id;
+            this.pivot.grado_id = datos.id;
+            this.pivot.seccion = datos.gra_seccion;
+            this.pivot.nivel = datos.gra_nivel;
+            this.graNom = datos.gra_nom;
+            this.secNom = datos.gra_seccion;
+            this.nivNom = datos.gra_nivel;
+            this.dialogAsignar = true;            
+       },
+       cerrarAsignar() {
+            this.dialogAsignar = false;
+            this.pivot = {};
+        },
        initFilters() {
             this.filters = {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
