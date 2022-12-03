@@ -124,9 +124,9 @@
                 <Button label="Agregar docente al curso" class="p-button-success" @click="agregarAsignacion" /> <br> 
             </div>
         </div>       
-        
+        <!-- TABLA PARA MOSTRAR LOS CURSOS ASISGNADOS A LOS DOCENTES (TABLA PIVOT) -->
         <h5>Lista de Docentes Asignados al Curso: {{nomCurso}}</h5>        
-        <DataTable :value="profesores" responsiveLayout="scroll">            
+        <DataTable :value="profesores" responsiveLayout="scroll">
             <Column field="pro_nom" header="Nombre" style="min-width:10rem"></Column>
             <Column field="pro_app" header="A. Paterno" style="min-width:8rem"></Column>
             <Column field="pro_apm" header="A. Materno" style="min-width:8rem"></Column>

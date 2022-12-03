@@ -26,3 +26,6 @@ export function buscar(dni) {
 export function asistenciaAlumno(id, datos) {
     return http().post(`/v1/alumno/${id}/llamar-asistencia`, datos);
 }
+export function asistenciaAlu(datos) {
+    return http().post('/v1/alumno/registrar-asistencia', datos);
+}

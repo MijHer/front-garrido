@@ -13,7 +13,6 @@
                         <div class="text-900 text-3xl font-medium mb-3">Bienvenido!</div>
                         <span class="text-600 font-medium">Iniciar Sesion</span>
                     </div>
-                
                     <div class="w-full md:w-10 mx-auto">
                         <label for="email1" class="block text-900 text-xl font-medium mb-2">Correo</label>
                         <InputText id="email1" v-model="usuario.email" type="text" class="w-full mb-3" autofocus placeholder="Correo" style="padding:1rem;" />
@@ -33,7 +32,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
 </template>
 
 <script>
@@ -57,14 +56,17 @@ export default {
       }
   },
   mounted() {
-    
   },
   methods: {
     async ingresar() {
       const { data } = await userService.login(this.usuario);
-      if (!data.error) {
-        this.$store.dispatch("ingresaUsuario", data.user.name);
-        this.$router.push({name: 'Admin'});
+      console.log(data);
+      if (this.usuario.email == data.user.email) {        
+          if (!data.error) {
+            this.$store.dispatch("ingresaUsuario", data.user.name);
+            localStorage.setItem("token", data.access_token);
+            this.$router.push({name: 'Admin'});          
+          }
       }
     }
   },

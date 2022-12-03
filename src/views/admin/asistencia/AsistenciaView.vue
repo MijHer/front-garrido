@@ -1,38 +1,19 @@
 <template>
   <div class="card">
     <h1>lista de asistencia</h1>
-      <DataTable ref="dt" :value="cursos" v-model:selection="selected" dataKey="id" 
-        :paginator="true" :rows="10" :filters="filters"
-        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
-        <template #header>
-            <div class="table-header flex flex-column md:flex-row md:justiify-content-between">
-        <h5 class="mb-2 md:m-0 p-as-md-center">Lista de Cursos</h5>
-        <span class="p-input-icon-left">
-            <i class="pi pi-search" />
-            <InputText v-model="filters['global'].value" placeholder="Search..." />
-        </span>
-					</div>
-      </template>
-      <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-      <Column field="cur_nom" header="Curso" :sortable="true" style="min-width:12rem"></Column>
-      <Column field="gra_nom" header="Grado" :sortable="true" style="min-width:10rem"></Column>
-      <Column field="gra_seccion" header="sección" :sortable="true" style="min-width:10rem"></Column>
-      <Column field="cur_estado" header="Estado" :sortable="true" style="min-width:16rem">
-        <template #body="slotProps">
-          {{slotProps.data.cur_estado == 1?"Activo":"Inactivo"}}
-        </template>
-      </Column>      
+      <DataTable :value="profesores" responsiveLayout="scroll">
+      <Column field="pivot.grado_id" header="Grado" :sortable="true" style="min-width:10rem"></Column>       
       <Column :exportable="false" style="min-width:8rem">
           <template #body="slotProps">
               <Button label="Asistencia" class="p-button-rounded p-button-info" @click="llamarAsistencia(slotProps.data)" />              
           </template>
       </Column>
-      {{grados}}
     </DataTable>
     <!-- DIALOG PARA ABRIR MODAL Y LLAMAR LA ASISTENCIA -->
     <Dialog v-model:visible="asistenciaDialog" :style="{width: '950px'}" header="Registrar Asistencia" :modal="true" class="p-fluid">            
       <h4>Lista de alumnos</h4>
+      {{curso_id}}
+      {{alumnoData}}
       <table class="table">
         <thead>
           <tr>
@@ -40,36 +21,32 @@
             <th>apellido</th>
             <th>asistio</th>
             <th>tarde</th>
-            <th>permiso</th>
+            <th>falto</th>
             <th>permiso</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="alumno in alumnos" :key="alumno">
+          <tr v-for="(alumno, index) in alumnoData" :key="index">
             <td>{{alumno.alu_nom}}</td>
             <td>{{alumno.alu_app +' '+ alumno.alu_apm}}</td>
             <td>                
-            <Checkbox inputId="binary" v-model="pivot.asistencia" :binary="true" />
-            <label for="binary"></label>
+            <Checkbox @change="cambiarValor(alumno, 1)" v-model="alumno.asistencia" :binary="true" />            
             </td>
             <td>                
-            <Checkbox inputId="binary" v-model="pivot.falta" :binary="true" />
-            <label for="binary"></label>
+            <Checkbox @change="cambiarValor(alumno, 2)" v-model="alumno.falta" :binary="true" />            
             </td>
             <td>                
-            <Checkbox inputId="binary" v-model="pivot.tardanza" :binary="true" />
-            <label for="binary"></label>
+            <Checkbox @change="cambiarValor(alumno, 3)" v-model="alumno.tardanza" :binary="true" />            
             </td>
             <td>                
-            <Checkbox inputId="binary" v-model="pivot.permiso" :binary="true" />
-            <label for="binary"></label>
+            <Checkbox @change="cambiarValor(alumno, 4)" v-model="alumno.permiso" :binary="true" />            
             </td>
           </tr>
         </tbody>
       </table>                          
       <template #footer>
           <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
-          <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveProduct" />
+          <Button label="Registrar Asistencia" icon="pi pi-check" class="p-button-text" @click="guardarAsistencia" />
       </template>
     </Dialog>
   </div>
@@ -88,34 +65,85 @@ export default {
     return {
       cursos: null,
       profesores: null,
-      filters: {},
       selected: null,
       grados: [],
       asistenciaDialog: false,
       alumnos: null,
       checked: false,
-      pivot: {}
+      pivot: {
+        asistencia: true,
+        falta: false,
+        tardanza: true,
+        permiso: false
+      },
+      alumnoData: [],
+      curso_id: null,
+      mostrar: []
+
     }
   },
   created() {
       this.initFilters();
   },
   mounted() {
-    this.listaCurso();
+    this.listaCurso(); 
   },
   methods: {
     async listaCurso() {
       const cur = await cursoService.listarCursos();
-      this.cursos = cur.data;
+      this.cursos = cur.data; /* LISTA PARA MOSTRAR EL NOMBRE DEL CURSO CUANDO SE APERTUA EL MODAL DE ASISTENCIA */
+      console.log(this.cursos);
       const profe = await profesorService.listarProfesores();
-      this.profesores = profe.data.data;
+      this.profesores = profe.data.data; /* LISTA PARA MOSTRAR EL NOMBRE DEL DOCENTE CUANDO SE APERTUA EL MODAL DE ASISTENCIA */
       const gra = await gradoService.listarGrados();
-      this.grados = gra.data;
+      this.grados = gra.data; /* LISTA PARA MOSTRAR EL NOMBRE DEL GRADO CUANDO SE APERTUA EL MODAL DE ASISTENCIA */
       const alu = await alumnoService.listarAlumnos();
       this.alumnos = alu.data.data;
+      this.alumnos.forEach(alumno => {
+        const {id, alu_nom, alu_app, alu_apm} = alumno;
+        this.alumnoData.push({id, alu_nom, alu_app,alu_apm, asistencia: true,
+        falta: false,
+        tardanza: true,
+        permiso: false})
+      });
     },
-    llamarAsistencia() {
+    llamarAsistencia(curs) {
+      this.curso_id = curs.id;
       this.asistenciaDialog = true;
+    },
+    cambiarValor(alumno, dato) {
+      if (dato == 1) {
+        alumno.asistencia = true;
+        alumno.falta = false;
+        alumno.tardanza = false;
+        alumno.permiso = false;
+      }
+      if (dato == 2) {
+        alumno.asistencia = false;
+        alumno.falta = true;
+        alumno.tardanza = false;
+        alumno.permiso = false;
+      }
+      if (dato == 3) {
+        alumno.asistencia = false;
+        alumno.falta = false;
+        alumno.tardanza = true;
+        alumno.permiso = false;
+      }
+      if (dato == 4) {
+        alumno.asistencia = false;
+        alumno.falta = false;
+        alumno.tardanza = false;
+        alumno.permiso = true;
+      }
+    },
+    async guardarAsistencia() {
+      const asistencia = {
+        curso_id: this.curso_id,
+        alumnos: this.alumnoData
+      }
+      this.asistenciaDialog = false;
+      await alumnoService.asistenciaAlu(asistencia);
     },
     initFilters() {
         this.filters = {

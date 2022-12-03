@@ -8,11 +8,19 @@
         </div>
         <Button label="Buscar" @click="buscarPersona()" />
     </div>
+    <!-- SE MUESTRA EL DIALOG SI EL DNI NO ES ECONTRADO -->
+      <Dialog header="DNI no existe" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :modal="true" :style="{width: '20vw'}">
+          <p>Ingrese nuevamente el DNI</p>
+          <template #footer>
+              <Button label="Aceptar" class="p-button-danger" @click="closeBasic" autofocus />
+          </template>
+      </Dialog>
+      <!-- DIALOG SE MUESTRA CUANDO EL DNI DEL ALUMNO ES ECONTRADO -->
     <Dialog v-model:visible="Dialog" :style="{width: '900px'}" header="Datos del Alumno" :modal="true" class="p-fluid">
       <div class="formgrid grid">
         <div class="field col">
           <label for="mat_cod_modular">Codigo Modular</label>
-          <InputText id="mat_cod_modular" v-model="matricula.mat_cod_modular" required="true" rows="3" cols="20" />
+          <InputText id="mat_cod_modular" v-model="matricula.mat_cod_modular" required="true" rows="3" cols="20" autofocus />
         </div>
         <div class="field col">
             <label for="mat_fecha">Fecha Matricula</label>
@@ -144,7 +152,8 @@ export default {
           estado: [
               {label: 'ACTIVO', value: '1'},
               {label: 'INACTIVO', value: '0'}
-          ]
+          ],
+          displayModal: false
         }
     },
     mounted() {
@@ -155,9 +164,17 @@ export default {
       async buscarPersona() {       
           const {data} = await alumnoService.buscar(this.dni);
           this.alumno = data;
-          this.matricula.apoderado_id = this.alumno.apoderado.id;
-          this.matricula.alumno_id = this.alumno.id;
-          this.Dialog = true;        
+          if (this.dni ==  data.alu_nmr_doc) {
+            this.matricula.apoderado_id = this.alumno.apoderado.id;
+            this.matricula.alumno_id = this.alumno.id;
+            this.Dialog = true;            
+          }
+          else {
+            this.displayModal = true;
+          }
+      },
+      closeBasic() {
+          this.displayModal = false;
       },
       async listaElementos() {
         const grad = await gradoService.listarGrados();

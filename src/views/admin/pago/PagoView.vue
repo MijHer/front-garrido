@@ -1,13 +1,23 @@
 <template>
     <div class="card">
+        <Toast />
+        <ConfirmDialog :breakpoints="{'300px': '35vw', '200px': '55vw'}" :style="{width: '25vw'}"></ConfirmDialog>
         <h1>Realizar Pago</h1>
         <div class="p-fluid">
             <div class="field" >
-                <label >Imgrese DNI del alumno</label>
-                <InputText  v-model="dni" autofocus required="true" rows="3" cols="20" />
+                <label >Ingrese DNI del alumno</label>
+                <InputText  v-model="dni" required="true" rows="3" cols="20" autofocus />
             </div>
             <Button label="Buscar" @click="buscarPersona()" />
         </div>
+        <!-- SE MUESTRA EL DIALOG SI EL DNI NO ES ECONTRADO -->
+            <Dialog header="DNI no existe" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :modal="true" :style="{width: '20vw'}">
+                <p>Ingrese nuevamente el DNI</p>
+                <template #footer>
+                    <Button label="Aceptar" class="p-button-danger" @click="closeBasic" autofocus />
+                </template>
+            </Dialog>
+        <!-- DIALOG PARA MOSTRAR LA INFORMACION DEL ALUMNO QUE REAZLIZA EL PAGO -->
         <Dialog v-model:visible="Dialog" :style="{width: '900px'}" header="Buscar Alumno" :modal="true" class="p-fluid">
             <div class="field">
                 <label for="alumno_id">Alumno</label>
@@ -51,10 +61,8 @@
 
 <script>
 
-import { FilterMatchMode } from 'primevue/api';
 import * as pagoService from '../../../services/pago.service';
 import * as alumnoService from '@/services/alumno.service';
-import * as matriculaService from '@/services/matricula.service';
 
 export default {
   data() {
@@ -66,7 +74,8 @@ export default {
         filters: {},
         Dialog: false,
         date: '',
-        time: ''
+        time: '',
+        displayModal: false
     }
   },
   mounted() {
@@ -77,11 +86,20 @@ export default {
     async buscarPersona() {
         const {data} = await alumnoService.buscar(this.dni);
         this.alumno = data;
-        this.pago.alumno_id = this.alumno.id;
-        this.pago.matricula_id = this.alumno.apoderado_id;
-        this.pago.pago_fecha = this.date;
-        this.pago.pago_hora = this.time;
-        this.Dialog = true;
+        if (this.dni ==  data.alu_nmr_doc) {            
+            console.log(this.alumno);
+            this.pago.alumno_id = this.alumno.id;
+            this.pago.matricula_id = this.alumno.apoderado_id;
+            this.pago.pago_fecha = this.date;
+            this.pago.pago_hora = this.time;
+            this.Dialog = true;
+        } 
+        else {            
+            this.displayModal = true;
+        }
+    },
+    closeBasic() {
+        this.displayModal = false;
     },
     printdate() {
         const date = new Date().toLocaleDateString();
