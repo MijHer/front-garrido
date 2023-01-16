@@ -417,12 +417,75 @@
       <Column :exportable="false" style="min-width:8rem">
         <template #body="slotProps">
             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarAlumnos(slotProps.data)" />
-            <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" @click="verAlumnos(slotProps.data)" />
+            <Button icon="pi pi-bookmark" class="p-button-rounded p-button-secondary mr-2" @click="verAlumnos(slotProps.data)" />
+            <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2"  @click="asignarUsers(slotProps.data)" />
             <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProduct(slotProps.data)" />
         </template>
       </Column>
   </DataTable>
-
+  <!-- DIALOG PARA ASIGNAR UN USUARIO AL ALUMNO -->
+  <Dialog v-model:visible="DialogUsers" :style="{width: '950px'}" header="Asignación de Usuario" :modal="true" class="p-fluid">
+    <div class="formgrid grid">
+        <div class="field col">
+        <label for="name">Nombres</label>          
+        <InputText id="name" readonly v-model.trim="user.name" required="true" autofocus :class="{'p-invalid': submitted && !user.name}" />          
+        </div>
+        <!-- <div class="field col">
+            <label for="usu_dni">Apellido Paterno</label>
+            <InputText id="usu_dni" readonly v-model.trim="user.usu_dni"   required="true" autofocus  />          
+        </div>
+        <div class="field col">
+            <label for="usu_telf">Apellido Materno</label>
+            <InputText id="usu_telf" readonly v-model.trim="user.usu_telf" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_telf}" />          
+        </div> -->
+    </div>
+    <div class="formgrid grid">
+        <div class="field col">
+            <label for="usu_dni">DNI</label>
+            <InputText id="usu_dni" readonly v-model.trim="user.usu_dni"   required="true" autofocus  />          
+        </div>
+        <div class="field col">
+            <label for="usu_telf">Telefono</label>
+            <InputText id="usu_telf" readonly v-model.trim="user.usu_telf" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_telf}" />          
+        </div>
+        <div class="field col">
+            <label for="email">Correo</label>
+            <InputText id="email" readonly v-model.trim="user.email" required="true" autofocus :class="{'p-invalid': submitted && !user.email}" />          
+        </div>
+    </div>
+    <div class="formgrid grid">                      
+        <div class="field col">
+        <label for="usu_user">Usuario</label>
+        <InputText id="usu_user" v-model.trim="user.usu_user" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_user}" />          
+        </div>
+        <div class="field col">
+            <label for="password">Contraseña</label>
+            <InputText id="password" v-model.trim="user.password" required="true" autofocus :class="{'p-invalid': submitted && !user.password}" />          
+        </div>
+        <div class="field col">
+            <label for="usu_dir">Dirección</label>
+            <InputText id="usu_dir" readonly v-model.trim="user.usu_dir" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_dir}" />
+        </div>
+    </div>
+    <div class="formgrid grid">                
+        <div class="field col">                    
+            <label for="usu_rgst">Fecha y Hora de Registro</label>
+            <!-- <InputText id="usu_dir" v-model.trim="user.usu_rgst" required="true" autofocus /> -->          
+            <Calendar inputId="usu_rgst" v-model="user.usu_rgst" :showTime="true" :showSeconds="true" :showIcon="true" />                
+        </div>
+        <div class="field col">
+            <label for="tipousuario.tipo_nom" >Rol</label>
+            <Dropdown id="tipousuario.tipo_nom" v-model="user.tipousuario_id" :options="tipousuarios" optionLabel="tipo_nom" optionValue="id" placeholder="Seleciona Rol">      
+            </Dropdown>
+        </div> 
+    </div>
+    {{user}} <br> <br>
+    <template #footer>
+        <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarUsers"/>
+        <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarUsers" />
+    </template>
+  </Dialog>
+  <!-- DIALOG PARA VISUALIZAR LA INFORMACION DEL ALUMNO -->
   <Dialog v-model:visible="verDialog" :style="{width: '1000px'}" header="Datos del Alumno" :modal="true" class="p-fluid">
     <div class="card">
       <div class="formgrid grid">  
@@ -638,8 +701,10 @@
 
 import { FilterMatchMode } from 'primevue/api';
 import Calendar from 'primevue/calendar';
-import * as alumnoService from '../../../services/alumno.service';
-import * as apoderadoService from '@/services/apoderado.service';
+import * as alumnoService from '@/services/alumno.service'
+import * as apoderadoService from '@/services/apoderado.service'
+import * as userService from '@/services/user.service'
+import * as tipousuarioService from '@/services/tipousuario.service'
 
 export default {
   data() {
@@ -799,7 +864,10 @@ export default {
       submitted: false,
       estadoEdicion: false,
       verDialog: null,
-      apoderados: {}
+      apoderados: {},
+      DialogUsers: false,
+      user: {},
+      users: null
     }
   },
   created() {     
@@ -814,6 +882,8 @@ export default {
       this.alumnos = data.data;
       const apo = await apoderadoService.listarApoderados();
       this.apoderados = apo.data.data;
+      const usu = await userService.listarUsuarios();
+      this.users = usu.data;
     },
     abrirDialog() {
       this.alumno = {};
@@ -826,6 +896,9 @@ export default {
     cerrarDialog(){
       this.dialog = false;
       this.submitted = false;
+    },
+    cerrarUsers() {
+      this.DialogUsers = false;
     },
     async guardarAlumnos() {
       let datos;
@@ -853,6 +926,9 @@ export default {
       this.alumno = data;      
       this.verDialog = true;
     },
+    asignarUsers() {
+      this.DialogUsers = true;
+    },   
     confirmDeleteProduct(data) {
       this.$confirm.require({
         message: 'Esta seguro que desea eliminar ',

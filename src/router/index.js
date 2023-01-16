@@ -28,6 +28,11 @@ const routes = [
     meta: {requireAtuh: true},
     children: [
       {
+        path: '',
+        name: 'Dashboard',
+        component: () => import('../components/Dashboard.vue')        
+    },
+      {
         path: 'alumno',
         name: 'Alumno',
         component: AlumnoView
@@ -108,7 +113,7 @@ const routes = [
         component: AsistenciaView 
       }
     ]
-  },
+  },  
   {
     path: '/login',
     name: 'Login',

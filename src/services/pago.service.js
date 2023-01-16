@@ -20,3 +20,6 @@ export function eliminarPagos(id)
 {
     return http().delete('/v1/pago/'+id)
 }
+export function contarPagos() {
+    return http().get('/v1/pago/contar-pagos');
+}

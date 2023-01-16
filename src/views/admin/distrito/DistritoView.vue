@@ -32,7 +32,7 @@
                 <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProduct(slotProps.data)" />
             </template>
         </Column>        
-    </DataTable>
+    </DataTable>    
     <Dialog v-model:visible="Dialog" :style="{width: '450px'}" header="Distrito Nuevo" :modal="true" class="p-fluid">        
         <div class="field">
             <label for="dist_nom">Nombre</label>

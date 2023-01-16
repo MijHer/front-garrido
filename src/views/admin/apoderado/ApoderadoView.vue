@@ -27,7 +27,7 @@
                 </div>
             </template>
             <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-            <Column field="apo_nom" header="Nombres" :sortable="true" style="min-width:10rem"></Column>
+            <Column field="apo_nom" header="Nombres" :sortable="true" style="min-width:10rem" class="mayusc"></Column>
             <Column field="apo_app" header="A. Paterno" :sortable="true" style="min-width:10rem"></Column>
             <Column field="apo_apm" header="A. Materno" :sortable="true" style="min-width:10rem"></Column>            
             <Column field="apo_vinculo" header="Vínculo" :sortable="true" style="min-width:10rem"></Column>            
@@ -50,34 +50,34 @@
             <div class="formgrid grid">            
                 <div class="field col">
                     <label for="apo_nom">Nombre</label>
-                    <InputText id="apo_nom" v-model.trim="apoderado.apo_nom" required="true" autofocus :class="{'p-invalid': submitted && !apoderado.apo_nom}" />
+                    <InputText id="apo_nom" v-model.trim="apoderado.apo_nom" required="true" autofocus :class="[{'p-invalid': submitted && !apoderado.apo_nom}, 'mayusc']"  />
                     <small class="p-error" v-if="submitted && !apoderado.apo_nom">Nombre es requerido.</small>
                 </div>
                 <div class="field col">
                     <label for="apo_app">A. Paterno</label>
-                    <InputText id="apo_app" v-model.trim="apoderado.apo_app" required="true" autofocus :class="{'p-invalid': submitted && !apoderado.apo_app}" />
+                    <InputText id="apo_app" v-model.trim="apoderado.apo_app" required="true" autofocus :class="[{'p-invalid': submitted && !apoderado.apo_app}, 'mayusc']" />
                     <small class="p-error" v-if="submitted && !apoderado.apo_app">Apellido requerido.</small>
                 </div>
                 <div class="field col">
                     <label for="apo_apm">A. Materno</label>
-                    <InputText id="apo_apm" v-model.trim="apoderado.apo_apm" required="true" autofocus :class="{'p-invalid': submitted && !apoderado.apo_apm}" />
+                    <InputText id="apo_apm" v-model.trim="apoderado.apo_apm" required="true" autofocus :class="[{'p-invalid': submitted && !apoderado.apo_apm}, 'mayusc']" />
                     <small class="p-error" v-if="submitted && !apoderado.apo_apm">Apellido requerido.</small>
                 </div>
             </div>
             <div class="formgrid grid">            
                 <div class="field col">
                     <label for="apo_dni">DNI</label>
-                    <InputText id="apo_dni" v-model.trim="apoderado.apo_dni" required="true" autofocus :class="{'p-invalid': submitted && !apoderado.apo_dni}" />
+                    <InputText id="apo_dni" v-model.trim="apoderado.apo_dni" required="true" autofocus :class="[{'p-invalid': submitted && !apoderado.apo_dni}, 'mayusc']" />
                     <small class="p-error" v-if="submitted && !apoderado.apo_dni">DNI es requerido.</small>
                 </div>
                 <div class="field col">
                     <label for="apo_telf">Teléfono</label>
-                    <InputText id="apo_telf" v-model.trim="apoderado.apo_telf" required="true" autofocus :class="{'p-invalid': submitted && !apoderado.apo_telf}" />
+                    <InputText id="apo_telf" v-model.trim="apoderado.apo_telf" required="true" autofocus :class="[{'p-invalid': submitted && !apoderado.apo_telf}, 'mayusc']" />
                     <small class="p-error" v-if="submitted && !apoderado.apo_telf">Telefóno requerido.</small>
                 </div>
                 <div class="field col">
                     <label for="apo_dir">Dirección</label>
-                    <InputText id="apo_dir" v-model.trim="apoderado.apo_dir" required="true" autofocus :class="{'p-invalid': submitted && !apoderado.apo_dir}" />
+                    <InputText id="apo_dir" v-model.trim="apoderado.apo_dir" required="true" autofocus :class="[{'p-invalid': submitted && !apoderado.apo_dir}, 'mayusc']" />
                     <small class="p-error" v-if="submitted && !apoderado.apo_dir">Dirección requerido.</small>
                 </div>
             </div>
@@ -89,13 +89,13 @@
                 </div>
                 <div class="field col">
                     <label for="apo_vinculo">Vínculo</label>
-                    <InputText id="apo_vinculo" v-model.trim="apoderado.apo_vinculo" required="true" autofocus :class="{'p-invalid': submitted && !apoderado.apo_vinculo}" />
-                    <small class="p-error" v-if="submitted && !apoderado.apo_vinculo">Apellido requerido.</small>
+                    <InputText id="apo_vinculo" v-model.trim="apoderado.apo_vinculo" required="true" autofocus :class="[{'p-invalid': submitted && !apoderado.apo_vinculo}, 'mayusc']" />
+                    <small class="p-error" v-if="submitted && !apoderado.apo_vinculo">Vinculo requerido.</small>
                 </div>
                 <div class="field col">
                     <label for="apo_grado_inst">Grado de instrucción</label>
-                    <InputText id="apo_grado_inst" v-model.trim="apoderado.apo_grado_inst" required="true" autofocus :class="{'p-invalid': submitted && !apoderado.apo_grado_inst}" />
-                    <small class="p-error" v-if="submitted && !apoderado.apo_grado_inst">Apellido requerido.</small>
+                    <InputText id="apo_grado_inst" v-model.trim="apoderado.apo_grado_inst" required="true" autofocus :class="[{'p-invalid': submitted && !apoderado.apo_grado_inst}, 'mayusc']" />
+                    <small class="p-error" v-if="submitted && !apoderado.apo_grado_inst">Grado de instrucción requerido.</small>
                 </div>
             </div>
             <div class="formgrdi grid">
@@ -116,44 +116,44 @@
                 <div class="formgrid grid">                     
                     <div class="field col">
                         <label for="apo_nom"><b>Nombre:</b></label>
-                        <p style="min-width:16rem" v-text="apoderado.apo_nom"></p>
+                        <p style="min-width:16rem" v-text="apoderado.apo_nom" class="mayusc"></p>
                     </div>
                     <div class="field col">
                         <label for="apo_app">A. Paterno:</label>
-                        <p style="min-width:16rem" v-text="apoderado.apo_app"></p>
+                        <p style="min-width:16rem" v-text="apoderado.apo_app" class="mayusc"></p>
                     </div>
                     <div class="field col">
                         <label for="apo_apm">A. Materno:</label>
-                        <p style="min-width:16rem" v-text="apoderado.apo_apm"></p>          
+                        <p style="min-width:16rem" v-text="apoderado.apo_apm" class="mayusc"></p>          
                     </div>
                 </div>                    
                 <div class="formgrid grid">
                     <div class="field col">
                         <label for="apo_dni">DNI:</label>
-                        <p style="min-width:16rem" v-text="apoderado.apo_dni"></p>          
+                        <p style="min-width:16rem" v-text="apoderado.apo_dni" class="mayusc"></p>          
                     </div>
                     <div class="field col">
                         <label for="apo_telf">Telefóno:</label>
-                        <p style="min-width:16rem" v-text="apoderado.apo_telf"></p>          
+                        <p style="min-width:16rem" v-text="apoderado.apo_telf" class="mayusc"></p>          
                     </div>
                     <div class="field col">
                         <label for="apo_dir">Dirección:</label>
-                        <p style="min-width:16rem" v-text="apoderado.pro_sexo"></p>          
+                        <p style="min-width:16rem" v-text="apoderado.apo_dir" class="mayusc"></p>          
                     </div>
                     
                 </div>
                 <div class="formgrid grid">
                     <div class="field col">
                         <label for="apo_fnac">Fecha de nacimiento:</label>
-                        <p style="min-width:16rem" v-text="apoderado.apo_fnac"></p>
+                        <p style="min-width:16rem" v-text="apoderado.apo_fnac" class="mayusc"></p>
                     </div>
                     <div class="field col">
                         <label for="apo_vinculo">Vínculo:</label>
-                        <p style="min-width:16rem" v-text="apoderado.apo_vinculo"></p>
+                        <p style="min-width:16rem" v-text="apoderado.apo_vinculo" class="mayusc"></p>
                     </div>
                     <div class="field col">
                         <label for="apo_grado_inst">Grado de instrucción:</label>
-                        <p style="min-width:16rem" v-text="apoderado.apo_grado_inst"></p>
+                        <p style="min-width:16rem" v-text="apoderado.apo_grado_inst" class="mayusc"></p>
                     </div>                    
                 </div>
                 <div class="formgrid grid">
@@ -180,10 +180,12 @@
 
 import { FilterMatchMode } from 'primevue/api';
 import * as apoderadoService from '../../../services/apoderado.service';
+import { capitalize } from '@vue/shared';
 
 export default {
-    data() {
+    data() {       
         return {
+            
             apoderados: null,
             selectedApoderados: null,
             filters: {},
@@ -195,7 +197,7 @@ export default {
             status: [
                     {label: 'ACTIVO', value: '1'},
                     {label: 'INACTIVO', value: '0'}
-                ]
+                ]                
         }
     },
     created() {
@@ -211,12 +213,14 @@ export default {
         },
         abrirDialog() {
             this.apoderado = {};
+            this.submitted = false;
             this.dialog = true;
         },
         cerrarDialog() {
             this.dialog = false;
         },
         async guardaApoderado() {
+            this.submitted = true;
             let datos;
             if (this.estadoEdicion) {
                 datos= await apoderadoService.modificarApoderados(this.apoderado.id, this.apoderado);
@@ -296,6 +300,9 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.mayusc {
+    text-transform: capitalize;
 }
 @media screen and (max-width: 960px) {
 	::v-deep(.p-toolbar) {

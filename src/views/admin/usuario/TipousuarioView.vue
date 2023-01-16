@@ -38,7 +38,8 @@
     <Dialog v-model:visible="Dialog" :style="{width: '450px'}" header="Tipo De Usuario" :modal="true" class="p-fluid">        
         <div class="field">
             <label for="tipo_nom">Nombre</label>
-            <InputText id="tipo_nom" v-model.trim="tipousuario.tipo_nom" autofocus  :class="{'p-invalid': submitted && !tipousuario.tipo_nom}" />            
+            <InputText id="tipo_nom" v-model.trim="tipousuario.tipo_nom" required="true" autofocus :class="{'p-invalid': submitted && !tipousuario.tipo_nom}" />
+            <small class="p-error" v-if="submitted && !tipousuario.tipo_nom == '' ">Nombre es requerido.</small>
         </div>
         <div class="field">
             <label for="tipo_descripcion">Descripción</label>
@@ -68,6 +69,7 @@ export default {
       tipousuarios: null,
       tipousuario: {},
       selectedTipousuario: null,
+      submitted: false,
       statuses: [
         {label:'Activo', value:'1'},
         {label:'Inactivo', value:'0'}
@@ -92,7 +94,6 @@ export default {
       if (this.estadoEdicion == true) {
         datos = await tipousuarioService.modificarTipousuario(this.tipousuario.id, this.tipousuario);
         this.tipousuario = datos;
-        console.log(this.tipousuario);
       }
       else {
         datos = await tipousuarioService.guardarTipousuario(this.tipousuario);
@@ -103,7 +104,7 @@ export default {
         this.cerrarDialog();
         this.estadoEdicion = false;
       }
-      
+      console.log(this.submitted);
     },
     editTipousuario(data) {
       this.tipousuario = data;

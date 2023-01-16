@@ -87,11 +87,10 @@
                     <InputText id="pro_distrito" v-model.trim="profesor.pro_distrito" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_distrito}" />
                     <small class="p-error" v-if="submitted && !profesor.pro_distrito">Campo Requerido.</small>
                 </div>
-                <div class="field col">
+                <!-- <div class="field col">
                     <label for="user_id">Usuario</label>
-                    <InputText id="user_id" v-model.trim="profesor.user_id" required="true" autofocus :class="{'p-invalid': submitted && !profesor.user_id}" />
-                    <small class="p-error" v-if="submitted && !profesor.user_id">Campo Requerido.</small>
-                </div>
+                    <InputText id="user_id" v-model.trim="profesor.user_id" required="true" autofocus />                    
+                </div> -->
                 <div class="field col">
                     <label for="pro_estado">Estado</label>
                     <Dropdown id="pro_estado" v-model="profesor.pro_estado" :options="status" optionLabel="label" optionValue="value" placeholder="Selecione Pais">                        
@@ -117,26 +116,87 @@
                 </div>
             </template>
             <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-            <Column field="pro_nom" header="Nombres" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="pro_app" header="A. Paterno" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="pro_apm" header="A. Materno" :sortable="true" style="min-width:16rem"></Column>
-            <Column field="pro_estado" header="Estado" :sortable="true" style="min-width:16rem">
+            <Column field="pro_nom" header="Nombres" :sortable="true" style="min-width:10rem"></Column>
+            <Column field="pro_app" header="A. Paterno" :sortable="true" style="min-width:10rem"></Column>
+            <Column field="pro_apm" header="A. Materno" :sortable="true" style="min-width:10rem"></Column>
+            <Column field="pro_estado" header="Estado" :sortable="true" style="min-width:10rem">
                 <template #body="slotProps">
                     {{slotProps.data.pro_estado == 1?"Activo":"Inactivo"}}
                 </template>
             </Column>
-            <Column field="pro_telf" header="Telefono" :sortable="true" style="min-width:16rem"></Column>            
-            <Column field="pro_especialidad" header="Especialidad" :sortable="true" style="min-width:16rem"></Column>            
+            <Column field="pro_telf" header="Telefono" :sortable="true" style="min-width:10rem"></Column>            
+            <Column field="pro_especialidad" header="Especialidad" :sortable="true" style="min-width:10rem"></Column>            
             <Column :exportable="false" style="min-width:16rem">
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarProfesores(slotProps.data)" />
                     <Button icon="pi pi-bookmark" class="p-button-rounded p-button-secondary mr-2" @click="verProfesores(slotProps.data)" />
-                    <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" @click="asignarRol(slotProps.data)" />
+                    <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" @click="asignarUsers(slotProps.data)" />
                     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProduct(slotProps.data)" />
                 </template>
             </Column>            
         </DataTable>
-        <Dialog v-model:visible="verDialog" :style="{width: '900', text: 'center'}" header="Datos del Profesor" :modal="true" class="p-fluid">
+        <Dialog v-model:visible="DialogUsers" :style="{width: '950px'}" header="Asignación de Usuario" :modal="true" class="p-fluid">
+            <div class="formgrid grid">
+                <div class="field col">
+                <label for="name">Nombres</label>          
+                <InputText id="name" readonly v-model.trim="user.name" required="true" autofocus :class="{'p-invalid': submitted && !user.name}" />          
+                </div>
+                <!-- <div class="field col">
+                    <label for="usu_dni">Apellido Paterno</label>
+                    <InputText id="usu_dni" readonly v-model.trim="user.usu_dni"   required="true" autofocus  />          
+                </div>
+                <div class="field col">
+                    <label for="usu_telf">Apellido Materno</label>
+                    <InputText id="usu_telf" readonly v-model.trim="user.usu_telf" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_telf}" />          
+                </div> -->
+            </div>
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="usu_dni">DNI</label>
+                    <InputText id="usu_dni" readonly v-model.trim="user.usu_dni"   required="true" autofocus  />          
+                </div>
+                <div class="field col">
+                    <label for="usu_telf">Telefono</label>
+                    <InputText id="usu_telf" readonly v-model.trim="user.usu_telf" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_telf}" />          
+                </div>
+                <div class="field col">
+                    <label for="email">Correo</label>
+                    <InputText id="email" readonly v-model.trim="user.email" required="true" autofocus :class="{'p-invalid': submitted && !user.email}" />          
+                </div>
+            </div>
+            <div class="formgrid grid">                      
+                <div class="field col">
+                <label for="usu_user">Usuario</label>
+                <InputText id="usu_user" v-model.trim="user.usu_user" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_user}" />          
+                </div>
+                <div class="field col">
+                    <label for="password">Contraseña</label>
+                    <InputText id="password" v-model.trim="user.password" required="true" autofocus :class="{'p-invalid': submitted && !user.password}" />          
+                </div>
+                <div class="field col">
+                    <label for="usu_dir">Dirección</label>
+                    <InputText id="usu_dir" readonly v-model.trim="user.usu_dir" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_dir}" />
+                </div>
+            </div>
+            <div class="formgrid grid">                
+                <div class="field col">                    
+                    <label for="usu_rgst">Fecha y Hora de Registro</label>
+                    <!-- <InputText id="usu_dir" v-model.trim="user.usu_rgst" required="true" autofocus /> -->          
+                    <Calendar inputId="usu_rgst" v-model="user.usu_rgst" :showTime="true" :showSeconds="true" :showIcon="true" />                
+                </div>
+                <div class="field col">
+                    <label for="tipousuario.tipo_nom" >Rol</label>
+                    <Dropdown id="tipousuario.tipo_nom" v-model="user.tipousuario_id" :options="tipousuarios" optionLabel="tipo_nom" optionValue="id" placeholder="Seleciona Rol">      
+                    </Dropdown>
+                </div> 
+            </div>
+            {{user}} <br> <br>
+            <template #footer>
+                <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarUsers"/>
+                <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarUsers" />
+            </template>
+        </Dialog>
+        <Dialog v-model:visible="verDialog" :style="{width: '900px', text: 'center'}" header="Datos del Profesor" :modal="true" class="p-fluid">
             <div class="card">
                 <div class="formgrid grid">                     
                     <div class="field col">
@@ -197,23 +257,39 @@
                         <p style="min-width:16rem" v-text="profesor.pro_distrito"></p>
                     </div>                                   
                 </div>
-                <div class="field">
-                    <label for="pro_estado">Estado</label>
-                    <p style="min-width:16rem" v-text="profesor.pro_estado"></p>
-                </div>                                       
+                <div class="formgrid grid">
+                    <div class="field col">
+                        <label for="pro_estado">Estado</label>
+                        <p>
+                            {{profesor.pro_estado == 1?"Activo":"Inactivo"}}
+                        </p>
+                    </div>
+                    <div class="field col">
+                        <label for="pro_estado">Rol</label>
+                        <p style="min-width:16rem" v-text="rolNom"></p>
+                        <!-- <p>
+                            {{getRol(data.user.tipousuario_id)}}
+                        </p> -->
+                    </div>
+                    <div class="field col">
+                    </div>
+                </div>
             </div>
             <template #footer>
-            <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarVerDialog()"/>
-            <Button label="Imprimir" icon="pi pi-check" class="p-button-text" @click="imprimirFicha()" />
+                <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarVerDialog()"/>
+                <Button label="Imprimir" icon="pi pi-check" class="p-button-text" @click="imprimirFicha()" />
             </template>
         </Dialog>
   </div>
+  
 </template>
 
 <script>
 
-import { FilterMatchMode } from 'primevue/api';
-import * as profesorService from '../../../services/profesor.service';
+import { FilterMatchMode } from 'primevue/api'
+import * as profesorService from '@/services/profesor.service'
+import * as userService from '@/services/user.service'
+import * as tipousuarioService from '@/services/tipousuario.service'
 
 export default {
     data() {
@@ -251,7 +327,12 @@ export default {
             status: [
                 {label: 'ACTIVO', value:'1'},
                 {label: 'INACTIVO', value:'0'}
-            ]
+            ],
+            DialogUsers: false,
+            user: {},
+            tipousuarios: [],
+            users: null,
+            rolNom: ''
         }
     },
     created() {
@@ -264,6 +345,10 @@ export default {
         async listaProfesor() {
             const { data } = await profesorService.listarProfesores();
             this.profesores = data.data;
+            const tipouser = await tipousuarioService.listarTiposuarios();
+            this.tipousuarios = tipouser.data;
+            const usu = await userService.listarUsuarios();
+            this.users = usu.data;
         },
         abrirDialog() {
             this.dialog = true;
@@ -295,8 +380,39 @@ export default {
             this.dialog = true;
         },
         verProfesores(data) {
+            console.log(data);
             this.profesor = data;
+            this.rolNom = data.user.tipousuario_id;
             this.verDialog = true;
+        },        
+        asignarUsers(datos) {
+            this.user = datos;
+            this.user.name = datos.pro_nom;
+            this.user.usu_dni = datos.pro_dni;
+            this.user.email = datos.pro_correo;
+            this.user.usu_dir = datos.pro_dire;
+            this.user.usu_telf = datos.pro_telf;
+            this.user.profesor_id = datos.id;            
+            this.DialogUsers = true;            
+        },
+        /* getRol(id) {
+            let nom = '';
+            for (let i = 0; i < this.tipousuarios.length; i++) {
+                const tipousuario = this.tipousuarios[i];
+                if (tipousuario.id == id) {
+                    nom = tipousuario.tipo_nom;
+                }
+            }            
+            return nom;
+        }, */
+        async guardarUsers() {
+            const { data } = await userService.guardarUsuarios(this.user);
+            this.user = data;
+            this.cerrarUsers();
+            this.listaProfesor();
+        },
+        cerrarUsers() {
+            this.DialogUsers = false;
         },
         cerrarVerDialog() {
             this.verDialog = false;

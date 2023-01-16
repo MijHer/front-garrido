@@ -18,7 +18,7 @@
                 </template>
             </Dialog>
         <!-- DIALOG PARA MOSTRAR LA INFORMACION DEL ALUMNO QUE REAZLIZA EL PAGO -->
-        <Dialog v-model:visible="Dialog" :style="{width: '900px'}" header="Buscar Alumno" :modal="true" class="p-fluid">
+        <Dialog v-model:visible="Dialog" :style="{width: '900px'}" header="Alumno" :modal="true" class="p-fluid">
             <div class="field">
                 <label for="alumno_id">Alumno</label>
                 <InputText id="alumno_id" readonly v-bind:value="alumno.alu_nom" required="true" rows="3" cols="20" />                
@@ -117,7 +117,7 @@ export default {
     cerrarDialog() {
         this.Dialog = false;
     }
-  },
+  }
 }
 </script>
 

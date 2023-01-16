@@ -29,3 +29,6 @@ export function asistenciaAlumno(id, datos) {
 export function asistenciaAlu(datos) {
     return http().post('/v1/alumno/registrar-asistencia', datos);
 }
+export function contarAlumnos() {
+    return http().get('/v1/alumno/contar-alumnos');
+}

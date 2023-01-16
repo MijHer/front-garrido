@@ -19,3 +19,6 @@ export function modificarUsuarios(id, datos) {
 export function eliminarUsuarios(id) {
     return http().delete('/v1/user/destroy/'+ id);
 }
+export function contarUsers() {
+    return http().get('/v1/user/contar-users');
+}

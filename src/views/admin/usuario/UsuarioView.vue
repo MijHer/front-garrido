@@ -3,9 +3,9 @@
     <Toast />
         <ConfirmDialog></ConfirmDialog>
     <Toolbar class="mb-4">
-      <template #start>
+      <!-- <template #start>
           <Button label="Nuevo Usuario" icon="pi pi-plus" class="p-button-success mr-2" @click="abrirDialog" />
-      </template>
+      </template> -->
       <template #end>
           <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block" />
           <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)"  />
@@ -17,7 +17,7 @@
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
         <template #header>
             <div class="table-header flex flex-column md:flex-row md:justiify-content-between">
-            <h5 class="mb-2 md:m-0 p-as-md-center">Registro de Usuarios</h5>
+            <h3 class="mb-2 md:m-0 p-as-md-center">Registro de Usuarios</h3>
             <span class="p-input-icon-left">
                 <i class="pi pi-search" />
                 <InputText v-model="filters['global'].value" placeholder="Search..." />

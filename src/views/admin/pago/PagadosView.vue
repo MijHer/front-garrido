@@ -28,11 +28,48 @@
           <Column field="pago_periodo" header="Periodo" :sortable="true" style="min-width:12rem"></Column>
           <Column :exportable="false" style="min-width:8rem">
               <template #body="slotProps">
-                  <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editProduct(slotProps.data)" />
+                  <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarPago(slotProps.data)" />
                   <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteProduct(slotProps.data)" />
               </template>
           </Column>          
       </DataTable>
+      <Dialog v-model:visible="Dialog" :style="{width: '900px'}" header="Alumno" :modal="true" class="p-fluid">
+        <div class="field">
+            <label for="alumno_id">Alumno</label>
+            <InputText id="alumno_id" readonly v-model="pago.alumno.alu_nom" required="true" rows="3" cols="20" />                
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="pago_fecha">Fecha de Pago</label>
+                <InputText id="pago_fecha"  v-model="pago.pago_fecha"  dateFormat="yy-dd-mm" required="true" rows="3" cols="20" />                
+            </div>
+            <div class="field col">
+                <label for="pago_hora">Hora de Pago</label>
+                <InputText id="pago_fecha" readonly v-model="pago.pago_hora" required="true" rows="3" cols="20" />                
+            </div>
+        </div>
+          <div class="field">
+            <label for="pago_monto">Precio de Pensión</label>
+            <InputText id="pago_monto" v-model="pago.pago_monto" required="true" rows="3" cols="20" />                
+        </div>
+          <div class="field">
+            <label for="pago_concepto">Concepto de Pago</label>
+            <InputText id="pago_concepto" v-model="pago.pago_concepto" required="true" rows="3" cols="20" />                
+        </div>
+          <div class="field">
+            <label for="pago_periodo">Periodo Correspondiente</label>
+            <InputText id="pago_periodo" v-model="pago.pago_periodo" required="true" rows="3" cols="20" />                
+        </div>
+        <div class="field">
+          <label >Apoderado</label>
+          <InputText id="matricula_id" readonly v-model="pago.alumno.apoderado_id" required="true" rows="3" cols="20" />                
+        </div>
+        <!-- {{pago.alumno.apoderado_id}} -->
+        <template #footer>
+            <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
+            <Button label="Modificar" icon="pi pi-check" class="p-button-text" @click="actualizarPago" />
+        </template>
+    </Dialog>
   </div>
 </template>
 
@@ -48,7 +85,10 @@ export default {
       pagos: null,
       selectedPagos: null,
       filters: {},
-      alumnos: {}
+      alumnos: {},
+      Dialog: false,
+      pago: {},
+      /* estadoEdicion: false */
     }
   },
   created() {
@@ -63,6 +103,19 @@ export default {
       this.pagos = data;
       const alu = await alumnoService.listarAlumnos();
       this.alumnos = alu.data.data;
+    },
+    editarPago(data) {
+      console.log(data);
+      this.pago = data;
+      /* this.pago.alumno_id = this.alumno.id; */
+      /* this.pago.matricula_id = this.alumno.apoderado_id; */
+      this.Dialog = true;
+      /* this.estadoEdicion = true; */
+    },
+    async actualizarPago() {
+      const { data } = await pagoService.mofidicarPagos(this.pago.id, this.pago);
+      this.pago = data;
+      this.Dialog = false;
     },
     initFilters() {
         this.filters = {

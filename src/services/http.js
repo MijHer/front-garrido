@@ -20,8 +20,14 @@ export function http()
             return response;
         },
         (error) => {
-            localStorage.removeItem("token");
-            window.location.href = '/login';
+            if(error.response.status === 401){
+                localStorage.removeItem("token");
+                window.location.href = "/login"
+            }
+
+            return Promise.reject(error);
+            /* localStorage.removeItem("token");            
+            window.location.href = '/login'; */
         }
     );
     return interceptor;

@@ -20,3 +20,7 @@ export function eliminarMatriculas(id)
 {
     return http().delete(`/v1/matricula/${id}`);
 }
+export function contarMatriculas()
+{
+    return http().get('/v1/matricula/contar-matriculados');
+}

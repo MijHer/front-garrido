@@ -23,3 +23,11 @@ export function eliminarProfesores(id)
 export function buscara(dnip) {
     return http().get(`/v1/profesor/buscara?p=${dnip}`);
 }
+export function contarProfesoresSi()
+{
+    return http().get('/v1/profesor/contar-profesores');
+}
+export function contarProfesores()
+{
+    return http().get('/v1/profesor/contar-profesorestotal');
+}

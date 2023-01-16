@@ -55,19 +55,15 @@ export default {
           return 'dark';
       }
   },
-  mounted() {
-  },
   methods: {
     async ingresar() {
       const { data } = await userService.login(this.usuario);
-      console.log(data);
-      if (this.usuario.email == data.user.email) {        
-          if (!data.error) {
-            this.$store.dispatch("ingresaUsuario", data.user.name);
-            localStorage.setItem("token", data.access_token);
-            this.$router.push({name: 'Admin'});          
-          }
-      }
+      console.log(data);             
+        if (!data.error) {
+          this.$store.dispatch("ingresaUsuario", data.user.name);
+          localStorage.setItem("token", data.access_token);
+          this.$router.push({name: 'Admin'});
+        }      
     }
   },
 }

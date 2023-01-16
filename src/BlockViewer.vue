@@ -19,9 +19,9 @@
                 <slot></slot>
             </div>
             <div v-if="blockView === BlockView.CODE">
-<pre v-code><code>{{code}}
+            <pre v-code><code>{{code}}
 
-</code></pre>
+            </code></pre>
             </div>
         </div>
     </div>
