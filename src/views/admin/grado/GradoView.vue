@@ -49,21 +49,25 @@
             <div class="field">
                 <label for="gra_nom">Nombre</label>
                 <InputText id="gra_nom" v-model="grado.gra_nom" required="true" autofocus />
+            </div>
+            <div class="field">
                 <label for="gra_seccion">Sección</label>
                 <InputText id="gra_seccion" v-model="grado.gra_seccion" required="true" autofocus />
-                <div class="field">
-                    <label for="gra_nivel" class="mb-3">Nivel</label>
-                    <Dropdown id="gra_nivel" v-model="grado.gra_nivel" :options="nivel" optionLabel="label" optionValue="value"  placeholder="Selecione Nivel Academico">                        
-                    </Dropdown>
-                </div>
+            </div>                
+            <div class="field">
+                <label for="gra_nivel" class="mb-3">Nivel</label>
+                <Dropdown id="gra_nivel" v-model="grado.gra_nivel" :options="nivel" optionLabel="label" optionValue="value"  placeholder="Selecione Nivel Academico">                        
+                </Dropdown>
+            </div>
+            <div class="field">
                 <label for="gra_registro">Fecha de Registro</label>
-                <Calendar inputId="icon" v-model="grado.gra_registro" :showIcon="true" />
-                <div class="field">
-                    <label for="gra_estado" class="mb-3">Estado</label>
-                    <Dropdown id="gra_estado" v-model="grado.gra_estado" :options="statusGra" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                        
-                    </Dropdown>
-                </div>
-            </div>           
+                <InputText id="gra_registro" v-model="grado.gra_registro" required="true" autofocus />
+            </div>
+            <div class="field">
+                <label for="gra_estado" class="mb-3">Estado</label>
+                <Dropdown id="gra_estado" v-model="grado.gra_estado" :options="statusGra" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                        
+                </Dropdown>
+            </div>            
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarGrado" />                
@@ -177,7 +181,8 @@ export default {
             pivot: {},
             graNom: '',
             secNom: '',
-            nivnom: ''
+            nivnom: '',
+            date: ''
         }
     },
     created() {
@@ -185,6 +190,7 @@ export default {
     },
     mounted() {
         this.listaGrado();
+        this.printdate();
     },
     methods: {
         async listaGrado() {
@@ -203,8 +209,13 @@ export default {
             this.pivot = {};
        },
        gradoNuevo() {
-            this.DialogGrado = true;
             this.grado = {};
+            this.grado.gra_registro = this.date
+            this.DialogGrado = true;
+        },
+        printdate() {
+            const date = new Date().toLocaleDateString();
+            this.date = date;
         },
         async guardarGrado() {
             let datos;
@@ -224,6 +235,7 @@ export default {
        },
        editarGrado(data) {
             this.grado = data;
+            this.grado.gra_registro = this.date
             this.DialogGrado = true;
             this.estadoedicion = true;
        },

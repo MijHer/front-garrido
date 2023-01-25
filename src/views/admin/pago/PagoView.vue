@@ -26,7 +26,7 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="pago_fecha">Fecha de Pago</label>
-                    <InputText id="pago_fecha"  v-model="pago.pago_fecha"  dateFormat="yy-dd-mm" required="true" rows="3" cols="20" />                
+                    <InputText id="pago_fecha"  v-model="pago.pago_fecha" required="true" rows="3" cols="20" />                
                 </div>
                 <div class="field col">
                     <label for="pago_hora">Hora de Pago</label>
@@ -61,8 +61,8 @@
 
 <script>
 
-import * as pagoService from '../../../services/pago.service';
-import * as alumnoService from '@/services/alumno.service';
+import * as pagoService from '@/services/pago.service'
+import * as alumnoService from '@/services/alumno.service'
 
 export default {
   data() {
@@ -85,11 +85,11 @@ export default {
   methods: {    
     async buscarPersona() {
         const {data} = await alumnoService.buscar(this.dni);
-        this.alumno = data;
-        if (this.dni ==  data.alu_nmr_doc) {            
+        this.alumno = data.alumno;
+        if (this.dni ==  data.alumno.alu_nmr_doc) {            
             console.log(this.alumno);
             this.pago.alumno_id = this.alumno.id;
-            this.pago.matricula_id = this.alumno.apoderado_id;
+            this.pago.matricula_id = data.matricula.id;
             this.pago.pago_fecha = this.date;
             this.pago.pago_hora = this.time;
             this.Dialog = true;

@@ -32,7 +32,7 @@
         <Column field="apoderado.apo_nom" header="Apoderado" :sortable="true" style="min-width:10rem"></Column>
         <Column field="mat_estado" header="Estado" :sortable="true" style="min-width:10rem">
             <template #body="slotProps">
-                {{slotProps.data.mat_estado == 1?"Activo":"Inactivo"}}                
+                {{slotProps.data.mat_estado == 1?"Activo":"Inactivo"}}
             </template>
         </Column>
         <Column :exportable="false" style="min-width:14rem">
@@ -164,15 +164,18 @@
             <div class="field col">
                 <label for="mat_nivel">Nivel</label>
                 <p rows="3" cols="20" v-text="matricula.mat_nivel"></p>
-            </div>               
+            </div>
             <div class="field col">
                 <label for="mat_turno">Turno</label>
                 <p rows="3" cols="20" v-text="matricula.mat_turno"></p>
             </div>
             <div class="field col">
                 <label for="mat_repit">Repetitivo</label>
-                <p rows="3" cols="20" v-text="matricula.mat_repit"></p>
-            </div>        
+                <p rows="3" cols="20" >
+                    {{matricula.mat_repit == 1?"SI":"NO"}}
+                </p>
+                
+            </div>
         </div>
         <div class="formgrid grid">
             <div class="field col">
@@ -181,8 +184,8 @@
             </div> 
             <div class="field col">
             <label for="anioacademico_id">Año Academico</label>
-            <p rows="3" cols="20" v-text="matricula.anioacademico.anio_nom"></p>            
-            </div>     
+            <p rows="3" cols="20" v-text="matricula.anioacademico.anio_nom"></p>
+            </div>
             <div class="field col">
                 <label for="distrito_id">Distrito</label>
                 <p rows="3" cols="20" v-text="matricula.distrito.dist_nom"></p>
@@ -190,8 +193,10 @@
         </div>
         <div class="field">
             <label for="mat_estado">Estado</label>
-            <p rows="3" cols="20" v-text="matricula.mat_estado">                            
-            </p>             
+            <p rows="3" cols="20">
+                {{matricula.mat_estado == 1?"Activo":"Inactivo"}}
+            </p>
+            
         </div>   
         <h5>Datos del Apoderado</h5>
         <div class="formgrid grid">
@@ -269,8 +274,8 @@ export default {
                 {label: 'TARDE', value: 'Tarde'}
                 ],
             repite: [
-                {label: 'NO REPITE', value: '0'},
-                {label: 'SI REPITE', value: '1'}
+                {label: 'SI REPITE', value: '1'},
+                {label: 'NO REPITE', value: '0'}
             ],
             estado: [
                 {label: 'ACTIVO', value: '1'},

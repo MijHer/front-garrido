@@ -2,7 +2,9 @@
   <div class="card">
     <h1>lista de asistencia</h1>
       <DataTable :value="profesores" responsiveLayout="scroll">
-      <Column field="pivot.grado_id" header="Grado" :sortable="true" style="min-width:10rem"></Column>       
+      <Column field="pivot.grado_id" header="Grado" :sortable="true" style="min-width:10rem"></Column>
+      <Column field="" header="Curso" :sortable="true" style="min-width:10rem"></Column>
+      <Column field="" header="Sección" :sortable="true" style="min-width:10rem"></Column>       
       <Column :exportable="false" style="min-width:8rem">
           <template #body="slotProps">
               <Button label="Asistencia" class="p-button-rounded p-button-info" @click="llamarAsistencia(slotProps.data)" />              

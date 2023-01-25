@@ -39,12 +39,12 @@
     <Dialog v-model:visible="Dialog" :style="{width: '950px'}" header="Registro de Usuario" :modal="true" class="p-fluid">
       <div class="formgrid grid">
         <div class="field col">
-          <label for="name">Nombre y Apellido</label>          
-          <InputText id="name" v-model.trim="user.name" required="true" autofocus :class="{'p-invalid': submitted && !user.name}" />          
+          <label for="name">Nombre</label>          
+          <InputText id="name" readonly v-model.trim="user.name" required="true" autofocus :class="{'p-invalid': submitted && !user.name}" />          
         </div>
         <div class="field col">
             <label for="usu_dni">DNI</label>
-            <InputText id="usu_dni" v-model.trim="user.usu_dni"   required="true" autofocus  />          
+            <InputText id="usu_dni" readonly v-model.trim="user.usu_dni"   required="true" autofocus  />          
         </div>
         <div class="field col">
             <label for="usu_telf">Telefono</label>
@@ -73,8 +73,8 @@
         <div class="field col">
           <div class="field col">
             <label for="usu_rgst">Fecha y Hora de Registro</label>
-            <!-- <InputText id="usu_dir" v-model.trim="user.usu_rgst" required="true" autofocus /> -->          
-            <Calendar inputId="usu_rgst" v-model="user.usu_rgst" :showTime="true" :showSeconds="true" :showIcon="true" />
+            <InputText id="usu_dir" readonly v-model.trim="user.usu_rgst" required="true" autofocus />
+            <!-- <Calendar inputId="usu_rgst" v-model="user.usu_rgst" :showTime="true" :showSeconds="true" :showIcon="true" /> -->
           </div>
         </div>
         <div class="field col"></div>
@@ -82,7 +82,7 @@
       <div class="formgrid grid">          
         <div class="field col">
           <label for="tipousuario.tipo_nom" class="mb-3">Rol</label>
-          <Dropdown id="tipousuario.tipo_nom" v-model="user.tipousuario_id" :options="tipousuarios" optionLabel="tipo_nom" optionValue="id" placeholder="Seleciona Rol">      
+          <Dropdown id="tipousuario.tipo_nom" disabled v-model="user.tipousuario_id" :options="tipousuarios" optionLabel="tipo_nom" optionValue="id" placeholder="Seleciona Rol">      
           </Dropdown>
         </div>               
       </div>     
@@ -111,11 +111,14 @@ export default {
       profesor: null,
       users: null,
       selectedUsers: null,
+      filters: {},
       Dialog: false,
       user: {},    
       tipousuarios: {},
       alumnos: {},
-      estadoedicion: false
+      estadoedicion: false,
+      date: '',
+      time: ''
     }
   },
   created() {
@@ -123,6 +126,8 @@ export default {
   },
   mounted() {
     this.listaUser();
+    this.printDate();
+    this.printTime();
   },
   methods: {      
     async listaUser() {
@@ -142,17 +147,23 @@ export default {
       this.Dialog = false;
       this.user = {};
     },
+    printDate() {
+      const date = new Date().toLocaleDateString();
+      this.date = date;
+    },
+    printTime() {
+      const time = new Date().toLocaleTimeString();
+      this.time = time;
+    },
     async guardarUsers() {
       let datos;
       if (this.estadoedicion) {
         datos = await userService.modificarUsuarios(this.user.id, this.user);
         this.user = datos;
-        console.log(this.user)
       }
       else {
         datos = await userService.guardarUsuarios(this.user);
         this.user = datos;
-        console.log(this.user);
       }        
       if (!datos.data.error) {
         this.cerrarDialog();
@@ -163,6 +174,7 @@ export default {
     },
     editarUsers(data) {
       this.user = data;
+      this.user.usu_rgst = this.date +' '+ this.time;
       this.Dialog = true;
       this.estadoedicion = true;
     },

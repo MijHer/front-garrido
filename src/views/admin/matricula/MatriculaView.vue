@@ -74,7 +74,8 @@
           <label for="mat_estado">Estado</label>
           <Dropdown id="mat_estado" v-model="matricula.mat_estado" :options="estado" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                        
           </Dropdown> 
-      </div>   
+      </div>
+      {{matricula}}
       <h5>Datos del Apoderado</h5>
       <div class="formgrid grid">
         <div class="field col">
@@ -153,11 +154,13 @@ export default {
               {label: 'ACTIVO', value: '1'},
               {label: 'INACTIVO', value: '0'}
           ],
-          displayModal: false
+          displayModal: false,
+          date: ''
         }
     },
     mounted() {
         this.listaElementos();
+        this.printdate();
     },    
     methods: {
       
@@ -167,6 +170,7 @@ export default {
           if (this.dni ==  data.alu_nmr_doc) {
             this.matricula.apoderado_id = this.alumno.apoderado.id;
             this.matricula.alumno_id = this.alumno.id;
+            this.matricula.mat_fecha = this.date;
             this.Dialog = true;            
           }
           else {
@@ -185,6 +189,10 @@ export default {
         this.apoderados = apo.data.data;
         const dist = await distritoServide.listarDistritos();
         this.distritos = dist.data;
+      },
+      printdate() {
+        const date = new Date().toLocaleDateString();
+        this.date = date;
       },
       async guardarMatricula() {
         let datos;

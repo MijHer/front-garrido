@@ -86,11 +86,7 @@
                     <label for="pro_distrito">Distrito</label>
                     <InputText id="pro_distrito" v-model.trim="profesor.pro_distrito" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_distrito}" />
                     <small class="p-error" v-if="submitted && !profesor.pro_distrito">Campo Requerido.</small>
-                </div>
-                <!-- <div class="field col">
-                    <label for="user_id">Usuario</label>
-                    <InputText id="user_id" v-model.trim="profesor.user_id" required="true" autofocus />                    
-                </div> -->
+                </div>                
                 <div class="field col">
                     <label for="pro_estado">Estado</label>
                     <Dropdown id="pro_estado" v-model="profesor.pro_estado" :options="status" optionLabel="label" optionValue="value" placeholder="Selecione Pais">                        
@@ -124,14 +120,14 @@
                     {{slotProps.data.pro_estado == 1?"Activo":"Inactivo"}}
                 </template>
             </Column>
-            <Column field="pro_telf" header="Telefono" :sortable="true" style="min-width:10rem"></Column>            
+            <Column field="pro_telf" header="Telefono" :sortable="true" style="min-width:10rem"></Column>       |     
             <Column field="pro_especialidad" header="Especialidad" :sortable="true" style="min-width:10rem"></Column>            
             <Column :exportable="false" style="min-width:16rem">
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarProfesores(slotProps.data)" />
-                    <Button icon="pi pi-bookmark" class="p-button-rounded p-button-secondary mr-2" @click="verProfesores(slotProps.data)" />
-                    <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" @click="asignarUsers(slotProps.data)" />
-                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProduct(slotProps.data)" />
+                    <Button icon="pi pi-bookmark" class="p-button-rounded p-button-secondary mr-2" v-if="slotProps.data.user != null" @click="verProfesores(slotProps.data)" />
+                    <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" v-if="slotProps.data.user == null" @click="asignarUsers(slotProps.data)" />
+                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteProduct(slotProps.data)" />
                 </template>
             </Column>            
         </DataTable>
@@ -141,14 +137,14 @@
                 <label for="name">Nombres</label>          
                 <InputText id="name" readonly v-model.trim="user.name" required="true" autofocus :class="{'p-invalid': submitted && !user.name}" />          
                 </div>
-                <!-- <div class="field col">
-                    <label for="usu_dni">Apellido Paterno</label>
-                    <InputText id="usu_dni" readonly v-model.trim="user.usu_dni"   required="true" autofocus  />          
+                <div class="field col">
+                    <label for="pro_apm">Apellido Paterno</label>
+                    <InputText id="pro_apm" readonly v-model="Apaterno"   required="true" autofocus  />
                 </div>
                 <div class="field col">
                     <label for="usu_telf">Apellido Materno</label>
-                    <InputText id="usu_telf" readonly v-model.trim="user.usu_telf" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_telf}" />          
-                </div> -->
+                    <InputText id="usu_telf" readonly v-model="Amaterno" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_telf}" />          
+                </div>
             </div>
             <div class="formgrid grid">
                 <div class="field col">
@@ -181,8 +177,8 @@
             <div class="formgrid grid">                
                 <div class="field col">                    
                     <label for="usu_rgst">Fecha y Hora de Registro</label>
-                    <!-- <InputText id="usu_dir" v-model.trim="user.usu_rgst" required="true" autofocus /> -->          
-                    <Calendar inputId="usu_rgst" v-model="user.usu_rgst" :showTime="true" :showSeconds="true" :showIcon="true" />                
+                    <InputText id="usu_dir" v-model.trim="user.usu_rgst" required="true" autofocus />          
+                    <!-- <Calendar inputId="usu_rgst" v-model="user.usu_rgst" :showTime="true" :showSeconds="true" :showIcon="true" /> -->                
                 </div>
                 <div class="field col">
                     <label for="tipousuario.tipo_nom" >Rol</label>
@@ -266,10 +262,7 @@
                     </div>
                     <div class="field col">
                         <label for="pro_estado">Rol</label>
-                        <p style="min-width:16rem" v-text="rolNom"></p>
-                        <!-- <p>
-                            {{getRol(data.user.tipousuario_id)}}
-                        </p> -->
+                        <p style="min-width:16rem" v-text="rolNom"></p>                        
                     </div>
                     <div class="field col">
                     </div>
@@ -332,7 +325,11 @@ export default {
             user: {},
             tipousuarios: [],
             users: null,
-            rolNom: ''
+            rolNom: '',
+            Apaterno: '',
+            Amaterno: '',
+            date: '',
+            time: ''
         }
     },
     created() {
@@ -340,6 +337,8 @@ export default {
     },
     mounted() {
         this.listaProfesor()
+        this.printDate();
+        this.printTime();
     },
     methods: {
         async listaProfesor() {
@@ -382,9 +381,9 @@ export default {
         verProfesores(data) {
             console.log(data);
             this.profesor = data;
-            this.rolNom = data.user.tipousuario_id;
+            this.rolNom = data.user.tipousuario.tipo_nom;
             this.verDialog = true;
-        },        
+        },
         asignarUsers(datos) {
             this.user = datos;
             this.user.name = datos.pro_nom;
@@ -392,19 +391,20 @@ export default {
             this.user.email = datos.pro_correo;
             this.user.usu_dir = datos.pro_dire;
             this.user.usu_telf = datos.pro_telf;
-            this.user.profesor_id = datos.id;            
+            this.user.profesor_id = datos.id;
+            this.Apaterno = datos.pro_app;
+            this.Amaterno = datos.pro_apm
+            this.user.usu_rgst = this.date +' '+ this.time;
             this.DialogUsers = true;            
         },
-        /* getRol(id) {
-            let nom = '';
-            for (let i = 0; i < this.tipousuarios.length; i++) {
-                const tipousuario = this.tipousuarios[i];
-                if (tipousuario.id == id) {
-                    nom = tipousuario.tipo_nom;
-                }
-            }            
-            return nom;
-        }, */
+        printDate() {
+            const date = new Date().toLocaleDateString();
+            this.date = date;
+        },
+        printTime() {
+            const time = new Date().toLocaleTimeString();
+            this.time = time;
+        },
         async guardarUsers() {
             const { data } = await userService.guardarUsuarios(this.user);
             this.user = data;

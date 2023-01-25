@@ -22,3 +22,6 @@ export function eliminarUsuarios(id) {
 export function contarUsers() {
     return http().get('/v1/user/contar-users');
 }
+export function perfilUsuario() {
+    return http().get('/user');
+}

@@ -393,7 +393,7 @@
   <DataTable ref="dt" :value="alumnos" v-model:selection="selectedAlumnos" dataKey="id" 
       :paginator="true" :rows="10" :filters="filters"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll" class="text-center">
       <template #header>
           <div class="table-header flex flex-column md:flex-row md:justiify-content-between">
             <h5 class="mb-2 md:m-0 p-as-md-center">Lista de Alumnos</h5>
@@ -405,16 +405,16 @@
       </template>
       <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
       <Column field="alu_foto" header="Foto" :sortable="true" style="min-width:12rem"></Column>
-      <Column field="alu_nom" header="Nombres" :sortable="true" style="min-width:16rem"></Column>
-      <Column field="alu_app" header="A. Paterno" :sortable="true" style="min-width:16rem"></Column>
-      <Column field="alu_apm" header="A. Materno" :sortable="true" style="min-width:16rem"></Column>
-      <Column field="alu_nmr_doc" header="DNI" :sortable="true" style="min-width:16rem"></Column>
+      <Column field="alu_nom" header="Nombres" :sortable="true" style="min-width:10rem"></Column>
+      <Column field="alu_app" header="A. Paterno" :sortable="true" style="min-width:10rem"></Column>
+      <Column field="alu_apm" header="A. Materno" :sortable="true" style="min-width:10rem"></Column>
+      <Column field="alu_nmr_doc" header="DNI" :sortable="true" style="min-width:10rem"></Column>
 
-      <Column field="apoderado.apo_nom" header="Apoderado" :sortable="true" style="min-width:16rem"></Column>
+      <Column field="apoderado.apo_nom" header="Apoderado" :sortable="true" style="min-width:10rem"></Column>
 
-      <Column field="alu_grado" header="Grado" :sortable="true" style="min-width:16rem"></Column>
-      <Column field="alu_distrito" header="Distrito" :sortable="true" style="min-width:16rem"></Column>
-      <Column :exportable="false" style="min-width:8rem">
+      <Column field="alu_grado" header="Grado" :sortable="true" style="min-width:10rem"></Column>
+      <Column field="alu_distrito" header="Distrito" :sortable="true" style="min-width:10rem"></Column>
+      <Column :exportable="false" header="Acciones" style="min-width:16rem">
         <template #body="slotProps">
             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarAlumnos(slotProps.data)" />
             <Button icon="pi pi-bookmark" class="p-button-rounded p-button-secondary mr-2" @click="verAlumnos(slotProps.data)" />
@@ -430,14 +430,14 @@
         <label for="name">Nombres</label>          
         <InputText id="name" readonly v-model.trim="user.name" required="true" autofocus :class="{'p-invalid': submitted && !user.name}" />          
         </div>
-        <!-- <div class="field col">
-            <label for="usu_dni">Apellido Paterno</label>
-            <InputText id="usu_dni" readonly v-model.trim="user.usu_dni"   required="true" autofocus  />          
+        <div class="field col">
+            <label for="patermno">Apellido Paterno</label>
+            <InputText id="patermno" readonly v-model="Apaterno"   required="true" autofocus  />          
         </div>
         <div class="field col">
-            <label for="usu_telf">Apellido Materno</label>
-            <InputText id="usu_telf" readonly v-model.trim="user.usu_telf" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_telf}" />          
-        </div> -->
+            <label for="materno">Apellido Materno</label>
+            <InputText id="materno" readonly v-model="Amaterno" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_telf}" />          
+        </div>
     </div>
     <div class="formgrid grid">
         <div class="field col">
@@ -446,11 +446,11 @@
         </div>
         <div class="field col">
             <label for="usu_telf">Telefono</label>
-            <InputText id="usu_telf" readonly v-model.trim="user.usu_telf" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_telf}" />          
+            <InputText id="usu_telf" v-model.trim="user.usu_telf" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_telf}" />          
         </div>
         <div class="field col">
             <label for="email">Correo</label>
-            <InputText id="email" readonly v-model.trim="user.email" required="true" autofocus :class="{'p-invalid': submitted && !user.email}" />          
+            <InputText id="email" v-model.trim="user.email" required="true" autofocus :class="{'p-invalid': submitted && !user.email}" />          
         </div>
     </div>
     <div class="formgrid grid">                      
@@ -464,7 +464,7 @@
         </div>
         <div class="field col">
             <label for="usu_dir">Dirección</label>
-            <InputText id="usu_dir" readonly v-model.trim="user.usu_dir" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_dir}" />
+            <InputText id="usu_dir" v-model.trim="user.usu_dir" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_dir}" />
         </div>
     </div>
     <div class="formgrid grid">                
@@ -867,7 +867,10 @@ export default {
       apoderados: {},
       DialogUsers: false,
       user: {},
-      users: null
+      users: null,
+      tipousuarios: null,
+      Apaterno: '',
+      Amaterno: ''
     }
   },
   created() {     
@@ -884,6 +887,8 @@ export default {
       this.apoderados = apo.data.data;
       const usu = await userService.listarUsuarios();
       this.users = usu.data;
+      const tipousu = await tipousuarioService.listarTiposuarios();
+      this.tipousuarios = tipousu.data;
     },
     abrirDialog() {
       this.alumno = {};
@@ -926,9 +931,22 @@ export default {
       this.alumno = data;      
       this.verDialog = true;
     },
-    asignarUsers() {
+    asignarUsers(data) {
+      this.user = data;
+      this.user.name = data.alu_nom;
+      this.user.usu_dni = data.alu_nmr_doc;
+      this.user.email = data.alu
+      this.user.alumno_id = data.id;
+      this.Apaterno = data.alu_app;
+      this.Amaterno = data.alu_apm;
       this.DialogUsers = true;
-    },   
+    },
+    async guardarUsers() {
+      const { data } = await userService.guardarUsuarios(this.user);
+      this.user = data;
+      this.cerrarUsers();
+      this.listaAlumnos();
+    },
     confirmDeleteProduct(data) {
       this.$confirm.require({
         message: 'Esta seguro que desea eliminar ',

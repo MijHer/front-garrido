@@ -44,7 +44,7 @@
         </div>
         <div class="field">
             <label for="prov_rgst">Fecha de Registro</label>
-            <Calendar inputId="icon" v-model="provincia.prov_rgst" :showIcon="true" />
+            <InputText  id="prov_rgst" v-model="provincia.prov_rgst" required="true" autofocus />
         </div>
         <template #footer>
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
@@ -70,7 +70,8 @@ export default {
             Dialog: false,
             submitted: false,
             departamentos: {},
-            estadoEdicion: false
+            estadoEdicion: false,
+            date: ''
         }
     },
     created() {
@@ -78,6 +79,7 @@ export default {
     },
     mounted() {
         this.listaProvincia();
+        this.printdate();
     },
     methods: {
         async listaProvincia() {
@@ -90,11 +92,16 @@ export default {
         abrirDialog () {
             this.provincia = {};
             this.submitted =false;
+            this.provincia.prov_rgst = this.date;
             this.Dialog = true;            
         },
         cerrarDialog() {
             this.Dialog = false;
             this.submitted = false;
+        },
+        printdate() {
+            const date = new Date().toLocaleDateString();
+            this.date = date;            
         },
         async guardarProvincia() {
             let datos;
@@ -114,6 +121,7 @@ export default {
         },
         editProvincia(data) {
             this.provincia = data;
+            this.provincia.prov_rgst = this.date;
             this.estadoEdicion = true;
             this.Dialog = true;
         },

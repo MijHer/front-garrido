@@ -105,12 +105,14 @@ export default {
       this.alumnos = alu.data.data;
     },
     editarPago(data) {
-      console.log(data);
       this.pago = data;
       /* this.pago.alumno_id = this.alumno.id; */
       /* this.pago.matricula_id = this.alumno.apoderado_id; */
       this.Dialog = true;
       /* this.estadoEdicion = true; */
+    },
+    cerrarDialog() {
+      this.Dialog = false;
     },
     async actualizarPago() {
       const { data } = await pagoService.mofidicarPagos(this.pago.id, this.pago);

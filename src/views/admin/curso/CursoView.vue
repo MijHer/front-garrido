@@ -59,8 +59,9 @@
         </div>
         <div class="field">
             <label for="cur_registro">Fecha de Registro</label>
-            <Calendar inputId="icon" v-model="curso.cur_registro" :showIcon="true" />
+            <InputText id="cur_registro" v-model.trim="curso.cur_registro" required="true" autofocus :class="{'p-invalid': submitted && !curso.cur_registro}" />            
         </div>
+        {{curso}}
         <template #footer>
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
             <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarCurso" />
@@ -119,6 +120,7 @@
                     </Dropdown>            
                 </div>
             </div>
+            {{pivot}}
             <div>
                 <!-- BOTON PARA AGREGAR DOCENTES AL CURSO -->
                 <Button label="Agregar docente al curso" class="p-button-success" @click="agregarAsignacion" /> <br> 
@@ -187,7 +189,8 @@ export default {
             anioacademicos: [],
             profesor: {},
             pivot: {},
-            nomCurso: ''
+            nomCurso: '',
+            date: ''
         }
     },
     created() {        
@@ -195,6 +198,7 @@ export default {
     },
     mounted() {
         this.listaCurso();
+        this.printdate();
     },
     methods: {
         async listaCurso () {
@@ -207,7 +211,7 @@ export default {
             const profe = await profesorService.listarProfesores();
             this.profesor = profe.data.data;
         },
-        getgrado(id) {
+        /* getgrado(id) {
             let nom = '';
             for (let i = 0; i < this.grados.length; i++) {
                 const grado = this.grados[i];
@@ -216,8 +220,8 @@ export default {
                 }
             }
             return nom;
-        },
-        getseccion(id) {
+        }, */
+        /* getseccion(id) {
             let sec = '';                     
             for (let i = 0; i < this.grados.length; i++) {
                 const grado = this.grados[i];
@@ -226,8 +230,8 @@ export default {
                 }
             }
             return sec;
-        },        
-        getanio(id) {
+        }, */        
+        /* getanio(id) {
             let fecha = '';                     
             for (let i = 0; i < this.anioacademicos.length; i++) {
                 const anioacademico = this.anioacademicos[i];
@@ -236,13 +240,18 @@ export default {
                 }
             }
             return fecha;
-        },
+        }, */
         nuevoCurso() {
-            this.Dialog = true;
             this.curso = {};
+            this.curso.cur_registro = this.date;
+            this.Dialog = true;
         },
         cerrarDialog() {
             this.Dialog = false;           
+        },
+        printdate() {
+            const date = new Date().toLocaleDateString();
+            this.date = date;
         },
         async guardarCurso() {
             let datos;
@@ -262,6 +271,7 @@ export default {
         },
         editCurso(data) {
             this.curso = data;
+            this.curso.cur_registro = this.date;
             this.estado = true;
             this.Dialog = true;
         },

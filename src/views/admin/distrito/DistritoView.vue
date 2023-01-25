@@ -44,8 +44,8 @@
             </Dropdown>
         </div>
         <div class="field">
-            <label for="dis_rgst" class="mb-3">Fecha de Registro</label>
-            <Calendar inputId="icon" v-model="distrito.dist_rgst" :showIcon="true" />
+            <label for="dist_rgst" class="mb-3">Fecha de Registro</label>
+            <InputText  id="dist_rgst" autofocus v-model="distrito.dist_rgst" required="true"/>
         </div>
         <template #footer>
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
@@ -72,7 +72,8 @@ export default {
             Dialog: false,
             provincia: {},
             departamento: {},
-            estadoEdicion: false
+            estadoEdicion: false,
+            date: ''
         }
     },
     created() {
@@ -80,6 +81,7 @@ export default {
     },
     mounted() {
         this.listaDistrito();
+        this.printdate();
     },
     methods: {        
         async listaDistrito() {
@@ -91,17 +93,22 @@ export default {
             this.departamento = depa.data;
         },
         nuevoDistrito() {
-            this.Dialog = true;
             this.distrito = {};
+            this.distrito.dist_rgst = this.date;
+            this.Dialog = true;
         },
         cerrarDialog() {
             this.Dialog = false;
+        },
+        printdate() {
+            const date = new Date().toLocaleDateString();
+            this.date = date;            
         },
         async guardarDistrito() {
             let datos;
             if (this.estadoEdicion) {
                 datos = await distritoService.modificarDistritos(this.distrito.id, this.distrito);
-                this.distrito = datos;
+                this.distrito = datos;                
             }
             else {
                 datos = await distritoService.guardarDistritos(this.distrito);
@@ -116,6 +123,7 @@ export default {
         },
         editDistrito(data) {
             this.distrito = data;
+            this.distrito.dist_rgst = this.date;
             this.estadoEdicion = true;
             this.Dialog = true;
         },
