@@ -35,10 +35,10 @@
                 {{slotProps.data.mat_estado == 1?"Activo":"Inactivo"}}
             </template>
         </Column>
-        <Column :exportable="false" style="min-width:14rem">
+        <Column :exportable="false" header="Acciones" style="min-width:14rem">
             <template #body="slotProps">
                 <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarMatricula(slotProps.data)" />
-                <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" @click="verMatricula(slotProps.data)" />
+                <Button icon="pi pi-file" class="p-button-rounded p-button-warning mr-2" @click="verMatricula(slotProps.data)" />
                 <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="eliminarMatricula(slotProps.data)" />
             </template>
         </Column>       

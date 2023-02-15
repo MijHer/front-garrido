@@ -8,6 +8,7 @@ import ProfesorView from '../views/admin/profesor/ProfesorView.vue'
 import ApoderadoView from '../views/admin/apoderado/ApoderadoView.vue'
 import PagoView from '../views/admin/pago/PagoView.vue'
 import PagadosView from '../views/admin/pago/PagadosView.vue'
+import PagadoView from '../views/admin/pago/PagadoView.vue'
 import AnioacademicoView from '../views/admin/anioacademico/AnioacademicoView.vue'
 import CursoView from '../views/admin/curso/CursoView.vue'
 import DepartamentoView from '../views/admin/departamento/DepartamentoView.vue'
@@ -51,6 +52,11 @@ const routes = [
         path: 'pagados',
         name: 'Pagados',
         component: PagadosView
+      },
+      {
+        path: 'pagado',
+        name: 'Pagado',
+        component: PagadoView
       },
       {
         path: 'pago',

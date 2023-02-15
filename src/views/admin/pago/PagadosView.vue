@@ -16,7 +16,7 @@
                 <h5 class="mb-2 md:m-0 p-as-md-center">Lista de Pensiones</h5>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search" />
-                    <InputText v-model="filters['global'].value" placeholder="Search..." />
+                    <InputText v-model="filters['global'].value" placeholder="Buscar..." />
                 </span>
               </div>
           </template>
@@ -29,6 +29,7 @@
           <Column :exportable="false" style="min-width:8rem">
               <template #body="slotProps">
                   <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarPago(slotProps.data)" />
+                  <Button icon="pi pi-bookmark" class="p-button-rounded p-button-secondary mr-2" @click="verPago(slotProps.data)" />
                   <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteProduct(slotProps.data)" />
               </template>
           </Column>          
@@ -69,7 +70,7 @@
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
             <Button label="Modificar" icon="pi pi-check" class="p-button-text" @click="actualizarPago" />
         </template>
-    </Dialog>
+      </Dialog>      
   </div>
 </template>
 
@@ -87,7 +88,7 @@ export default {
       filters: {},
       alumnos: {},
       Dialog: false,
-      pago: {},
+      pago: {}
       /* estadoEdicion: false */
     }
   },
@@ -118,7 +119,7 @@ export default {
       const { data } = await pagoService.mofidicarPagos(this.pago.id, this.pago);
       this.pago = data;
       this.Dialog = false;
-    },
+    },    
     initFilters() {
         this.filters = {
             'global': {value: null, matchMode: FilterMatchMode.CONTAINS},

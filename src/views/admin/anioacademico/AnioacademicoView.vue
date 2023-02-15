@@ -9,16 +9,16 @@
             </template>>
         </Toolbar>
         <DataTable :value="anioacademicos" responsiveLayout="scroll">
-            <Column field="anio_nom" header="Nombre"></Column>
-            <Column field="anio_detalle" header="Detalle"></Column>
-            <Column field="anio_inicio" header="Inicio"></Column>
-            <Column field="anio_fin" header="Fin"></Column>
-            <Column field="anio_estado" header="Estado">
+            <Column field="anio_nom" header="Nombre" style="min-width:10rem"></Column>
+            <Column field="anio_detalle" header="Detalle" style="min-width:10rem"></Column>
+            <Column field="anio_inicio" header="Inicio de Periodo" style="min-width:10rem"></Column>
+            <Column field="anio_fin" header="Fin de Periodo" style="min-width:10rem"></Column>
+            <Column field="anio_estado" header="Estado" style="min-width:10rem">
                 <template #body="slotProps">
                     {{slotProps.data.anio_estado == 1?"Activo":"Inactivo"}}
                 </template>
             </Column>          
-            <Column :exportable="false" style="min-width:8rem">
+            <Column :exportable="false" header="Eliminar" style="min-width:10rem">
                 <template #body="slotProps">
                     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="borrarAnio(slotProps.data)" />
                 </template>

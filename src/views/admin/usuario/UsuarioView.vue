@@ -25,14 +25,14 @@
           </div>
         </template>
         <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-        <Column field="name" header="Nombre" :sortable="true" style="min-width:12rem"></Column>
+        <Column field="name" header="Nombre" :sortable="true" style="min-width:16rem"></Column>
         <Column field="email" header="Correo" :sortable="true" style="min-width:16rem"></Column>
         <Column field="usu_user" header="Nick" :sortable="true" style="min-width:16rem"></Column>
         <Column field="tipousuario.tipo_nom" header="Rol" :sortable="true" style="min-width:16rem"></Column>
-        <Column :exportable="false" style="min-width:8rem">
+        <Column :exportable="false" header="Acciones" style="min-width:16rem">
             <template #body="slotProps">
                 <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarUsers(slotProps.data)" />
-                <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="eliminarUsers(slotProps.data)" />
+                <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mt-2" @click="eliminarUsers(slotProps.data)" />
             </template>
         </Column>
     </DataTable>
@@ -74,10 +74,13 @@
           <div class="field col">
             <label for="usu_rgst">Fecha y Hora de Registro</label>
             <InputText id="usu_dir" readonly v-model.trim="user.usu_rgst" required="true" autofocus />
-            <!-- <Calendar inputId="usu_rgst" v-model="user.usu_rgst" :showTime="true" :showSeconds="true" :showIcon="true" /> -->
           </div>
         </div>
-        <div class="field col"></div>
+        <div class="field col">
+          <label for="usu_estado">Estado</label>
+          <Dropdown id="usu_estado" v-model="user.usu_estado" :options="estados" optionLabel="label" optionValue="value" placeholder="Seleciona Rol">      
+          </Dropdown>
+        </div>
       </div>       
       <div class="formgrid grid">          
         <div class="field col">
@@ -85,7 +88,7 @@
           <Dropdown id="tipousuario.tipo_nom" disabled v-model="user.tipousuario_id" :options="tipousuarios" optionLabel="tipo_nom" optionValue="id" placeholder="Seleciona Rol">      
           </Dropdown>
         </div>               
-      </div>     
+      </div>      
       <template #footer>
           <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
           <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarUsers" />
@@ -117,6 +120,10 @@ export default {
       tipousuarios: {},
       alumnos: {},
       estadoedicion: false,
+      estados: [
+          {label: "Activo", value: 1 },
+          {label: "Inactivo", value: 0}
+      ],
       date: '',
       time: ''
     }

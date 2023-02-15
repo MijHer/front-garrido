@@ -34,7 +34,7 @@
                 {{slotProps.data.cur_estado == 1?"Activo":"Inactico"}}
             </template>            
         </Column>        
-        <Column :exportable="false" style="min-width:12rem">
+        <Column :exportable="false" header="Acciones" style="min-width:12rem">
             <template #body="slotProps">
                 <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editCurso(slotProps.data)" />
                 <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteCurso(slotProps.data)" /> 
@@ -94,12 +94,12 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="grado_id">Grado</label>
-                    <Dropdown id="grado_id" v-model="pivot.grado_id" :options="grados" optionLabel="gra_nom" optionValue="gra_nom" placeholder="Selecione Grado">                        
+                    <Dropdown id="grado_id" v-model="pivot.grado_id" :options="grados" optionLabel="gra_nom" optionValue="id" placeholder="Selecione Grado">                        
                     </Dropdown>
                 </div>
                 <div class="field col">
                     <label for="grado_id">Nivel</label>
-                    <Dropdown id="grado_id" disabled v-model="pivot.grado_id" :options="grados" optionLabel="gra_nivel" optionValue="gra_nom" placeholder="Selecione nivel">                        
+                    <Dropdown id="grado_id" disabled v-model="pivot.grado_id" :options="grados" optionLabel="gra_nivel" optionValue="id" placeholder="Selecione nivel">                        
                     </Dropdown>
                 </div>
                 <div class="field col">

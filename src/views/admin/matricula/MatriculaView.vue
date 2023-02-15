@@ -25,7 +25,6 @@
         <div class="field col">
             <label for="mat_fecha">Fecha Matricula</label>
             <InputText id="mat_fecha" v-model="matricula.mat_fecha" required="true" rows="3" cols="20" />
-            <!-- <Calendar id="mat_fecha" v-model="matricula.mat_fecha" :showIcon="true" /> -->
         </div>
         <div class="field col">
             <label for="mat_costo">Costo Matricula</label>
@@ -34,7 +33,7 @@
       </div>
       <div class="field">
           <label for="alumno_id">Alumno</label>
-          <InputText id="alumno_id" readonly v-bind:value="alumno.alu_nom + ' ' +alumno.alu_app + ' ' + alumno.alu_apm"  required="true" rows="3" cols="20" />         
+          <InputText id="alumno_id" readonly v-bind:value="alumno.alumno.alu_nom + ' ' +alumno.alumno.alu_app + ' ' + alumno.alumno.alu_apm"  required="true" rows="3" cols="20" />         
       </div>
       <div class="formgrid grid">
         <div class="field col">
@@ -80,34 +79,29 @@
       <div class="formgrid grid">
         <div class="field col">
           <label for="apo_nom">Nombre</label>                    
-           <InputText style="min-width:19rem"  id="apoderado_id" readonly v-bind:value="alumno.apoderado.apo_nom" :options="apoderados" optionLabel="apo_nom" optionValue="id" required="true" rows="3" cols="20" />
+           <InputText style="min-width:19rem"  id="apoderado_id" readonly v-bind:value="alumno.alumno.apoderado.apo_nom" required="true" rows="3" cols="20" />
         </div>
         <div class="field col">
             <label for="apo_app">Apellido Paterno</label>
-            <!-- <InputText id="apo_app" v-model="matricula.apo_app" required="true" rows="3" cols="20" /> -->
-            <label class="border" style="min-width:19rem" optionvalue="id" v-text="alumno.apoderado.apo_app"></label>
+            <label class="border" style="min-width:19rem" v-text="alumno.alumno.apoderado.apo_app"></label>
         </div>
         <div class="field col">
             <label for="apo_apm">Apellido Materno</label>
-            <!-- <InputText id="apo_apm" v-model="matricula.apo_apm" required="true" rows="3" cols="20" /> -->
-            <label class="border" style="min-width:19rem" optionvalue="id"> {{ alumno.apoderado.apo_apm }} </label>
+            <label class="border" style="min-width:19rem" v-text="alumno.alumno.apoderado.apo_apm"></label>
         </div>
       </div>
       <div class="formgrid grid">
         <div class="field col">
           <label for="apo_parentesco">Parentesco</label>
-          <!-- <InputText id="apo_parentesco" v-model="matricula.apo_parentesco" required="true" rows="3" cols="20" /> -->
-          <label class="border" style="min-width:19rem" optionvalue="id"> {{ alumno.apoderado.apo_vinculo }} </label>
+          <label class="border" style="min-width:19rem" v-text="alumno.alumno.apoderado.apo_vinculo"></label>
         </div>
         <div class="field col">
             <label for="apo_telf">Telefono</label>
-            <!-- <InputText id="apo_telf" v-model="matricula.apo_telf" required="true" rows="3" cols="20" /> -->
-            <label class="border" style="min-width:19rem" optionvalue="id"> {{ alumno.apoderado.apo_telf }} </label>
+            <label class="border" style="min-width:19rem" v-text="alumno.alumno.apoderado.apo_telf"></label>
         </div>
         <div class="field col">
             <label for="apo_dni">DNI</label>
-            <!-- <InputText id="apo_dni" v-model="matricula.apo_dni" required="true" rows="3" cols="20" /> -->
-            <label class="border" style="min-width:19rem" optionvalue="id" v-text="alumno.apoderado.apo_dni"></label>
+            <label class="border" style="min-width:19rem" v-text="alumno.alumno.apoderado.apo_dni"></label>
         </div>
       </div>
       <template #footer>
@@ -155,8 +149,7 @@ export default {
               {label: 'INACTIVO', value: '0'}
           ],
           displayModal: false,
-          date: ''
-        }
+          date: ''        }
     },
     mounted() {
         this.listaElementos();
@@ -167,9 +160,9 @@ export default {
       async buscarPersona() {       
           const {data} = await alumnoService.buscar(this.dni);
           this.alumno = data;
-          if (this.dni ==  data.alu_nmr_doc) {
-            this.matricula.apoderado_id = this.alumno.apoderado.id;
-            this.matricula.alumno_id = this.alumno.id;
+          if (this.dni ==  data.alumno.alu_nmr_doc) {
+            this.matricula.apoderado_id = data.alumno.apoderado.id;
+            this.matricula.alumno_id = data.alumno.id;
             this.matricula.mat_fecha = this.date;
             this.Dialog = true;            
           }

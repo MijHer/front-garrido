@@ -18,70 +18,62 @@
 					<i class="pi pi-calendar"></i>
 					<span>Events</span>
 				</button>
-			</li> -->
-			<!-- <li>
-				<button class="p-link layout-topbar-button">
-					<i class="pi pi-cog"></i>
-					<span>Settings</span>
-				</button>
-			</li> -->
+			</li> -->			
 			<li>
 				<span> <b> {{ $store.state.usuario }} </b> </span>
-				<button class="p-link layout-topbar-button bg-primary" @click="verPerfil()" :modal="true">
+				<button class="p-link layout-topbar-button bg-primary" @click="verPerfil" :modal="true">
 					<i class="pi pi-user"></i>
 					<span>Perfil</span>
 				</button>
 			</li>
+			<li>
+				<button class="p-link layout-topbar-button" @click="logout" style="background: #73C6DB; color: white;">
+					<i class="pi pi-sign-out"></i>
+					<span>Cerrar Sessión</span>
+				</button>
+			</li>
 		</ul>
-		<Dialog header="Datos del Perfil" v-model:visible="DialogPerfil" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '55vw'}"  :modal="true">
+		<Dialog header="Datos del Perfil" v-model:visible="DialogPerfil" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '45vw'}"  :modal="true">
 			<div class="formgrid grid">
 				<div class="field col">
-				<label for="name">Nombre</label>          
-				<p style="min-width:16rem" v-text="user.name"></p>
+					<label for="name">Nombre</label>          
+					<p style="min-width:10rem" v-text="users.name"></p>
 				</div>
+				<div class="field col">
+					<label for="usu_dni">Apellido Paterno</label>
+					<p style="min-width:10rem" v-text="users.usu_dni"></p>
+				</div>
+				<div class="field col">
+					<label for="usu_telf">Apellido Materno</label>
+					<p style="min-width:10rem" v-text="users.usu_telf"></p>					
+				</div>
+			</div>
+			<div class="formgrid grid">
 				<div class="field col">
 					<label for="usu_dni">DNI</label>
-					<InputText id="usu_dni" readonly v-text="user.usu_dni"   required="true" autofocus  />          
+					<p style="min-width:10rem" v-text="users.usu_dni"></p>
 				</div>
 				<div class="field col">
-					<label for="usu_telf">Telefono</label>
-					<InputText id="usu_telf" v-model.trim="user.usu_telf" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_telf}" />          
+					<label for="usu_telf">Teléfono</label>
+					<p style="min-width:10rem" v-text="users.usu_telf"></p>					
 				</div>
+				<div class="field col">
+					<label for="email">Correo</label>
+					<p style="min-width:10rem" v-text="users.email"></p>
+				</div>				
 			</div>
 			<div class="formgrid grid">
 				<div class="field col">
-				<label for="email">Correo</label>
-				<InputText id="email" v-model.trim="user.email" required="true" autofocus :class="{'p-invalid': submitted && !user.email}" />          
-				</div>      
-				<div class="field col">
-				<label for="usu_user">Usuario</label>
-				<InputText id="usu_user" v-model.trim="user.usu_user" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_user}" />          
+					<label for="usu_user">Usuario</label>
+					<p style="min-width:10rem" v-text="users.usu_user"></p>
 				</div>
 				<div class="field col">
-					<label for="password">Contraseña</label>
-					<InputText id="password" v-model.trim="user.password" required="true" autofocus :class="{'p-invalid': submitted && !user.password}" />          
+					<label for="usu_dir">Dirección</label>
+					<p style="min-width:10rem" v-text="users.usu_dir"></p>
 				</div>
-			</div>
-			<div class="formgrid grid">
-				<div class="field col">
-				<label for="usu_dir">Dirección</label>
-				<InputText id="usu_dir" v-model.trim="user.usu_dir" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_dir}" />
-				</div>
-				<div class="field col">
-				<div class="field col">
-					<label for="usu_rgst">Fecha y Hora de Registro</label>
-					<InputText id="usu_dir" readonly v-model.trim="user.usu_rgst" required="true" autofocus />
-				</div>
-				</div>
-				<div class="field col"></div>
-			</div>       
-			<div class="formgrid grid">          
-				<div class="field col">
-				<label for="tipousuario.tipo_nom" class="mb-3">Rol</label>
-				<Dropdown id="tipousuario.tipo_nom" disabled v-model="user.tipousuario_id" :options="tipousuarios" optionLabel="tipo_nom" optionValue="id" placeholder="Seleciona Rol">      
-				</Dropdown>
-				</div>               
-			</div>
+				<div class="field col">								
+				</div>				
+			</div>			
 			{{users}}
             <template #footer>
                 <Button label="Cerrar" icon="pi pi-times" @click="cerrarDialog" class="p-button-text" />
@@ -101,7 +93,6 @@ export default {
 			DialogPerfil: false,			
 			user: {},
 			users: null,
-			tipoususario: null
 		}
 	},
 	mounted() {
@@ -117,15 +108,18 @@ export default {
 		topbarImage() {
 			return this.$appState.darkTheme ? 'images/logo-garrido.png' : 'images/logo-garrido.png';
 		},
+		logout() {
+			localStorage.clear();
+			this.$router.push({name: 'Login'});
+		},
 		cerrarDialog() {
 			this.DialogPerfil = false;
 		},
 		async listarUsuarios() {
 			const { data } = await userService.perfilUsuario();
-			this.users = data;			
+			this.users = data;
 		},
-		verPerfil(id) {
-			console.log(id);
+		verPerfil() {
 			this.DialogPerfil = true;
 		}
     },

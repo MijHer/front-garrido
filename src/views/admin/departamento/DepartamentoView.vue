@@ -25,7 +25,7 @@
             <Column field="depa_nom" header="Nombre" :sortable="true" style="min-width:16rem"></Column>
             <Column field="dape_rgst" header="Registro" :sortable="true" style="min-width:16rem"></Column>
             <Column></Column>                
-            <Column :exportable="false" style="min-width:4rem">
+            <Column :exportable="false" header="Eliminar" style="min-width:16rem">
                 <template #body="slotProps">                    
                     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProduct(slotProps.data)" />
                 </template>

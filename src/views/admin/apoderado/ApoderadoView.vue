@@ -37,10 +37,10 @@
                     {{slotProps.data.apo_estado == 1?"Activo":"Inactivo"}}
                 </template>
             </Column>            
-            <Column :exportable="false" style="min-width:10rem">
+            <Column :exportable="false" header="Acciones" style="min-width:10rem">
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarApoderados(slotProps.data)" />
-                    <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" @click="verApoderados(slotProps.data)" />
+                    <Button icon="pi pi-file" class="p-button-rounded p-button-warning mr-2" @click="verApoderados(slotProps.data)" />
                     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteProduct(slotProps.data)" />
                 </template>
             </Column>
@@ -98,7 +98,7 @@
                     <small class="p-error" v-if="submitted && !apoderado.apo_grado_inst">Grado de instrucción requerido.</small>
                 </div>
             </div>
-            <div class="formgrdi grid">
+            <div class="formgrid grid">
                 <div class="field col">
                     <label for="apo_estado">Estado</label>                    
                     <Dropdown id="apo_estado" v-model="apoderado.apo_estado" :options="status" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                                            

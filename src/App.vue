@@ -65,6 +65,9 @@ export default {
                         },
                         {
                             label: 'Pagos Realizados', icon: 'pi pi-fw pi-bookmark', to: '/admin/pagados',
+                        },
+                        {
+                            label: 'Pagos Realizados v2', icon: 'pi pi-fw pi-bookmark', to: '/admin/pagado',
                         }
                     ]
                 },

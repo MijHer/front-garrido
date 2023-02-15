@@ -36,7 +36,7 @@
                     {{slotProps.data.gra_estado == 1?"Activo":"Inactivo"}}                    
                 </template>
             </Column>
-            <Column :exportable="false" style="min-width:8rem">
+            <Column :exportable="false" header="Acciones" style="min-width:10rem">
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarGrado(slotProps.data)" />
                     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="borrarGrado(slotProps.data)" />
@@ -119,7 +119,8 @@
                 <!-- BOTON PARA AGREGAR DOCENTES AL CURSO -->
                 <Button label="Agregar curso" class="p-button-success" @click="agregarAsignacion" /> <br> 
             </div>
-        </div> 
+        </div>
+        {{pivot}}
         <h5>Lista de Cursos Asignados: {{graNom}}</h5>
         <DataTable :value="cursos" responsiveLayout="scroll">           
             <Column field="cur_nom" header="Curso" style="min-width:8rem">                

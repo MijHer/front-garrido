@@ -26,7 +26,7 @@
         <Column field="provincia.prov_nom" header="Provincia" :sortable="true" style="min-width:16rem"></Column>        
         <Column field="provincia.departamento.depa_nom" header="Departamento"  :sortable="true" style="min-width:16rem"></Column>
         <Column field="dist_rgst" header="Registro" :sortable="true" style="min-width:16rem"></Column>
-        <Column :exportable="false" style="min-width:8rem">
+        <Column :exportable="false" header="Acciones" style="min-width:16rem">
             <template #body="slotProps">
                 <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editDistrito(slotProps.data)" />
                 <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProduct(slotProps.data)" />

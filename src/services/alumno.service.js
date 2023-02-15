@@ -4,6 +4,9 @@ export function listarAlumnos(page=1)
 {
     return http().get(`/v1/alumno?page=${page}`);
 }
+export function listarAlumnosCursoGradoSeccion(curso_id, grado_id, seccion) {
+    return http().get(`/v1/alumno-curso/${curso_id}/grado/${grado_id}/seccion=${seccion}`);
+}
 export function guardarAlumnos(datos)
 {
     return http().post('/v1/alumno', datos);

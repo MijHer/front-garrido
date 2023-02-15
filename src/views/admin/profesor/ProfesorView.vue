@@ -5,9 +5,7 @@
         <Toolbar class="mb-4">
             <template #start>
                 <Button label="Registar Profesor" icon="pi pi-plus" class="p-button-success mr-2" @click="abrirDialog" />
-                <Button label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />
             </template>
-
             <template #end>
                 <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block" />
                 <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)"  />
@@ -120,12 +118,12 @@
                     {{slotProps.data.pro_estado == 1?"Activo":"Inactivo"}}
                 </template>
             </Column>
-            <Column field="pro_telf" header="Telefono" :sortable="true" style="min-width:10rem"></Column>       |     
+            <Column field="pro_telf" header="Telefono" :sortable="true" style="min-width:10rem"></Column>
             <Column field="pro_especialidad" header="Especialidad" :sortable="true" style="min-width:10rem"></Column>            
-            <Column :exportable="false" style="min-width:16rem">
+            <Column :exportable="false" header="Acciones" style="min-width:16rem">
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarProfesores(slotProps.data)" />
-                    <Button icon="pi pi-bookmark" class="p-button-rounded p-button-secondary mr-2" v-if="slotProps.data.user != null" @click="verProfesores(slotProps.data)" />
+                    <Button icon="pi pi-file" class="p-button-rounded p-button-warning mr-2" v-if="slotProps.data.user != null" @click="verProfesores(slotProps.data)" />
                     <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" v-if="slotProps.data.user == null" @click="asignarUsers(slotProps.data)" />
                     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteProduct(slotProps.data)" />
                 </template>
@@ -153,11 +151,11 @@
                 </div>
                 <div class="field col">
                     <label for="usu_telf">Telefono</label>
-                    <InputText id="usu_telf" readonly v-model.trim="user.usu_telf" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_telf}" />          
+                    <InputText id="usu_telf" v-model.trim="user.usu_telf" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_telf}" />          
                 </div>
                 <div class="field col">
                     <label for="email">Correo</label>
-                    <InputText id="email" readonly v-model.trim="user.email" required="true" autofocus :class="{'p-invalid': submitted && !user.email}" />          
+                    <InputText id="email" v-model.trim="user.email" required="true" autofocus :class="{'p-invalid': submitted && !user.email}" />          
                 </div>
             </div>
             <div class="formgrid grid">                      
@@ -171,7 +169,7 @@
                 </div>
                 <div class="field col">
                     <label for="usu_dir">Dirección</label>
-                    <InputText id="usu_dir" readonly v-model.trim="user.usu_dir" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_dir}" />
+                    <InputText id="usu_dir" v-model.trim="user.usu_dir" required="true" autofocus :class="{'p-invalid': submitted && !user.usu_dir}" />
                 </div>
             </div>
             <div class="formgrid grid">                
@@ -179,6 +177,11 @@
                     <label for="usu_rgst">Fecha y Hora de Registro</label>
                     <InputText id="usu_dir" v-model.trim="user.usu_rgst" required="true" autofocus />          
                     <!-- <Calendar inputId="usu_rgst" v-model="user.usu_rgst" :showTime="true" :showSeconds="true" :showIcon="true" /> -->                
+                </div>
+                <div class="field col">
+                    <label for="usu_estado">Estado</label>
+                    <Dropdown id="usu_estado" v-model="user.usu_estado" :options="estados" optionLabel="label" optionValue="value" placeholder="Seleciona Rol">      
+                    </Dropdown>
                 </div>
                 <div class="field col">
                     <label for="tipousuario.tipo_nom" >Rol</label>
@@ -328,6 +331,10 @@ export default {
             rolNom: '',
             Apaterno: '',
             Amaterno: '',
+            estados: [
+                {label:"Activo", value: 1},
+                {label:"Inactivo", value: 0}
+            ],
             date: '',
             time: ''
         }

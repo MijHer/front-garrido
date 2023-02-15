@@ -403,22 +403,20 @@
             </span>
           </div>
       </template>
-      <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
+      <Column selectionMode="multiple" style="width: 3rem;" :exportable="false"></Column>
       <Column field="alu_foto" header="Foto" :sortable="true" style="min-width:12rem"></Column>
       <Column field="alu_nom" header="Nombres" :sortable="true" style="min-width:10rem"></Column>
       <Column field="alu_app" header="A. Paterno" :sortable="true" style="min-width:10rem"></Column>
       <Column field="alu_apm" header="A. Materno" :sortable="true" style="min-width:10rem"></Column>
       <Column field="alu_nmr_doc" header="DNI" :sortable="true" style="min-width:10rem"></Column>
-
       <Column field="apoderado.apo_nom" header="Apoderado" :sortable="true" style="min-width:10rem"></Column>
-
       <Column field="alu_grado" header="Grado" :sortable="true" style="min-width:10rem"></Column>
       <Column field="alu_distrito" header="Distrito" :sortable="true" style="min-width:10rem"></Column>
-      <Column :exportable="false" header="Acciones" style="min-width:16rem">
+      <Column :exportable="false" header="Acciones" style="min-width:16rem;">
         <template #body="slotProps">
             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarAlumnos(slotProps.data)" />
-            <Button icon="pi pi-bookmark" class="p-button-rounded p-button-secondary mr-2" @click="verAlumnos(slotProps.data)" />
-            <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2"  @click="asignarUsers(slotProps.data)" />
+            <Button icon="pi pi-file" class="p-button-rounded p-button-warning mr-2" v-if="slotProps.data.user" @click="verAlumnos(slotProps.data)" />
+            <Button icon="pi pi-user" class="p-button-rounded p-button-info mr-2" v-else @click="asignarUsers(slotProps.data)" />
             <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProduct(slotProps.data)" />
         </template>
       </Column>
@@ -472,6 +470,11 @@
             <label for="usu_rgst">Fecha y Hora de Registro</label>
             <!-- <InputText id="usu_dir" v-model.trim="user.usu_rgst" required="true" autofocus /> -->          
             <Calendar inputId="usu_rgst" v-model="user.usu_rgst" :showTime="true" :showSeconds="true" :showIcon="true" />                
+        </div>
+        <div class="field col">
+          <label for="usu_estado">Estado</label>
+          <Dropdown id="usu_estado" v-model="user.usu_estado" :options="estados" optionLabel="label" optionValue="value" placeholder="Seleciona Rol">      
+          </Dropdown>
         </div>
         <div class="field col">
             <label for="tipousuario.tipo_nom" >Rol</label>
@@ -565,13 +568,16 @@
           <p style="min-width:16rem">{{ alumno.alu_tipo_sangre }}</p>
         </div>
       </div>
-      <div class="formgrid grid">
-        
+      <div class="formgrid grid">        
         <div class="field col">
           <label for="alu_religion ">Religión:</label>
           <p style="min-width:16rem">{{ alumno.alu_religion }}</p>
         </div>
-        <div class="field col">            
+        <div class="field col">
+          <label for="alumno_rol">Rol</label>
+          <p style="min-width:16rem">{{ alumno.user.tipousuario.tipo_nom }}</p>
+        </div>
+        <div class="field col">
         </div>
       </div>
       <h5><b>Datos De La Madre</b></h5>
@@ -870,7 +876,11 @@ export default {
       users: null,
       tipousuarios: null,
       Apaterno: '',
-      Amaterno: ''
+      Amaterno: '',
+      estados: [
+        {label:"Activo", value: 1},
+        {label:"Inctivo", value: 0}
+      ]
     }
   },
   created() {     

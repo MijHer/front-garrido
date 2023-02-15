@@ -21,14 +21,14 @@
         </div>
       </template>
       <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-      <Column field="tipo_nom" header="Nombre" :sortable="true" style="min-width:12rem"></Column>
+      <Column field="tipo_nom" header="Nombre" :sortable="true" style="min-width:16rem"></Column>
       <Column field="tipo_descripcion" header="Descripción" :sortable="true" style="min-width:16rem"></Column>
       <Column field="tipo_estado" header="Estado" :sortable="true" style="min-width:16rem">
         <template #body="slotProps">
             {{slotProps.data.tipo_estado == 1?"Activo":"Inactivo"}}
         </template>
       </Column>      
-      <Column :exportable="false" style="min-width:8rem">
+      <Column :exportable="false" header="Acciones" style="min-width:16rem">
           <template #body="slotProps">
               <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editTipousuario(slotProps.data)" />
               <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteTipousuario(slotProps.data)" />
