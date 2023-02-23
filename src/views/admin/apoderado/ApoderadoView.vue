@@ -195,8 +195,8 @@ export default {
             estadoEdicion: false,
             verDialog: false,
             status: [
-                    {label: 'ACTIVO', value: '1'},
-                    {label: 'INACTIVO', value: '0'}
+                    {label: 'Activo', value: 1},
+                    {label: 'Inactivo', value: 0}
                 ]                
         }
     },

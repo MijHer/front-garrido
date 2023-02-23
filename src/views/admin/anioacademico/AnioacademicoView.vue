@@ -10,9 +10,12 @@
         </Toolbar>
         <DataTable :value="anioacademicos" responsiveLayout="scroll">
             <Column field="anio_nom" header="Nombre" style="min-width:10rem"></Column>
-            <Column field="anio_detalle" header="Detalle" style="min-width:10rem"></Column>
             <Column field="anio_inicio" header="Inicio de Periodo" style="min-width:10rem"></Column>
             <Column field="anio_fin" header="Fin de Periodo" style="min-width:10rem"></Column>
+            <Column field="anio_detalle" header="Costo de Matricula" style="min-width:10rem"></Column>
+            <Column field="anio_pension_inicial" header="Pensión de Inicial" style="min-width:10rem"></Column>
+            <Column field="anio_pension_primaria" header="Pensión de Primaria" style="min-width:10rem"></Column>
+            <Column field="anio_pension_secundaria" header="Pensión de Secundaria" style="min-width:10rem"></Column>
             <Column field="anio_estado" header="Estado" style="min-width:10rem">
                 <template #body="slotProps">
                     {{slotProps.data.anio_estado == 1?"Activo":"Inactivo"}}
@@ -20,28 +23,48 @@
             </Column>          
             <Column :exportable="false" header="Eliminar" style="min-width:10rem">
                 <template #body="slotProps">
-                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="borrarAnio(slotProps.data)" />
+                    <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarAnio(slotProps.data)" />
+                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="borrarAnio(slotProps.data)" />
                 </template>
             </Column>
         </DataTable>
-        <Dialog v-model:visible="DialogAnio" :style="{width: '450px'}" header="Año Academico Nuevo" :modal="true" class="p-fluid">            
-            <div class="field">
-                <label for="anoi_nom">Nombre</label>
-                <InputText id="anoi_nom" v-model.trim="anioacademico.anio_nom" required="true" autofocus :class="{'p-invalid': submitted && !anioacademico.anio_nom}" />
-                <small class="p-error" v-if="submitted && !anioacademico.anio_nom">Nombre es requerido.</small>
+        <!-- DIALOG PARA CREAR DETALLES DEL AÑO ACADEMICO -->
+        <Dialog v-model:visible="DialogAnio" :style="{width: '800px'}" header="Año Academico Nuevo" :modal="true" class="p-fluid">            
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="anoi_nom">Nombre</label>
+                    <InputText id="anoi_nom" v-model.trim="anioacademico.anio_nom" required="true" autofocus :class="{'p-invalid': submitted && !anioacademico.anio_nom}" />
+                    <small class="p-error" v-if="submitted && !anioacademico.anio_nom">Nombre es requerido.</small>
+                </div>                
             </div>
-            <div class="field">
-                <label for="anio_detalle">Detalle</label>
-                <InputText id="anio_detalle" v-model="anioacademico.anio_detalle" required="true" rows="3" cols="20" />
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="anio_inicio">Fecha Inicio</label>                
+                    <Calendar inputId="icon" v-model="anioacademico.anio_inicio" :showIcon="true" />
+                </div>
+                <div class="field col">
+                    <label for="anio_fin">Fecha Fin</label>
+                    <Calendar inputId="icon" v-model="anioacademico.anio_fin" :showIcon="true" />
+                </div>
             </div>
-            <div class="field">
-                <label for="anio_inicio">Fecha Inicio</label>                
-                <Calendar inputId="icon" v-model="anioacademico.anio_inicio" :showIcon="true" />
-            </div>
-            <div class="field">
-                <label for="anio_fin">Fecha Fin</label>
-                <Calendar inputId="icon" v-model="anioacademico.anio_fin" :showIcon="true" />
-            </div>
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="anio_detalle">Costo Matricula</label>
+                    <InputText id="anio_detalle" v-model="anioacademico.anio_detalle" required="true" rows="3" cols="20" />
+                </div>
+                <div class="field col">
+                    <label for="anio_pension_inicial">Pension de Inicial</label>                
+                    <InputText inputId="icon" v-model="anioacademico.anio_pension_inicial" required="true" rows="3" cols="20" />
+                </div>
+                <div class="field col">
+                    <label for="anio_pension_primaria">Pension de Primaria</label>                
+                    <InputText inputId="icon" v-model="anioacademico.anio_pension_primaria" required="true" rows="3" cols="20" />
+                </div>
+                <div class="field col">
+                    <label for="anio_pension_secundaria">Pension de Secundaria</label>                
+                    <InputText inputId="icon" v-model="anioacademico.anio_pension_secundaria" required="true" rows="3" cols="20" />
+                </div>
+            </div>            
             <div class="field">
                 <label for="anio_estado" class="mb-3">Estado</label>
                 <Dropdown id="anio_estado" v-model="anioacademico.anio_estado" :options="statusAnoi" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                        
@@ -68,9 +91,10 @@ export default {
             filters: {},
             DialogAnio: false,            
             statusAnoi: [
-                {label: 'ACTIVO', value: '1'},
-                {label: 'INACTIVO', value: '0'}
-                ]
+                {label: 'Activo', value: 1},
+                {label: 'Inactivo', value: 0}
+                ],
+            estadoEdicion: false
         }
     },    
     mounted() {
@@ -84,18 +108,35 @@ export default {
        cerrarDialogAnio() {
            this.DialogAnio = false;
        },
-       cerrarDialog() {
-           this.DialogGrado = false;
-       },
        anioacademicoNuevo() {
            this.DialogAnio = true;
+           this.anioacademico = {};
        },        
        async guardarAnioacademico() {
-           const {data} = await anioacademicoService.guardarAnioacademicos(this.anioacademico);
-           this.anioacademico = data;
-           this.DialogAnio = false;
-           this.listaAnioacademico();
-       },       
+            let datos;
+            if (this.estadoEdicion) {
+                datos = await anioacademicoService.mofidicarAnioacademicos(this.anioacademico.id, this.anioacademico);
+                this.anioacademico = datos;
+                this.cerrarDialogAnio();
+                this.listaAnioacademico();
+            }else {
+                datos = await anioacademicoService.guardarAnioacademicos(this.anioacademico);
+                this.anioacademico = datos;                
+                this.cerrarDialogAnio();
+                this.listaAnioacademico();
+            }
+            if (!datos.data.error) {
+                this.listaAnioacademico();
+                this.cerrarDialogAnio();
+                this.estadoEdicion = false;
+                this.anioacademico = {};
+            }
+       },
+       editarAnio(data) {
+        this.anioacademico = data;
+        this.estadoEdicion = true;
+        this.DialogAnio = true;
+       },
        async borrarAnio(data) {
             this.$confirm.require({
             message: 'Esta seguro que desea eliminar ',

@@ -71,7 +71,7 @@
 					<label for="usu_dir">Dirección</label>
 					<p style="min-width:10rem" v-text="users.usu_dir"></p>
 				</div>
-				<div class="field col">								
+				<div class="field col">					
 				</div>				
 			</div>			
 			{{users}}
@@ -85,7 +85,6 @@
 <script>
 
 import * as userService from '@/services/user.service'
-import * as tipousuarioService from '@/services/tipousuario.service'
 
 export default {
 	data() {

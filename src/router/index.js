@@ -20,6 +20,8 @@ import TipousuarioView from '../views/admin/usuario/TipousuarioView.vue'
 import UsuarioView from '../views/admin/usuario/UsuarioView.vue'
 import GradoView from '../views/admin/grado/GradoView.vue'
 import AsistenciaView from '../views/admin/asistencia/AsistenciaView'
+import NotaView from '../views/admin/nota/NotaView'
+import DashalumnoView from '../views/admin/dashalumno/DashalumnoView'
 
 const routes = [
   {
@@ -32,7 +34,12 @@ const routes = [
         path: '',
         name: 'Dashboard',
         component: () => import('../components/Dashboard.vue')        
-    },
+      },
+      {
+        path: 'dashalumno',
+        name: 'Dashalumno',
+        component: DashalumnoView        
+      },
       {
         path: 'alumno',
         name: 'Alumno',
@@ -117,7 +124,12 @@ const routes = [
         path: 'asistencia',
         name: 'Asistencia',
         component: AsistenciaView 
-      }
+      },
+      {
+        path: 'nota',
+        name: 'Nota',
+        component: NotaView 
+      }      
     ]
   },  
   {

@@ -7,12 +7,12 @@
           <Button label="Registar alumno" icon="pi pi-plus" class="p-button-success mr-2" @click="abrirDialog" />
           <Button label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />
       </template>
-
       <template #end>
           <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block" />
           <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)"  />
       </template>
   </Toolbar>
+  <!-- DIALOG PARA REGISTRAR NUEVO ALUMNO -->
   <Dialog v-model:visible="dialog" :style="{width: '1000px'}" header="Nuevo Alumno" :modal="true" class="p-fluid">
     <h3>DATOS DEL ALUMNO</h3>
     <div class="field">
@@ -38,9 +38,9 @@
       <div class="field col">            
           <label for="alu_fnac">Fecha de Nacimiento</label>
           <Calendar id="alu_fnac" v-model="alumno.alu_fnac" :showIcon="true"/>            
-      </div>
+      </div>      
       <div class="field col">
-        <label for="alu_tipo_doc" class="mb-3">Tipo de Documento</label>
+        <label for="alu_tipo_doc">Tipo de Documento</label>
         <Dropdown id="alu_tipo_doc" v-model="alumno.alu_tipo_doc" :options="statuses1" optionLabel="label" optionValue="value" placeholder="Selecciona Tipo">
           <template #value="slotProps">
             <div v-if="slotProps.value && slotProps.value.value">
@@ -60,11 +60,7 @@
         <InputNumber id="alu_nmr_doc" v-model="alumno.alu_nmr_doc" integeronly />
       </div>
     </div>
-    <div class="formgrid grid">
-      <div class="field col">
-          <label for="alu_grado">Grado</label>
-          <InputText id="alu_grado" v-model="alumno.alu_grado" required="true" rows="3" cols="20" />
-      </div>
+    <div class="formgrid grid">            
       <div class="field col">
         <label for="alu_pais" class="mb-3">Pais</label>
         <Dropdown id="alu_pais" v-model="alumno.alu_pais" :options="statuses2" optionLabel="label" optionValue="value" placeholder="Selecciona Pais">
@@ -81,8 +77,6 @@
           </template>
         </Dropdown>
       </div>
-    </div>
-    <div class="formgrid grid">
       <div class="field col">
         <label for="alu_departamento" class="mb-3">Departamento</label>
         <Dropdown id="alu_departamento" v-model="alumno.alu_departamento" :options="statuses3" optionLabel="label" optionValue="value" placeholder="Selecciona Departamento">
@@ -99,6 +93,8 @@
           </template>
         </Dropdown>
       </div>
+    </div>
+    <div class="formgrid grid">      
       <div class="field col">
         <label for="alu_provincia" class="mb-3">Provincia</label>
         <Dropdown id="alu_provincia" v-model="alumno.alu_provincia" :options="statuses4" optionLabel="label" optionValue="value" placeholder="Selecciona Provincia">
@@ -131,11 +127,11 @@
           </template>
         </Dropdown>
       </div>
-    </div>
-    <div class="formgrid grid">
+    </div>    
+    <div class="formgrid grid">      
       <div class="field col">
-        <label for="alu_cert_discapacidad" class="mb-3">Tiene Discapacidad</label>
-        <Dropdown id="alu_cert_discapacidad" v-model="alumno.alu_cert_discapacidad" :options="statuses6" optionLabel="label" optionValue="value" placeholder="Selecciona Tipo">
+        <label for="alu_sexo">Sexo</label>
+        <Dropdown id="alu_sexo" v-model="alumno.alu_sexo" :options="statuses13" optionLabel="label" optionValue="value" placeholder="Selecciona Pais">
           <template #value="slotProps">
             <div v-if="slotProps.value && slotProps.value.value">
               <span :class="'product-badge status-' +slotProps.value.value">{{slotProps.value.label}}</span>
@@ -148,49 +144,8 @@
             </span>
           </template>
         </Dropdown>
-      </div>
-      <div class="field col">
-          <label for="alu_tipo_discapacidad">Tipo de Discapacidad</label>
-          <InputText id="alu_tipo_discapacidad" v-model="alumno.alu_tipo_discapacidad" required="true" rows="3" cols="20" />
-      </div>
-      <div class="field col">
-        <label for="alu_nmr_hermanos">Numero de Hermanos</label>
-        <InputNumber id="alu_nmr_hermanos" v-model="alumno.alu_nmr_hermanos" integeronly />
-      </div>
-    </div>
-    <div class="formgrid grid">
-      <div class="field col">
-        <label for="alu_lugar_ocupa">Lugar que ocupa</label>
-        <InputNumber id="alu_lugar_ocupa" v-model="alumno.alu_lugar_ocupa" integeronly />
-      </div>
-      <div class="field col">
-        <label class="mb-3">Sexo</label>
-        <div class="formgrid grid">
-          <div class="field-radiobutton col-6">
-              <RadioButton id="alu_sexo1" name="alu_sexo" value="Masculino" v-model="alumno.alu_sexo" />
-              <label for="alu_sexo1">Masculino</label>
-          </div>
-          <div class="field-radiobutton col-6">
-              <RadioButton id="alu_sexo2" name="alu_sexo" value="Femenino" v-model="alumno.alu_sexo" />
-              <label for="alu_sexo2">Femenino</label>
-          </div>        
-        </div>
-      </div>
-      <div class="field col">
-          <label for="alu_lengua_materna">Lengua Materna</label>
-          <InputText id="alu_lengua_materna" v-model="alumno.alu_lengua_materna" required="true" rows="3" cols="20" />
-      </div>      
-    </div>
-    <div class="formgrid grid">
-      <div class="field col">
-          <label for="alu_tipo_sangre">Tipo de Sangre</label>
-          <InputText id="alu_tipo_sangre" v-model="alumno.alu_tipo_sangre" required="true" rows="3" cols="20" />
-      </div>      
-      <div class="field col">
-          <label for="alu_religion">Religión</label>
-          <InputText id="alu_religion" v-model="alumno.alu_religion" required="true" rows="3" cols="20" />
-      </div>
-    </div>
+      </div>           
+    </div>    
     <h3>DATOS DE LA MADRE</h3>
     <div class="formgrid grid">
       <div class="field col">
@@ -208,7 +163,7 @@
     </div>
     <div class="formgrid grid">
       <div class="field col">
-        <label for="alu_tipo_doc_madre" class="mb-3">Tipo de Documento</label>
+        <label for="alu_tipo_doc_madre">Tipo de Documento</label>
         <Dropdown id="alu_tipo_doc_madre" v-model="alumno.alu_tipo_doc_madre" :options="statuses7" optionLabel="label" optionValue="value" placeholder="Selecciona">
           <template #value="slotProps">
             <div v-if="slotProps.value && slotProps.value.value">
@@ -224,7 +179,11 @@
         </Dropdown>
       </div>
       <div class="field col">
-        <label for="alu_civil_madre" class="mb-3">Estado civil</label>
+        <label for="alu_dni_madre">DNI</label>
+        <InputNumber id="alu_dni_madre" v-model="alumno.alu_dni_madre" />
+      </div> 
+      <div class="field col">
+        <label for="alu_civil_madre">Estado civil</label>
         <Dropdown id="alu_civil_madre" v-model="alumno.alu_civil_madre" :options="statuses8" optionLabel="label" optionValue="value" placeholder="Selecciona">
           <template #value="slotProps">
             <div v-if="slotProps.value && slotProps.value.value">
@@ -238,53 +197,8 @@
             </span>
           </template>
         </Dropdown>
-      </div>
-      <div class="field col">
-        <label for="alu_vive_con_este_madre" class="mb-3">Vive con la madre</label>
-        <Dropdown id="alu_vive_con_este_madre" v-model="alumno.alu_vive_con_madre" :options="statuses9" optionLabel="label" optionValue="value" placeholder="Selecciona">
-          <template #value="slotProps">
-            <div v-if="slotProps.value && slotProps.value.value">
-              <span :class="'product-badge status-' +slotProps.value.value">{{slotProps.value.label}}</span>
-            </div>
-            <div v-else-if="slotProps.value && !slotProps.value.value">
-              <span :class="'product-badge status-' +slotProps.value.toLowerCase()">{{slotProps.value}}</span>
-            </div>
-            <span v-else>
-              {{slotProps.placeholder}}
-            </span>
-          </template>
-        </Dropdown>
-      </div>
-    </div>
-    <div class="formgrid grid">      
-      <div class="field col">
-        <label for="alu_dni_madre">DNI</label>
-        <InputNumber id="alu_dni_madre" v-model="alumno.alu_dni_madre" />
-      </div>
-      
-      <div class="field col">
-          <label for="alu_vive_madre">Vive la madre</label>
-          <InputText id="alu_vive_madre" v-model="alumno.alu_vive_madre" required="true" rows="3" cols="20" />
-      </div>
-      <div class="field col">
-          <label for="alu_fnca_madre">Fecha de nacimiento</label>
-          <Calendar id="alu_fnca_madre" v-model="alumno.alu_fnca_madre" :showIcon="true" />
-      </div>
-    </div>
-    <div class="formgrid grid">    
-      <div class="field col">
-          <label for="alu_grado_inst_madre">Grado de instruccion</label>
-          <InputText id="alu_grado_inst_madre" v-model="alumno.alu_grado_inst_madre" required="true" rows="3" cols="20" />
-      </div>
-      <div class="field col">
-          <label for="alu_ocupacion_madre">Ocupación</label>
-          <InputText id="alu_ocupacion_madre" v-model="alumno.alu_ocupacion_madre" required="true" rows="3" cols="20" />
-      </div>
-      <div class="field col">
-          <label for="alu_religion_madre">Religión</label>
-          <InputText id="alu_religion_madre" v-model="alumno.alu_religion_madre" required="true" rows="3" cols="20" />
       </div>      
-    </div>
+    </div>        
     <h3>DATOS DEL PADRE</h3>
     <div class="formgrid grid">
       <div class="field col">
@@ -302,7 +216,7 @@
     </div>
     <div class="formgrid grid">
       <div class="field col">
-        <label for="alu_tipo_doc_padre" class="mb-3">Tipo de Documento</label>
+        <label for="alu_tipo_doc_padre">Tipo de Documento</label>
         <Dropdown id="alu_tipo_doc_padre" v-model="alumno.alu_tipo_doc_padre" :options="statuses10" optionLabel="label" optionValue="value" placeholder="Selecciona">
           <template #value="slotProps">
             <div v-if="slotProps.value && slotProps.value.value">
@@ -318,7 +232,11 @@
         </Dropdown>
       </div>
       <div class="field col">
-        <label for="alu_civil_padre" class="mb-3">Estado civil</label>
+        <label for="alu_dni_padre">DNI</label>
+        <InputNumber id="alu_dni_padre" v-model="alumno.alu_dni_padre" />
+      </div>
+      <div class="field col">
+        <label for="alu_civil_padre">Estado civil</label>
         <Dropdown id="alu_civil_padre" v-model="alumno.alu_civil_padre" :options="statuses11" optionLabel="label" optionValue="value" placeholder="Selecciona">
           <template #value="slotProps">
             <div v-if="slotProps.value && slotProps.value.value">
@@ -332,53 +250,8 @@
             </span>
           </template>
         </Dropdown>
-      </div>
-      <div class="field col">
-        <label for="alu_vive_con_este_padre" class="mb-3">Vive con el padre</label>
-        <Dropdown id="alu_vive_con_este_padre" v-model="alumno.alu_vive_con_padre" :options="statuses12" optionLabel="label" optionValue="value" placeholder="Selecciona">
-          <template #value="slotProps">
-            <div v-if="slotProps.value && slotProps.value.value">
-              <span :class="'product-badge status-' +slotProps.value.value">{{slotProps.value.label}}</span>
-            </div>
-            <div v-else-if="slotProps.value && !slotProps.value.value">
-              <span :class="'product-badge status-' +slotProps.value.toLowerCase()">{{slotProps.value}}</span>
-            </div>
-            <span v-else>
-              {{slotProps.placeholder}}
-            </span>
-          </template>
-        </Dropdown>
-      </div>
-    </div>
-    <div class="formgrid grid">      
-      <div class="field col">
-        <label for="alu_dni_padre">DNI</label>
-        <InputNumber id="alu_dni_padre" v-model="alumno.alu_dni_padre" />
-      </div>
-      
-      <div class="field col">
-          <label for="alu_vive_padre">Vive el padre</label>
-          <InputText id="alu_vive_padre" v-model="alumno.alu_vive_padre" required="true" rows="3" cols="20" />
-      </div>
-      <div class="field col">
-          <label for="alu_fnca_padre">Fecha de nacimiento</label>          
-          <Calendar id="alu_fnca_padre" v-model="alumno.alu_fnca_padre" :showIcon="true" />
-      </div>
-    </div>
-    <div class="formgrid grid">    
-      <div class="field col">
-          <label for="alu_grado_inst_padre">Grado de instruccion</label>
-          <InputText id="alu_grado_inst_padre" v-model="alumno.alu_grado_inst_padre" required="true" rows="3" cols="20" />
-      </div>
-      <div class="field col">
-          <label for="alu_ocupacion_padre">Ocupación</label>
-          <InputText id="alu_ocupacion_padre" v-model="alumno.alu_ocupacion_padre" required="true" rows="3" cols="20" />
-      </div>
-      <div class="field col">
-          <label for="alu_religion_padre">Religión</label>
-          <InputText id="alu_religion_padre" v-model="alumno.alu_religion_padre" required="true" rows="3" cols="20" />
       </div>      
-    </div>
+    </div>  
     <h3>APODERADO</h3>
     <div class="field">
         <label for="apoderado_id" class="mb-3"></label>
@@ -410,7 +283,6 @@
       <Column field="alu_apm" header="A. Materno" :sortable="true" style="min-width:10rem"></Column>
       <Column field="alu_nmr_doc" header="DNI" :sortable="true" style="min-width:10rem"></Column>
       <Column field="apoderado.apo_nom" header="Apoderado" :sortable="true" style="min-width:10rem"></Column>
-      <Column field="alu_grado" header="Grado" :sortable="true" style="min-width:10rem"></Column>
       <Column field="alu_distrito" header="Distrito" :sortable="true" style="min-width:10rem"></Column>
       <Column :exportable="false" header="Acciones" style="min-width:16rem;">
         <template #body="slotProps">
@@ -448,7 +320,7 @@
         </div>
         <div class="field col">
             <label for="email">Correo</label>
-            <InputText id="email" v-model.trim="user.email" required="true" autofocus :class="{'p-invalid': submitted && !user.email}" />          
+            <InputText id="email" v-model.trim="user.email" required="true" autofocus :class="{'p-invalid': submitted && !user.email}" />
         </div>
     </div>
     <div class="formgrid grid">                      
@@ -458,7 +330,8 @@
         </div>
         <div class="field col">
             <label for="password">Contraseña</label>
-            <InputText id="password" v-model.trim="user.password" required="true" autofocus :class="{'p-invalid': submitted && !user.password}" />          
+            <!-- <InputText id="password" v-model.trim="user.password" required="true" autofocus :class="{'p-invalid': submitted && !user.password}" /> -->
+            <Password id="password" v-model.trim="user.password" placeholder="Contraseña" :toggleMask="true" class="w-full" inputClass="w-full" ></Password>
         </div>
         <div class="field col">
             <label for="usu_dir">Dirección</label>
@@ -706,7 +579,6 @@
 <script>
 
 import { FilterMatchMode } from 'primevue/api';
-import Calendar from 'primevue/calendar';
 import * as alumnoService from '@/services/alumno.service'
 import * as apoderadoService from '@/services/apoderado.service'
 import * as userService from '@/services/user.service'
@@ -866,6 +738,10 @@ export default {
       statuses12: [
         {label: 'Si', value: 'si'},
         {label: 'No', value: 'No'}
+      ],
+      statuses13: [
+        {label: 'Masculino', value: 'Masculino'},
+        {label: 'Femenino', value: 'Femenino'}
       ],
       submitted: false,
       estadoEdicion: false,

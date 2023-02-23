@@ -7,7 +7,7 @@
 
         <div class="layout-main-container">
             <div class="layout-main">
-                <router-view />                
+                <router-view />
             </div>
             <AppFooter />
         </div>
@@ -25,6 +25,7 @@ import AppTopBar from './AppTopbar.vue';
 import AppMenu from './AppMenu.vue';
 import AppConfig from './AppConfig.vue';
 import AppFooter from './AppFooter.vue';
+import Dashboard from '@/components/Dashboard.vue';
 
 export default {
     emits: ['change-theme'],
@@ -40,6 +41,23 @@ export default {
                     items: [
                         {
                             label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/admin'
+                        }
+                    ]
+                },
+                {
+                    label: 'Dashboard Alumno',
+                    items:[
+                        {
+                            label: 'Datos Personales', icon: 'pi pi-fw pi-home', to: '/admin/dashalumno'
+                        },
+                        {
+                            label: 'Historial de Notas', icon: 'pi pi-fw pi-home', to: '/admin/dashalumno'
+                        },
+                        {
+                            label: 'Pagos', icon: 'pi pi-fw pi-home', to: '/admin/pagados'
+                        },
+                        {
+                            label: 'Asistencia', icon: 'pi pi-fw pi-home', to: '/admin/dashalumno'
                         }
                     ]
                 },
@@ -62,12 +80,9 @@ export default {
                     items: [
                         {
                             label: 'Realizar Pago', icon: 'pi pi-fw pi-bookmark', to: '/admin/pago',
-                        },
+                        },                        
                         {
-                            label: 'Pagos Realizados', icon: 'pi pi-fw pi-bookmark', to: '/admin/pagados',
-                        },
-                        {
-                            label: 'Pagos Realizados v2', icon: 'pi pi-fw pi-bookmark', to: '/admin/pagado',
+                            label: 'Pagos Realizados', icon: 'pi pi-fw pi-bookmark', to: '/admin/pagado',
                         }
                     ]
                 },
@@ -86,10 +101,13 @@ export default {
                     ]
                  },
                  {
-                    label: 'Asistencia', icon: 'pi pi-fw pi-search',
+                    label: 'Asistencias y Notas', icon: 'pi pi-fw pi-search',
                     items: [
                         {
                             label: 'Lista de Asistencia', icon: 'pi pi-fw pi-bookmark', to: '/admin/asistencia',
+                        },
+                        {
+                            label: 'Registro de Notas', icon: 'pi pi-fw pi-bookmark', to: '/admin/nota',
                         }
                     ]
                  },
@@ -235,6 +253,7 @@ export default {
         'AppMenu': AppMenu,
         'AppConfig': AppConfig,
         'AppFooter': AppFooter,
+        'Dashboard': Dashboard,
     }
 }
 </script>

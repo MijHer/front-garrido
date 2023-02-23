@@ -28,7 +28,9 @@
         </div>
         <div class="field col">
             <label for="mat_costo">Costo Matricula</label>
-            <InputText id="mat_costo" v-model="matricula.mat_costo" required="true" rows="3" cols="20" />
+            <!-- <InputText id="mat_costo" v-model="matricula.mat_costo" required="true" rows="3" cols="20" /> -->
+            <Dropdown id="mat_costo" v-model="matricula.mat_costo" :options="anioacademicos" optionLabel="anio_detalle" optionValue="anio_detalle" placeholder="Selecione costo">                        
+            </Dropdown>
         </div>
       </div>
       <div class="field">
@@ -38,7 +40,7 @@
       <div class="formgrid grid">
         <div class="field col">
             <label for="mat_nivel">Nivel</label>
-            <Dropdown id="mat_nivel" v-model="matricula.mat_nivel" :options="nivel" optionLabel="label" optionValue="value" placeholder="Selecione Nivel Academico">                        
+            <Dropdown id="mat_nivel" v-model="matricula.mat_nivel" :options="grados" optionLabel="gra_nivel" optionValue="gra_nivel" placeholder="Selecione Nivel Academico">                        
             </Dropdown>            
         </div>               
         <div class="field col">
@@ -131,25 +133,26 @@ export default {
           anioacademicos: {},
           apoderados: {},
           distritos: {},
-          nivel: [
+          /* nivel: [
               {label: 'Inicial', value: 'Inicial'},
               {label: 'Primaria', value: 'Primaria'},
               {label: 'Secundaria', value: 'Secundaria'}
-          ],
+          ], */
           turno: [
-              {label: 'MAÑANA', value: 'Mañana'},
-              {label: 'TARDE', value: 'Tarde'}
+              {label: 'Mañana', value: 'Mañana'},
+              {label: 'Tarde', value: 'Tarde'}
               ],
           repite: [
-              {label: 'NO REPITE', value: '0'},
-              {label: 'SI REPITE', value: '1'}
+              {label: 'No Repite', value: 0},
+              {label: 'Si Repite', value: 1}
           ],
           estado: [
-              {label: 'ACTIVO', value: '1'},
-              {label: 'INACTIVO', value: '0'}
+              {label: 'Activo', value: 1},
+              {label: 'Inactivo', value: 0}
           ],
           displayModal: false,
-          date: ''        }
+          date: ''        
+        }
     },
     mounted() {
         this.listaElementos();

@@ -24,6 +24,9 @@ export function http()
                 localStorage.removeItem("token");
                 window.location.href = "/login"
             }
+            if(error.response.status === 404){                
+                window.alert('rede');
+            }
 
             return Promise.reject(error);
             /* localStorage.removeItem("token");            

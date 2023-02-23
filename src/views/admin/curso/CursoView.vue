@@ -111,7 +111,7 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="anioacademico_id">Periodo</label>
-                    <Dropdown id="anioacademico_id" v-model="pivot.anioacademico_id" :options="anioacademicos" optionLabel="anio_inicio" optionValue="anio_inicio" placeholder="Selecione Periodo">
+                    <Dropdown id="anioacademico_id" v-model="pivot.anioacademico_id" :options="anioacademicos" optionLabel="anio_inicio" optionValue="id" placeholder="Selecione Periodo">
                     </Dropdown>            
                 </div>
                 <div class="field col">
@@ -120,7 +120,7 @@
                     </Dropdown>            
                 </div>
             </div>
-            {{pivot}}
+            {{anioacademicos}}
             <div>
                 <!-- BOTON PARA AGREGAR DOCENTES AL CURSO -->
                 <Button label="Agregar docente al curso" class="p-button-success" @click="agregarAsignacion" /> <br> 
@@ -177,12 +177,12 @@ export default {
             curso: {}, // Objeto para llenar la tabla curso
             estado: false, // Estado para editar los cursos creados
             status: [
-                {label: "Activo", value: '1'},
-                {label: "Inactivo", value: '0'}
+                {label: "Activo", value: 1},
+                {label: "Inactivo", value: 0}
             ],
             status2: [
-                {label: "Activo", value: '1'},
-                {label: "Inactivo", value: '0'}
+                {label: "Activo", value: 1},
+                {label: "Inactivo", value: 0}
             ],
             profesores:[],
             grados: [],

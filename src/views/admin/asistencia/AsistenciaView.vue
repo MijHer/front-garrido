@@ -1,12 +1,11 @@
 <template>
   <div class="card" v-if="profesores">
-    <h1>lista de asistencia</h1>
-    
+    <h1>lista de asistencia</h1>    
       <DataTable :value="profesores.cursos" responsiveLayout="scroll">
       <Column field="cur_nom" header="Curso" :sortable="true" style="min-width:10rem"></Column>
       <Column field="pivot.grado.gra_nom" header="Grado" :sortable="true" style="min-width:10rem"></Column>
       <Column field="pivot.seccion" header="Sección" :sortable="true" style="min-width:10rem"></Column>       
-      <Column :exportable="false" style="min-width:8rem">
+      <Column :exportable="false" header="Asistencia" style="min-width:10rem">
           <template #body="slotProps">
               <Button label="Asistencia" class="p-button-rounded p-button-info" @click="llamarAsistencia(slotProps.data)" />              
           </template>
@@ -20,17 +19,17 @@
       <div class="formgrid grid">        
         <div class="field col">
           <label for="anioacademico">Año Academico</label>
-          <InputText id="anioacademico" v-model.trim="anioacademico" autofocus  />
+          <InputText id="anioacademico" v-model.trim="anioacademico_id" autofocus  />
         </div>
       </div>
       <div class="formgrid grid">        
         <div class="field col">
           <label for="curso">Curso</label>
-          <InputText id="curso" v-model.trim="curso" autofocus  />
+          <InputText id="curso" v-model.trim="curso_id" autofocus  />
         </div>
         <div class="field col">
           <label for="grado">Grado</label>
-          <InputText id="grado" v-model.trim="grado" autofocus  />
+          <InputText id="grado" v-model.trim="grado_id" autofocus  />
         </div>
         <div class="field col">
           <label for="seccion">Seccion</label>
@@ -39,8 +38,8 @@
       </div>
       <div class="formgrid grid">        
         <div class="field col">
-          <label for="hora">Hora</label>
-          <InputText id="hora" v-model.trim="alumnoData.hora" autofocus  />
+          <label for="hora">Fecha y Hora</label>
+          <InputText id="hora" v-model.trim="hora" autofocus  />
         </div>
       </div>
       <table class="table">
@@ -83,8 +82,7 @@
 
 <script>
 
-import { FilterMatchMode } from 'primevue/api';
-import * as cursoService from '@/services/curso.service'
+import { FilterMatchMode } from 'primevue/api'
 import * as profesorService from '@/services/profesor.service'
 import * as gradoService  from '@/services/grado.service'
 import * as alumnoService from '@/services/alumno.service'
@@ -106,16 +104,19 @@ export default {
         permiso: false
       }, */
       alumnoData: [],
-      curso: null,
-      mostrar: []
-
+      curso_id: null,
+      mostrar: [],
+      time: '',
+      date: ''
     }
   },
   created() {
       this.initFilters();
   },
   mounted() {
-    this.listaCurso(); 
+    this.listaCurso();
+    this.printTime();
+    this.printDate();
   },
   methods: {
     async listaCurso() {
@@ -137,13 +138,22 @@ export default {
         permiso: false
         })
       });
+    },    
+    printTime() {
+      const time = new Date().toLocaleTimeString();
+      this.time = time;
+    },
+    printDate() {
+      const date = new Date().toLocaleDateString();
+      this.date = date;
     },
     llamarAsistencia(curs) {
       console.log(curs);
-      this.curso =  curs.id;
-      this.anioacademico = curs.pivot.anioacademico_id;
-      this.grado = curs.pivot.grado.id;
+      this.curso_id =  curs.id;
+      this.anioacademico_id = curs.pivot.anioacademico_id;
+      this.grado_id = curs.pivot.grado.id;
       this.seccion = curs.pivot.seccion;
+      this.hora = this.date +' '+ this.time;
       this.asistenciaDialog = true;
     },
     cambiarValor(alumno, dato) {
@@ -174,7 +184,7 @@ export default {
     },
     async guardarAsistencia() {
       const asistencia = {
-        curso: this.curso,
+        curso_id: this.curso_id,
         alumnos: this.alumnoData
       }
       this.asistenciaDialog = false;

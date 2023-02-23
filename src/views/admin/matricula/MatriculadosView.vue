@@ -270,16 +270,16 @@ export default {
                 {label: 'Secundaria', value: 'Secundaria'}
             ],
             turno: [
-                {label: 'MAÑANA', value: 'Mañana'},
-                {label: 'TARDE', value: 'Tarde'}
+                {label: 'Mañana', value: 'Mañana'},
+                {label: 'Tarde', value: 'Tarde'}
                 ],
             repite: [
-                {label: 'SI REPITE', value: '1'},
-                {label: 'NO REPITE', value: '0'}
+                {label: 'Si Repite', value: 1},
+                {label: 'No Repite', value: 0}
             ],
             estado: [
-                {label: 'ACTIVO', value: '1'},
-                {label: 'INACTIVO', value: '0'}
+                {label: 'Activo', value: 1},
+                {label: 'Inactivo', value: 0}
             ]
         }
     },

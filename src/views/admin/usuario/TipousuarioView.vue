@@ -71,8 +71,8 @@ export default {
       selectedTipousuario: null,
       submitted: false,
       statuses: [
-        {label:'Activo', value:'1'},
-        {label:'Inactivo', value:'0'}
+        {label:'Activo', value:1},
+        {label:'Inactivo', value:0}
       ],
       Dialog: false,
       estadoEdicion: false

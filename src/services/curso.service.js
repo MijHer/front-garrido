@@ -21,3 +21,6 @@ export function asignarProfesor(id, datos) {
 export function quitarProfesor(id, datos) {
     return http().post(`/v1/curso/${id}/quitar-profesor`, datos);
 }
+export function cursosParaNotas() {
+    return http().get('/v1/curso/vistacursos-nota');
+}

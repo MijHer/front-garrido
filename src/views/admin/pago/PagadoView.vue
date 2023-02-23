@@ -43,7 +43,7 @@
         </div>
           <div class="field">
             <label for="pago_monto">Precio de Pensión</label>
-            <InputText id="pago_monto" v-model="pago.pago_monto" required="true" rows="3" cols="20" />                
+            <InputText id="pago_monto" readonly v-model="pago.pago_monto" required="true" rows="3" cols="20" />                
         </div>
           <div class="field">
             <label for="pago_concepto">Concepto de Pago</label>

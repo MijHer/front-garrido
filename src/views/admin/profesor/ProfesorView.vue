@@ -11,6 +11,7 @@
                 <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)"  />
             </template>
         </Toolbar>
+        <!-- DIALOG PARA CREAR UN NUEVO PROFESOR -->
         <Dialog v-model:visible="dialog" :style="{width: '1000px'}" header="Datos del Docente" :modal="true" class="p-fluid">            
             <div class="formgrid grid">            
                 <div class="field col">
@@ -82,15 +83,18 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="pro_distrito">Distrito</label>
-                    <InputText id="pro_distrito" v-model.trim="profesor.pro_distrito" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_distrito}" />
-                    <small class="p-error" v-if="submitted && !profesor.pro_distrito">Campo Requerido.</small>
+                    <!-- <InputText id="pro_distrito" v-model.trim="profesor.pro_distrito" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_distrito}" />
+                    <small class="p-error" v-if="submitted && !profesor.pro_distrito">Campo Requerido.</small> -->
+                    <Dropdown id="pro_distrito" v-model="profesor.pro_distrito" :options="distritos" optionLabel="dist_nom" optionValue="dist_nom" placeholder="Selecione distrito">                        
+                    </Dropdown>
                 </div>                
                 <div class="field col">
                     <label for="pro_estado">Estado</label>
                     <Dropdown id="pro_estado" v-model="profesor.pro_estado" :options="status" optionLabel="label" optionValue="value" placeholder="Selecione Pais">                        
-                    </Dropdown>                    
+                    </Dropdown>
                 </div>
             </div>
+            {{profesor}}
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardaProfesor" />
@@ -129,6 +133,7 @@
                 </template>
             </Column>            
         </DataTable>
+        <!-- DIALOG PARA ASIGANR USUARIO AL PROFESOR -->
         <Dialog v-model:visible="DialogUsers" :style="{width: '950px'}" header="Asignación de Usuario" :modal="true" class="p-fluid">
             <div class="formgrid grid">
                 <div class="field col">
@@ -165,7 +170,8 @@
                 </div>
                 <div class="field col">
                     <label for="password">Contraseña</label>
-                    <InputText id="password" v-model.trim="user.password" required="true" autofocus :class="{'p-invalid': submitted && !user.password}" />          
+                    <!-- <InputText id="password" v-model.trim="user.password" required="true" autofocus :class="{'p-invalid': submitted && !user.password}" /> -->
+                    <Password id="password" v-model.trim="user.password" placeholder="Contraseña" :toggleMask="true" class="w-full" inputClass="w-full" ></Password>
                 </div>
                 <div class="field col">
                     <label for="usu_dir">Dirección</label>
@@ -195,6 +201,7 @@
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarUsers" />
             </template>
         </Dialog>
+        <!-- DIALOG PARA VER DETALLES DEL PROFESOR -->
         <Dialog v-model:visible="verDialog" :style="{width: '900px', text: 'center'}" header="Datos del Profesor" :modal="true" class="p-fluid">
             <div class="card">
                 <div class="formgrid grid">                     
@@ -286,6 +293,7 @@ import { FilterMatchMode } from 'primevue/api'
 import * as profesorService from '@/services/profesor.service'
 import * as userService from '@/services/user.service'
 import * as tipousuarioService from '@/services/tipousuario.service'
+import * as distritoService from '@/services/distrito.service'
 
 export default {
     data() {
@@ -299,30 +307,30 @@ export default {
             estadoEdicion: false,
             verDialog: false,
             statusSexo: [
-                {label: 'MASCULINO', value: 'masculino'},
-                {label: 'FEMENINO', value:'femenino'}
+                {label: 'Masculino', value: 'Masculino'},
+                {label: 'Femenino', value:'Femenino'}
             ],
             statusInstruc: [
-                {label: 'PRIMARIA', value: 'primaria'},
-                {label: 'SECUNDARIA', value: 'secundaria'},
-                {label: 'TECNICO', value: 'tecnico'},
-                {label: 'UNIVERSITARIA', value: 'universitaria'},
+                {label: 'Primaria', value: 'Primaria'},
+                {label: 'Secundaria', value: 'Secundaria'},
+                {label: 'Tenico', value: 'Tenico'},
+                {label: 'Universitaria', value: 'Universitaria'},
             ],
             statusPais: [
-                {label: 'AGENTINA', value: 'AGENTINA'},
-                {label: 'BOLIVIA', value: 'BOLIVIA'},
-                {label: 'BRASIL', value: 'BRASIL'},
-                {label: 'COLOMBIA', value: 'COLOMBIA'},
-                {label: 'CHILE', value: 'CHILE'},
-                {label: 'ECUADOR', value: 'ECUADOR'},
-                {label: 'PARAGUAY', value: 'PARAGUAY'},                
-                {label: 'PERÚ', value: 'PERÚ'},
-                {label: 'VENEZUELA', value: 'VENEZUELA'},
-                {label: 'URUGUAY', value: 'URUGUAY'},
+                {label: 'Agentina', value: 'Agentina'},
+                {label: 'Bolivia', value: 'Bolivia'},
+                {label: 'Brasil', value: 'Brasil'},
+                {label: 'Colombia', value: 'Colombia'},
+                {label: 'Chile', value: 'Chile'},
+                {label: 'Ecuador', value: 'Ecuador'},
+                {label: 'Paraguay', value: 'Paraguay'},                
+                {label: 'Perú', value: 'Perú'},
+                {label: 'Venezuela', value: 'Venezuela'},
+                {label: 'Uruguay', value: 'Uruguay'},
             ],
             status: [
-                {label: 'ACTIVO', value:'1'},
-                {label: 'INACTIVO', value:'0'}
+                {label: 'Activo', value: 1},
+                {label: 'Inactivo', value: 0}
             ],
             DialogUsers: false,
             user: {},
@@ -336,7 +344,8 @@ export default {
                 {label:"Inactivo", value: 0}
             ],
             date: '',
-            time: ''
+            time: '',
+            distritos: {}
         }
     },
     created() {
@@ -355,6 +364,8 @@ export default {
             this.tipousuarios = tipouser.data;
             const usu = await userService.listarUsuarios();
             this.users = usu.data;
+            const dist = await distritoService.listarDistritos();
+            this.distritos = dist.data;
         },
         abrirDialog() {
             this.dialog = true;

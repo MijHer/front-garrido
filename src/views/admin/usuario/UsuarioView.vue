@@ -29,12 +29,17 @@
         <Column field="email" header="Correo" :sortable="true" style="min-width:16rem"></Column>
         <Column field="usu_user" header="Nick" :sortable="true" style="min-width:16rem"></Column>
         <Column field="tipousuario.tipo_nom" header="Rol" :sortable="true" style="min-width:16rem"></Column>
+        <Column field="usu_estado" header="Estado" :sortable="true" style="min-width:16rem">         
+          <template #body="slotProps" >
+              {{slotProps.data.usu_estado == 1?"Activo":"Inactivo"}}
+          </template>
+        </Column>
         <Column :exportable="false" header="Acciones" style="min-width:16rem">
             <template #body="slotProps">
                 <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarUsers(slotProps.data)" />
                 <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mt-2" @click="eliminarUsers(slotProps.data)" />
             </template>
-        </Column>
+        </Column>        
     </DataTable>
     <Dialog v-model:visible="Dialog" :style="{width: '950px'}" header="Registro de Usuario" :modal="true" class="p-fluid">
       <div class="formgrid grid">
@@ -62,7 +67,7 @@
         </div>
         <div class="field col">
             <label for="password">Contraseña</label>
-            <InputText id="password" v-model.trim="user.password" required="true" autofocus :class="{'p-invalid': submitted && !user.password}" />          
+            <Password id="password" v-model="user.password" placeholder="Contraseña" :toggleMask="true" inputClass="w-full"></Password>
         </div>
       </div>
       <div class="formgrid grid">
@@ -101,7 +106,6 @@
 <script>
 
 import { FilterMatchMode } from 'primevue/api';
-import Calendar from 'primevue/calendar';
 import * as userService from '@/services/user.service'
 import * as tipousuarioService from '@/services/tipousuario.service'
 import * as alumnoService from '@/services/alumno.service'

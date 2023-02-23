@@ -32,7 +32,7 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>        
 </template>
 
 <script>
@@ -58,12 +58,11 @@ export default {
   methods: {
     async ingresar() {
       const { data } = await userService.login(this.usuario);
-      console.log(data);             
         if (!data.error) {
           this.$store.dispatch("ingresaUsuario", data.user.name);
           localStorage.setItem("token", data.access_token);
           this.$router.push({name: 'Admin'});
-        }      
+        }
     }
   },
 }
