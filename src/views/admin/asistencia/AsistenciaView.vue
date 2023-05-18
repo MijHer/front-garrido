@@ -1,6 +1,6 @@
 <template>
   <div class="card" v-if="profesores">
-    <h1>lista de asistencia</h1>    
+    <h1>Registrar Asistencia</h1>    
       <DataTable :value="profesores.cursos" responsiveLayout="scroll">
       <Column field="cur_nom" header="Curso" :sortable="true" style="min-width:10rem"></Column>
       <Column field="pivot.grado.gra_nom" header="Grado" :sortable="true" style="min-width:10rem"></Column>
@@ -12,8 +12,7 @@
       </Column>
     </DataTable>    
     <!-- DIALOG PARA ABRIR MODAL Y LLAMAR LA ASISTENCIA -->
-    <Dialog v-model:visible="asistenciaDialog" :style="{width: '950px'}" header="Registrar Asistencia" :modal="true" class="p-fluid">            
-      <h4>Lista de alumnos</h4>
+    <Dialog v-model:visible="asistenciaDialog" :style="{width: '950px'}" header="Registrar Asistencia" :modal="true" class="p-fluid">      
       {{curso}}
       {{alumnoData}}      
       <div class="formgrid grid">        
@@ -22,7 +21,7 @@
           <InputText id="anioacademico" v-model.trim="anioacademico_id" autofocus  />
         </div>
       </div>
-      <div class="formgrid grid">        
+      <div class="formgrid grid">
         <div class="field col">
           <label for="curso">Curso</label>
           <InputText id="curso" v-model.trim="curso_id" autofocus  />
@@ -38,8 +37,12 @@
       </div>
       <div class="formgrid grid">        
         <div class="field col">
-          <label for="hora">Fecha y Hora</label>
-          <InputText id="hora" v-model.trim="hora" autofocus  />
+          <label for="hora">Hora</label>
+          <InputText readonly id="hora" v-model.trim="hora" autofocus  />
+        </div>
+        <div class="field col">
+          <label for="fecha">Fecha</label>
+          <InputText id="fecha" v-model.trim="fecha" autofocus  />
         </div>
       </div>
       <table class="table">
@@ -97,17 +100,17 @@ export default {
       asistenciaDialog: false,
       alumnos: null,
       checked: false,
-      /* pivot: {
-        asistencia: true,
-        falta: false,
-        tardanza: true,
-        permiso: false
-      }, */
+      /* pivot: {}, */
       alumnoData: [],
       curso_id: null,
+      grado_id: null,
+      seccion: null,
+      fecha: null,
+      hora: null,
       mostrar: [],
       time: '',
-      date: ''
+      date: '',
+      graNom: ''
     }
   },
   created() {
@@ -120,25 +123,13 @@ export default {
   },
   methods: {
     async listaCurso() {
-     /*  const cur = await cursoService.listarCursos();
-      this.cursos = cur.data; */ /* LISTA PARA MOSTRAR EL NOMBRE DEL CURSO CUANDO SE APERTUA EL MODAL DE ASISTENCIA */     
       const profe = await profesorService.cursosParaAsistencia();
       this.profesores = profe.data; /* LISTA PARA MOSTRAR EL NOMBRE DEL DOCENTE CUANDO SE APERTUA EL MODAL DE ASISTENCIA */
       console.log(this.profesores);
       const gra = await gradoService.listarGrados();
       this.grados = gra.data; /* LISTA PARA MOSTRAR EL NOMBRE DEL GRADO CUANDO SE APERTUA EL MODAL DE ASISTENCIA */
-      const alu = await alumnoService.listarAlumnosCursoGradoSeccion(this.curso, this.grado, this.seccion);
-      this.alumnos = alu.data.data;
-      this.alumnos.forEach(alumno => {
-        const {id, alu_nom, alu_app, alu_apm} = alumno;
-        this.alumnoData.push({id, alu_nom, alu_app,alu_apm, 
-        asistencia: true,
-        falta: false,
-        tardanza: false,
-        permiso: false
-        })
-      });
-    },    
+      
+    },
     printTime() {
       const time = new Date().toLocaleTimeString();
       this.time = time;
@@ -147,13 +138,26 @@ export default {
       const date = new Date().toLocaleDateString();
       this.date = date;
     },
-    llamarAsistencia(curs) {
+    async llamarAsistencia(curs) {
       console.log(curs);
       this.curso_id =  curs.id;
       this.anioacademico_id = curs.pivot.anioacademico_id;
-      this.grado_id = curs.pivot.grado.id;
+      this.grado_id = curs.pivot.grado_id;
       this.seccion = curs.pivot.seccion;
-      this.hora = this.date +' '+ this.time;
+      this.hora = this.time;
+      this.fecha = this.date;
+      const alu = await alumnoService.listarAlumnosCursoGradoSeccion(this.curso_id, this.grado_id, this.seccion);
+      this.alumnos = alu.data;
+      this.alumnoData = [];
+      this.alumnos.forEach(alumno => {
+        const {id, alu_nom, alu_app, alu_apm} = alumno.alumno;
+        this.alumnoData.push({id, alu_nom, alu_app,alu_apm,
+        asistencia: true,
+        falta: false,
+        tardanza: false,
+        permiso: false
+        })
+      });
       this.asistenciaDialog = true;
     },
     cambiarValor(alumno, dato) {
@@ -184,7 +188,12 @@ export default {
     },
     async guardarAsistencia() {
       const asistencia = {
+        anioacademico_id: this.anioacademico_id,
         curso_id: this.curso_id,
+        grado_id: this.grado_id,
+        seccion: this.seccion,
+        fecha: this.fecha,
+        hora: this.hora,
         alumnos: this.alumnoData
       }
       this.asistenciaDialog = false;

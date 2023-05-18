@@ -26,12 +26,15 @@ export function eliminarAlumnos(id)
 export function buscar(dni) {
     return http().get(`/v1/alumno/buscar?q=${dni}`);
 }
-/* export function asistenciaAlumno(id, datos) {
-    return http().post(`/v1/alumno/${id}/llamar-asistencia`, datos);
-} */
+export function guardarNotas(datos) {
+    return http().post('/v1/alumno/registrar-notas', datos);
+}
 export function asistenciaAlu(datos) {
     return http().post('/v1/alumno/registrar-asistencia', datos);
 }
 export function contarAlumnos() {
     return http().get('/v1/alumno/contar-alumnos');
+}
+export function muestraPago() {
+    return http().get('/v1/alumno/pago-alumno');
 }

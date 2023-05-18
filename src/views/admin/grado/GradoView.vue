@@ -79,28 +79,22 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="curso_id">Curso</label>
-                    <Dropdown id="curso_id" v-model="pivot.curso_id" :options="curso" optionLabel="cur_nom" optionValue="id" placeholder="Selecione Curso">
+                    <Dropdown id="curso_id" v-model="pivot.curso_id" :options="curso" optionLabel="cur_descripcion" optionValue="id" placeholder="Selecione Curso">
                     </Dropdown>
                 </div>                
             </div>
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="grado_id">Grado</label>
-                    <InputText id="gra_id" readonly  v-bind:value="graNom" required="true" />
-                    <!-- <Dropdown id="grado_id" disabled v-model="pivot.grado_id" :options="grados" optionLabel="gra_nom" optionValue="id" >
-                    </Dropdown> -->
+                    <InputText id="grado_id" readonly  v-bind:value="graNom" required="true" />
                 </div>
                 <div class="field col">
                     <label for="seccion">Sección</label>
                     <InputText id="seccion" readonly  v-bind:value="secNom" required="true" />
-                    <!-- <Dropdown id="seccion" disabled v-model="pivot.seccion" :options="grados" optionLabel="gra_seccion" optionValue="gra_seccion" placeholder="Selecione Sección">
-                    </Dropdown> -->
                 </div>
                 <div class="field col">
                     <label for="nivel">Nivel</label>
                     <InputText id="nivel" readonly  v-bind:value="nivNom" required="true" />
-                    <!-- <Dropdown id="nivel" disabled v-model="pivot.nivel" :options="grados" optionLabel="gra_nivel" optionValue="gra_nivel" placeholder="Selecione Nivel">
-                    </Dropdown> -->            
                 </div>
             </div>
             <div class="formgrid grid">                
@@ -127,7 +121,7 @@
             </Column>
             <Column field="pivot.seccion" header="Sección" style="min-width:8rem"></Column>
             <Column field="pivot.nivel" header="Nivel" style="min-width:8rem"></Column>
-            <Column field="pivot.anioacademico" header="Periodo" style="min-width:8rem"></Column>
+            <Column field="pivot.anioacademico_id" header="Periodo" style="min-width:8rem"></Column>
             <Column field="pivot.estado" header="Estado" style="min-width:8rem">
                 <template #body=slotProps>
                     {{slotProps.data.pivot.estado == 1?"Activo":"Inactivo"}}
@@ -261,7 +255,9 @@ export default {
             const { data } = await gradoService.asignarCurso(this.grado.id, this.pivot);
             this.cursos = data.data;
             this.listaGrado();
-            this.pivot = {};
+            /* this.pivot = {}; */
+            this.pivot.anioacademico_id = '';
+            this.pivot.estado = '';            
        },
        modalAsignar(datos) {
             this.cursos = datos.cursos;

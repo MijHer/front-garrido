@@ -23,31 +23,24 @@
           <InputText id="mat_cod_modular" v-model="matricula.mat_cod_modular" required="true" rows="3" cols="20" autofocus />
         </div>
         <div class="field col">
-            <label for="mat_fecha">Fecha Matricula</label>
-            <InputText id="mat_fecha" v-model="matricula.mat_fecha" required="true" rows="3" cols="20" />
+            <label for="mat_hora">Hora de Matricula</label>
+            <InputText id="mat_hora" readonly v-model="matricula.mat_hora" required="true" rows="3" cols="20" />            
         </div>
         <div class="field col">
-            <label for="mat_costo">Costo Matricula</label>
-            <!-- <InputText id="mat_costo" v-model="matricula.mat_costo" required="true" rows="3" cols="20" /> -->
-            <Dropdown id="mat_costo" v-model="matricula.mat_costo" :options="anioacademicos" optionLabel="anio_detalle" optionValue="anio_detalle" placeholder="Selecione costo">                        
-            </Dropdown>
+            <label for="mat_fecha">Fecha de Matricula</label>
+            <InputText id="mat_fecha" v-model="matricula.mat_fecha"  required="true" rows="3" cols="20" />
         </div>
       </div>
       <div class="field">
           <label for="alumno_id">Alumno</label>
-          <InputText id="alumno_id" readonly v-bind:value="alumno.alumno.alu_nom + ' ' +alumno.alumno.alu_app + ' ' + alumno.alumno.alu_apm"  required="true" rows="3" cols="20" />         
+          <InputText id="alumno_id" readonly v-bind:value="alumno.alumno.alu_nom + ' ' +alumno.alumno.alu_app + ' ' + alumno.alumno.alu_apm"  required="true" rows="3" cols="20" />
       </div>
       <div class="formgrid grid">
         <div class="field col">
-            <label for="mat_nivel">Nivel</label>
-            <Dropdown id="mat_nivel" v-model="matricula.mat_nivel" :options="grados" optionLabel="gra_nivel" optionValue="gra_nivel" placeholder="Selecione Nivel Academico">                        
-            </Dropdown>            
-        </div>               
-        <div class="field col">
-            <label for="mat_turno">Turno</label>
-            <Dropdown id="mat_turno" v-model="matricula.mat_turno" :options="turno" optionLabel="label" optionValue="value" placeholder="Selecione Turno">                        
-            </Dropdown> 
-        </div>
+            <label for="mat_costo">Costo Matricula</label>
+            <Dropdown id="mat_costo" v-model="matricula.mat_costo" :options="anioacademicos" optionLabel="anio_detalle" optionValue="anio_detalle" placeholder="Selecione costo">                        
+            </Dropdown>
+        </div>                
         <div class="field col">
             <label for="mat_repit">Repetitivo</label>
             <Dropdown id="mat_repit" v-model="matricula.mat_repit" :options="repite" optionLabel="label" optionValue="value" placeholder="Selecione">                        
@@ -57,9 +50,21 @@
       <div class="formgrid grid">
         <div class="field col">
             <label for="grado_id">Grado</label>
-            <Dropdown id="grado_id" v-model="matricula.grado_id" :options="grados" optionLabel="gra_nom" optionValue="id" placeholder="Selecione Grado Academico">                        
+            <Dropdown id="grado_id" v-model="matricula.grado_id" :options="grados" :optionLabel="(grados) => grados.gra_nom +' - '+ grados.gra_seccion + ' - ' + grados.gra_nivel" optionValue="id" placeholder="Selecione Grado Academico">                        
             </Dropdown>
-        </div> 
+        </div>
+        <div class="field col">
+            <label for="grado_id">Sección</label>
+            <Dropdown id="grado_id" disabled v-model="matricula.grado_id" :options="grados" optionLabel="gra_seccion" optionValue="id" placeholder="Selecione Grado Academico">                        
+            </Dropdown>
+        </div>
+        <div class="field col">
+            <label for="mat_nivel">Nivel</label>
+            <Dropdown id="mat_nivel" v-model="matricula.mat_nivel" :options="nivel" optionLabel="label" optionValue="value" placeholder="Selecione Nivel Academico">                        
+            </Dropdown>
+        </div>
+      </div>
+      <div class="formgrid grid">
         <div class="field col">
           <label for="anioacademico_id">Año Academico</label>
           <Dropdown id="anioacademico_id" v-model="matricula.anioacademico_id" :options="anioacademicos" optionLabel="anio_nom" optionValue="id" placeholder="Seleccione Año Academico">
@@ -67,14 +72,14 @@
         </div>     
         <div class="field col">
             <label for="distrito_id">Distrito</label>
-             <Dropdown id="distrito_id" v-model="matricula.distrito_id" :options="distritos" optionLabel="dist_nom" optionValue="id" placeholder="Selecione Dsitrito">
+              <Dropdown id="distrito_id" v-model="matricula.distrito_id" :options="distritos" optionLabel="dist_nom" optionValue="id" placeholder="Selecione Dsitrito">
             </Dropdown>            
-        </div>
+        </div>        
       </div>
-      <div class="field">
+      <div class="field col">
           <label for="mat_estado">Estado</label>
           <Dropdown id="mat_estado" v-model="matricula.mat_estado" :options="estado" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                        
-          </Dropdown> 
+          </Dropdown>
       </div>
       {{matricula}}
       <h5>Datos del Apoderado</h5>
@@ -109,7 +114,7 @@
       <template #footer>
           <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
           <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarMatricula" />
-      </template>
+      </template>      
     </Dialog>   
   </div>
 </template>
@@ -133,11 +138,11 @@ export default {
           anioacademicos: {},
           apoderados: {},
           distritos: {},
-          /* nivel: [
+          nivel: [
               {label: 'Inicial', value: 'Inicial'},
               {label: 'Primaria', value: 'Primaria'},
               {label: 'Secundaria', value: 'Secundaria'}
-          ], */
+          ],
           turno: [
               {label: 'Mañana', value: 'Mañana'},
               {label: 'Tarde', value: 'Tarde'}
@@ -151,28 +156,33 @@ export default {
               {label: 'Inactivo', value: 0}
           ],
           displayModal: false,
-          date: ''        
+          date: '',
+          time: ''
         }
     },
     mounted() {
         this.listaElementos();
-        this.printdate();
+        this.printDate();
+        this.printTime();
     },    
     methods: {
       
       async buscarPersona() {       
           const {data} = await alumnoService.buscar(this.dni);
           this.alumno = data;
+          console.log(this.alumno);
           if (this.dni ==  data.alumno.alu_nmr_doc) {
             this.matricula.apoderado_id = data.alumno.apoderado.id;
             this.matricula.alumno_id = data.alumno.id;
+            this.matricula.mat_hora = this.time;
             this.matricula.mat_fecha = this.date;
-            this.Dialog = true;            
+            this.Dialog = true;
           }
           else {
             this.displayModal = true;
           }
       },
+      
       closeBasic() {
           this.displayModal = false;
       },
@@ -186,9 +196,13 @@ export default {
         const dist = await distritoServide.listarDistritos();
         this.distritos = dist.data;
       },
-      printdate() {
+      printDate() {
         const date = new Date().toLocaleDateString();
         this.date = date;
+      },
+      printTime() {
+        const time = new Date().toLocaleTimeString();
+        this.time = time;
       },
       async guardarMatricula() {
         let datos;

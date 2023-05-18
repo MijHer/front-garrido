@@ -67,17 +67,17 @@
             </div> 
         </div>
         <div v-if="alumno">
-        <DataTable :value="alumno.pagos" responsiveLayout="scroll">
-            <Column field="pago_periodo" header="Periodo" style="min-width:8rem"></Column>
-            <Column field="pago_concepto" header="Concepto de Pago" style="min-width:8rem"></Column>
-            <Column field="pago_monto" header="Monto" style="min-width:8rem"></Column>
-            <Column field="pago_fecha" header="Fecha" style="min-width:8rem"></Column>
-            <Column header="Editar" :exportable="false" style="min-width:8rem">
-                <template #body="slotProps">
-                    <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarPago(slotProps.data)" />
-                </template>
-            </Column>
-        </DataTable>
+            <DataTable :value="alumno.pagos" responsiveLayout="scroll">
+                <Column field="pago_periodo" header="Periodo" style="min-width:8rem"></Column>
+                <Column field="pago_concepto" header="Concepto de Pago" style="min-width:8rem"></Column>
+                <Column field="pago_monto" header="Monto" style="min-width:8rem"></Column>
+                <Column field="pago_fecha" header="Fecha" style="min-width:8rem"></Column>
+                <Column header="Editar" :exportable="false" style="min-width:8rem">
+                    <template #body="slotProps">
+                        <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarPago(slotProps.data)" />
+                    </template>
+                </Column>
+            </DataTable>           
         </div>
         <template #footer>
             <Button label="Cerrar" icon="pi pi-times" @click="closeModal" class="p-button-text"/>

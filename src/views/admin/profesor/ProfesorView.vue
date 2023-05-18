@@ -134,7 +134,7 @@
             </Column>            
         </DataTable>
         <!-- DIALOG PARA ASIGANR USUARIO AL PROFESOR -->
-        <Dialog v-model:visible="DialogUsers" :style="{width: '950px'}" header="Asignación de Usuario" :modal="true" class="p-fluid">
+        <Dialog v-model:visible="DialogUsers" :style="{width: '950px'}" header="ASIGNAR USUARIO A PROFESOR" :modal="true" class="p-fluid">
             <div class="formgrid grid">
                 <div class="field col">
                 <label for="name">Nombres</label>          

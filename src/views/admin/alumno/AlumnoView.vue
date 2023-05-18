@@ -15,25 +15,26 @@
   <!-- DIALOG PARA REGISTRAR NUEVO ALUMNO -->
   <Dialog v-model:visible="dialog" :style="{width: '1000px'}" header="Nuevo Alumno" :modal="true" class="p-fluid">
     <h3>DATOS DEL ALUMNO</h3>
-    <div class="field">
-      <label for="alu_foto">Fotografia</label>
-      <InputText id="alu_foto" v-model.trim="alumno.alu_foto" required="true" autofocus :class="{'p-invalid': submitted && !alumno.alu_foto}" />
-      <small class="p-error" v-if="submitted && !alumno.alu_foto">Foto es requerida.</small>
-    </div>
     <div class="formgrid grid">
-      <div class="field col">
-          <label for="alu_nom">Nombre</label>
-          <InputText id="alu_nom" v-model="alumno.alu_nom" required="true" rows="3" cols="20" />
+      <div class="field col" style="margin-top: 25px;">            
+          <img src="../../../../public/images/logo-usuario.png" alt="Usuario" style="width: 200px; display:block; margin:auto;">
+          <p style="font-weight: bold; text-align:center; margin-top: 10px;" v-text="users.name"></p>
       </div>
       <div class="field col">
-          <label for="alu_app">A. Paterno</label>
-          <InputText id="alu_app" v-model="alumno.alu_app" required="true" rows="3" cols="20" />
+        <div class="field col">
+            <label for="alu_nom">Nombre</label>
+            <InputText id="alu_nom" v-model="alumno.alu_nom" required="true" rows="3" cols="20" />
+        </div>
+        <div class="field col">
+            <label for="alu_app">A. Paterno</label>
+            <InputText id="alu_app" v-model="alumno.alu_app" required="true" rows="3" cols="20" />
+        </div>
+        <div class="field col">
+            <label for="alu_apm">A. Materno</label>
+            <InputText id="alu_apm" v-model="alumno.alu_apm" required="true" rows="3" cols="20" />
+        </div>
       </div>
-      <div class="field col">
-          <label for="alu_apm">A. Materno</label>
-          <InputText id="alu_apm" v-model="alumno.alu_apm" required="true" rows="3" cols="20" />
-      </div>
-    </div>
+    </div>    
     <div class="formgrid grid">
       <div class="field col">            
           <label for="alu_fnac">Fecha de Nacimiento</label>
@@ -277,7 +278,6 @@
           </div>
       </template>
       <Column selectionMode="multiple" style="width: 3rem;" :exportable="false"></Column>
-      <Column field="alu_foto" header="Foto" :sortable="true" style="min-width:12rem"></Column>
       <Column field="alu_nom" header="Nombres" :sortable="true" style="min-width:10rem"></Column>
       <Column field="alu_app" header="A. Paterno" :sortable="true" style="min-width:10rem"></Column>
       <Column field="alu_apm" header="A. Materno" :sortable="true" style="min-width:10rem"></Column>
@@ -294,7 +294,7 @@
       </Column>
   </DataTable>
   <!-- DIALOG PARA ASIGNAR UN USUARIO AL ALUMNO -->
-  <Dialog v-model:visible="DialogUsers" :style="{width: '950px'}" header="Asignación de Usuario" :modal="true" class="p-fluid">
+  <Dialog v-model:visible="DialogUsers" :style="{width: '950px'}" header="Asginar usuario al alumno" :modal="true" class="p-fluid">
     <div class="formgrid grid">
         <div class="field col">
         <label for="name">Nombres</label>          

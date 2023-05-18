@@ -68,17 +68,12 @@
                 <label for="mat_nivel">Nivel</label>
                 <Dropdown id="mat_nivel" v-model="matricula.mat_nivel" :options="nivel" optionLabel="label" optionValue="value" placeholder="Selecione Nivel Academico">                        
                 </Dropdown>            
-            </div>               
-            <div class="field col">
-                <label for="mat_turno">Turno</label>
-                <Dropdown id="mat_turno" v-model="matricula.mat_turno" :options="turno" optionLabel="label" optionValue="value" placeholder="Selecione Turno">                        
-                </Dropdown> 
             </div>
             <div class="field col">
                 <label for="mat_repit">Repetitivo</label>
                 <Dropdown id="mat_repit" v-model="matricula.mat_repit" :options="repite" optionLabel="label" optionValue="value" placeholder="Selecione">                        
                 </Dropdown> 
-            </div>        
+            </div>
         </div>
         <div class="formgrid grid">
             <div class="field col">
@@ -166,10 +161,6 @@
                 <p rows="3" cols="20" v-text="matricula.mat_nivel"></p>
             </div>
             <div class="field col">
-                <label for="mat_turno">Turno</label>
-                <p rows="3" cols="20" v-text="matricula.mat_turno"></p>
-            </div>
-            <div class="field col">
                 <label for="mat_repit">Repetitivo</label>
                 <p rows="3" cols="20" >
                     {{matricula.mat_repit == 1?"SI":"NO"}}
@@ -180,7 +171,7 @@
         <div class="formgrid grid">
             <div class="field col">
                 <label for="grado_id">Grado</label>
-                <p rows="3" cols="20" v-text="matricula.grado.gra_nom"></p>
+                <p rows="3" cols="20" v-text="matricula.grado.gra_nom +' '+matricula.grado.gra_seccion"></p>
             </div> 
             <div class="field col">
             <label for="anioacademico_id">Año Academico</label>

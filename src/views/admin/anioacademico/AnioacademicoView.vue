@@ -9,22 +9,25 @@
             </template>>
         </Toolbar>
         <DataTable :value="anioacademicos" responsiveLayout="scroll">
-            <Column field="anio_nom" header="Nombre" style="min-width:10rem"></Column>
-            <Column field="anio_inicio" header="Inicio de Periodo" style="min-width:10rem"></Column>
-            <Column field="anio_fin" header="Fin de Periodo" style="min-width:10rem"></Column>
-            <Column field="anio_detalle" header="Costo de Matricula" style="min-width:10rem"></Column>
-            <Column field="anio_pension_inicial" header="Pensión de Inicial" style="min-width:10rem"></Column>
-            <Column field="anio_pension_primaria" header="Pensión de Primaria" style="min-width:10rem"></Column>
-            <Column field="anio_pension_secundaria" header="Pensión de Secundaria" style="min-width:10rem"></Column>
-            <Column field="anio_estado" header="Estado" style="min-width:10rem">
-                <template #body="slotProps">
-                    {{slotProps.data.anio_estado == 1?"Activo":"Inactivo"}}
+            <Column field="anio_nom" header="Nombre del año" style="min-width:20rem"></Column>
+            <Column field="anio_inicio" header="Inicio de Periodo" style="min-width:8rem"></Column>
+            <Column field="anio_fin" header="Fin de Periodo" style="min-width:8rem"></Column>
+            <Column field="anio_detalle" header="Costo de Matricula" style="min-width:8rem"></Column>
+            <Column field="anio_pension_inicial" header="Pensión de Inicial" style="min-width:8rem"></Column>
+            <Column field="anio_pension_primaria" header="Pensión de Primaria" style="min-width:8rem"></Column>
+            <Column field="anio_pension_secundaria" header="Pensión de Secundaria" style="min-width:8rem"></Column>            
+            <Column field="anio_estado" header="Estado" style="min-width:10rem">            
+                <template #body="slotProps" >
+                    <div>                        
+                        <Button v-if="slotProps.data.anio_estado == 0" label="Activar" value="Activar" class="p-button-danger mr-2" @click="activarAnio(slotProps.data)" />
+                        <Tag class="mr-2" style="font-size: 15px; padding:10px 18px;" severity="success" value="Activo" v-else></Tag>
+                    </div>                    
                 </template>
-            </Column>          
+            </Column>
             <Column :exportable="false" header="Eliminar" style="min-width:10rem">
                 <template #body="slotProps">
-                    <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editarAnio(slotProps.data)" />
-                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="borrarAnio(slotProps.data)" />
+                    <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" v-if="slotProps.data.anio_estado == 1" @click="editarAnio(slotProps.data)" />
+                    <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" v-if="slotProps.data.anio_estado == 1" @click="borrarAnio(slotProps.data)" />
                 </template>
             </Column>
         </DataTable>
@@ -70,9 +73,18 @@
                 <Dropdown id="anio_estado" v-model="anioacademico.anio_estado" :options="statusAnoi" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                        
                 </Dropdown>
             </div>
+            {{anioacademico}}
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialogAnio"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarAnioacademico" />
+            </template>
+        </Dialog>
+        <!-- PARA ACTIVAR ANIO ACADEMICO -->
+        <Dialog header="CAMBIAR AÑO ACADEMICO" v-model:visible="dialogActivar" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '20vw'}" :modal="true">
+            <p style="color: red;"> <b style="font-size:20px; color:red;">¡</b>Esta seguro de cambiar el año academico.<b style="font-size:20px; color:red;">!</b></p>            
+            <template #footer>
+                <Button label="No" icon="pi pi-times" @click="cerrarModal" class="p-button-text"/>
+                <Button label="Si" icon="pi pi-check" class="p-button-danger" @click="aceptarCambiodeAnio" autofocus />
             </template>
         </Dialog>        
   </div>
@@ -94,7 +106,9 @@ export default {
                 {label: 'Activo', value: 1},
                 {label: 'Inactivo', value: 0}
                 ],
-            estadoEdicion: false
+            estadoEdicion: false,
+            dialogActivar: false,
+            anioselecionado: -1
         }
     },    
     mounted() {
@@ -136,6 +150,19 @@ export default {
         this.anioacademico = data;
         this.estadoEdicion = true;
         this.DialogAnio = true;
+       },
+       activarAnio(id) {
+        this.anioselecionado = id;
+        this.dialogActivar = true;
+       },
+       async aceptarCambiodeAnio() {
+        const aniocambi = await anioacademicoService.cambiarAnoiacademicos({id:this.anioselecionado.id});
+        this.listaAnioacademico();
+        this.anioselecionado = -1;
+        this.dialogActivar = false;
+       },
+       cerrarModal() {
+        this.dialogActivar = false;
        },
        async borrarAnio(data) {
             this.$confirm.require({

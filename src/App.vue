@@ -101,7 +101,7 @@ export default {
                     ]
                  },
                  {
-                    label: 'Asistencias y Notas', icon: 'pi pi-fw pi-search',
+                    label: 'Dashboard Profesor', icon: 'pi pi-fw pi-search',
                     items: [
                         {
                             label: 'Lista de Asistencia', icon: 'pi pi-fw pi-bookmark', to: '/admin/asistencia',

@@ -20,3 +20,7 @@ export function eliminarAnioacademicos(id)
 {
     return http().delete('/v1/anioacademico/'+id)
 }
+export function cambiarAnoiacademicos(datos)
+{
+    return http().post('/v1/anioacademico/cambiaranio', datos)
+}

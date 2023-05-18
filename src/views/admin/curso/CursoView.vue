@@ -54,7 +54,7 @@
         </div>
         <div class="field">
             <label for="cur_estado">Estado</label>
-            <Dropdown v-model.trim="curso.cur_estado" :options="status" optionLabel="label" optionValue="value" required="true">
+            <Dropdown v-model="curso.cur_estado" :options="status" optionLabel="label" optionValue="value" required="true">
             </Dropdown>            
         </div>
         <div class="field">
@@ -67,8 +67,8 @@
             <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarCurso" />
         </template>
     </Dialog>
-    <!-- DIALOG PARA ASGANR DOCENTE AL CURSO -->
-    <Dialog header="Asignar Docente al Curso" v-model:visible="dialogAsignar" :style="{width: '1000px'}" :modal="true" class="p-fluid">
+    <!-- DIALOG PARA ASIGNAR DOCENTE AL CURSO -->
+    <Dialog header="Asignar Docente al Curso y Grado" v-model:visible="dialogAsignar" :style="{width: '1000px'}" :modal="true" class="p-fluid">
         <div>
             <div class="formgrid grid">
                 <div class="field col">
@@ -79,22 +79,28 @@
                 <div class="field col">
                     <label for="profesor_id">A. Paterno</label>
                     <Dropdown id="profesor_id" disabled v-model="pivot.profesor_id" :options="profesor" optionLabel="pro_app" optionValue="id" placeholder="Selecione Docente">
-                    </Dropdown>            
+                    </Dropdown>
                 </div>
                 <div class="field col">
                     <label for="profesor_id">A. Materno</label>
                     <Dropdown id="profesor_id" disabled v-model="pivot.profesor_id" :options="profesor" optionLabel="pro_apm" optionValue="id" placeholder="Selecione Docente">
                     </Dropdown>            
-                </div>
+                </div>                
+            </div>
+            <div class="formgrid grid">
                 <div class="field col">
                     <label for="">curso</label>
-                    <InputText id="curso_id" readonly  v-bind:value="nomCurso" required="true" />                    
+                    <InputText id="" readonly  v-bind:value="nomCurso" required="true" />
+                </div>
+                <div class="field col">
+                    <label for="">Descripción</label>
+                    <InputText id="" readonly  v-bind:value="nomDescripcion" required="true" />
                 </div>
             </div>
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="grado_id">Grado</label>
-                    <Dropdown id="grado_id" v-model="pivot.grado_id" :options="grados" optionLabel="gra_nom" optionValue="id" placeholder="Selecione Grado">                        
+                    <Dropdown id="grado_id" v-model="pivot.grado_id" :options="grados" :optionLabel="(grados) => grados.gra_nom +' - '+ grados.gra_seccion +' - '+ grados.gra_nivel" optionValue="id" placeholder="Selecione Grado">                        
                     </Dropdown>
                 </div>
                 <div class="field col">
@@ -104,8 +110,8 @@
                 </div>
                 <div class="field col">
                     <label for="seccion">Sección</label>
-                    <Dropdown id="seccion" v-model="pivot.seccion" :options="grados" optionLabel="gra_seccion" optionValue="gra_seccion" placeholder="Selecione Sección">
-                    </Dropdown>            
+                    <Dropdown id="seccion" v-model="pivot.seccion" :options="grados" :optionLabel="(grados) => grados.gra_nom +' - '+ grados.gra_seccion +' - '+ grados.gra_nivel" optionValue="gra_seccion" placeholder="Selecione Sección">
+                    </Dropdown>
                 </div>                
             </div>
             <div class="formgrid grid">
@@ -120,7 +126,7 @@
                     </Dropdown>            
                 </div>
             </div>
-            {{anioacademicos}}
+            {{pivot}}
             <div>
                 <!-- BOTON PARA AGREGAR DOCENTES AL CURSO -->
                 <Button label="Agregar docente al curso" class="p-button-success" @click="agregarAsignacion" /> <br> 
@@ -190,6 +196,7 @@ export default {
             profesor: {},
             pivot: {},
             nomCurso: '',
+            nomDescripcion: '',
             date: ''
         }
     },
@@ -295,13 +302,17 @@ export default {
             const { data }  = await cursoService.asignarProfesor(this.curso.id, this.pivot);           
             this.listaCurso();
             this.profesores = data.data;
+            this.pivot.anioacademico_id = '';
+            this.pivot.estado = '';
         },
         modalAsignar(datos) {
+            console.log(datos);
             this.curso.id = datos.id;
             this.profesores = datos.profesores;
-            this.dialogAsignar = true;
             this.pivot.curso_id = datos.id;
             this.nomCurso = datos.cur_nom;
+            this.nomDescripcion = datos.cur_descripcion;
+            this.dialogAsignar = true;
         },
         cerrarAsignar() {
             this.dialogAsignar = false;
