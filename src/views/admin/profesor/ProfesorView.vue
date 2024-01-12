@@ -16,7 +16,7 @@
             <div class="formgrid grid">            
                 <div class="field col">
                     <label for="pro_nom">Nombre</label>
-                    <InputText id="pro_nom" v-model.trim="profesor.pro_nom" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_nom}" />
+                    <InputText id="pro_nom" v-model.trim="profesor.pro_nom" required autofocus :class="{'p-invalid': submitted && !profesor.pro_nom}" />
                     <small class="p-error" v-if="submitted && !profesor.pro_nom">Nombre es requerido.</small>
                 </div>
                 <div class="field col">
@@ -85,16 +85,15 @@
                     <label for="pro_distrito">Distrito</label>
                     <!-- <InputText id="pro_distrito" v-model.trim="profesor.pro_distrito" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_distrito}" />
                     <small class="p-error" v-if="submitted && !profesor.pro_distrito">Campo Requerido.</small> -->
-                    <Dropdown id="pro_distrito" v-model="profesor.pro_distrito" :options="distritos" optionLabel="dist_nom" optionValue="dist_nom" placeholder="Selecione distrito">                        
+                    <Dropdown id="pro_distrito" v-model="profesor.pro_distrito" :options="distritos" optionLabel="dist_nom" :disabled="Estranjero()" optionValue="dist_nom" placeholder="Selecione distrito">                        
                     </Dropdown>
                 </div>                
                 <div class="field col">
                     <label for="pro_estado">Estado</label>
-                    <Dropdown id="pro_estado" v-model="profesor.pro_estado" :options="status" optionLabel="label" optionValue="value" placeholder="Selecione Pais">                        
+                    <Dropdown id="pro_estado" v-model="profesor.pro_estado" :options="status" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                        
                     </Dropdown>
                 </div>
             </div>
-            {{profesor}}
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardaProfesor" />
@@ -355,6 +354,7 @@ export default {
         this.listaProfesor()
         this.printDate();
         this.printTime();
+        this.Estranjero();
     },
     methods: {
         async listaProfesor() {
@@ -366,6 +366,9 @@ export default {
             this.users = usu.data;
             const dist = await distritoService.listarDistritos();
             this.distritos = dist.data;
+        },
+        Estranjero() {
+            return this.profesor.pro_pais !== 'Perú';
         },
         abrirDialog() {
             this.dialog = true;

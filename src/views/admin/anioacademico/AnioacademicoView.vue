@@ -10,12 +10,12 @@
         </Toolbar>
         <DataTable :value="anioacademicos" responsiveLayout="scroll">
             <Column field="anio_nom" header="Nombre del año" style="min-width:20rem"></Column>
-            <Column field="anio_inicio" header="Inicio de Periodo" style="min-width:8rem"></Column>
-            <Column field="anio_fin" header="Fin de Periodo" style="min-width:8rem"></Column>
-            <Column field="anio_detalle" header="Costo de Matricula" style="min-width:8rem"></Column>
-            <Column field="anio_pension_inicial" header="Pensión de Inicial" style="min-width:8rem"></Column>
-            <Column field="anio_pension_primaria" header="Pensión de Primaria" style="min-width:8rem"></Column>
-            <Column field="anio_pension_secundaria" header="Pensión de Secundaria" style="min-width:8rem"></Column>            
+            <Column field="anio_inicio" header="Inicio de Periódo" style="min-width:8rem"></Column>
+            <Column field="anio_fin" header="Fin de Periódo" style="min-width:8rem"></Column>
+            <Column field="anio_detalle" header="Matrícula S/." style="min-width:8rem"></Column>
+            <Column field="anio_pension_inicial" header="Inicial S/." style="min-width:8rem"></Column>
+            <Column field="anio_pension_primaria" header="Primaria S/." style="min-width:8rem"></Column>
+            <Column field="anio_pension_secundaria" header="Secundaria S/." style="min-width:8rem"></Column>
             <Column field="anio_estado" header="Estado" style="min-width:10rem">            
                 <template #body="slotProps" >
                     <div>                        
@@ -24,7 +24,7 @@
                     </div>                    
                 </template>
             </Column>
-            <Column :exportable="false" header="Eliminar" style="min-width:10rem">
+            <Column :exportable="false" header="Acción" style="min-width:10rem">
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" v-if="slotProps.data.anio_estado == 1" @click="editarAnio(slotProps.data)" />
                     <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" v-if="slotProps.data.anio_estado == 1" @click="borrarAnio(slotProps.data)" />

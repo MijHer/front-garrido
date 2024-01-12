@@ -50,7 +50,7 @@
             <div class="formgrid grid">            
                 <div class="field col">
                     <label for="apo_nom">Nombre</label>
-                    <InputText id="apo_nom" v-model.trim="apoderado.apo_nom" required="true" autofocus :class="[{'p-invalid': submitted && !apoderado.apo_nom}, 'mayusc']"  />
+                    <InputText id="apo_nom" v-model.trim="apoderado.apo_nom" required autofocus :class="[{'p-invalid': submitted && !apoderado.apo_nom}, 'mayusc']"  />
                     <small class="p-error" v-if="submitted && !apoderado.apo_nom">Nombre es requerido.</small>
                 </div>
                 <div class="field col">
