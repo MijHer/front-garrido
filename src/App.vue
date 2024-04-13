@@ -48,16 +48,16 @@ export default {
                     label: 'Dashboard Alumno',
                     items:[
                         {
-                            label: 'Datos Personales', icon: 'pi pi-fw pi-home', to: '/admin/dashalumno'
+                            label: 'Datos Personales', icon: 'pi pi-fw pi-user', to: '/admin/dashalumno'
                         },
                         {
-                            label: 'Historial de Notas', icon: 'pi pi-fw pi-home', to: '/admin/dashalumno'
+                            label: 'Historial de Notas', icon: 'pi pi-fw pi-book', to: '/admin/dashalumno'
                         },
                         {
-                            label: 'Pagos', icon: 'pi pi-fw pi-home', to: '/admin/pagados'
+                            label: 'Pagos', icon: 'pi pi-fw pi-dollar', to: '/admin/pagados'
                         },
                         {
-                            label: 'Asistencia', icon: 'pi pi-fw pi-home', to: '/admin/dashalumno'
+                            label: 'Asistencia', icon: 'pi pi-fw pi-list', to: '/admin/dashalumno'
                         }
                     ]
                 },
@@ -65,13 +65,13 @@ export default {
                     label: 'Gestinar Registros', icon: 'pi pi-fw pi-search',
                     items: [
                         {
-                            label: 'Alumnos', icon: 'pi pi-fw pi-bookmark', to: '/admin/alumno',
+                            label: 'Alumnos', icon: 'pi pi-fw pi-user', to: '/admin/alumno',
                         },
                         {
-                            label: 'Profesores', icon: 'pi pi-fw pi-bookmark', to: '/admin/profesor',
+                            label: 'Profesores', icon: 'pi pi-fw pi-user', to: '/admin/profesor',
                         },
                         {
-                            label: 'Apoderado', icon: 'pi pi-fw pi-bookmark', to: '/admin/apoderado',
+                            label: 'Apoderado', icon: 'pi pi-fw pi-user', to: '/admin/apoderado',
                         }
                     ]
                 },
@@ -79,10 +79,10 @@ export default {
                     label: 'Pagos', icon: 'pi pi-fw pi-search',
                     items: [
                         {
-                            label: 'Realizar Pago', icon: 'pi pi-fw pi-bookmark', to: '/admin/pago',
+                            label: 'Realizar Pago', icon: 'pi pi-fw pi-dollar', to: '/admin/pago',
                         },                        
                         {
-                            label: 'Pagos Realizados', icon: 'pi pi-fw pi-bookmark', to: '/admin/pagado',
+                            label: 'Pagos Realizados', icon: 'pi pi-fw pi-dollar', to: '/admin/pagado',
                         }
                     ]
                 },
@@ -90,13 +90,13 @@ export default {
                     label: 'Detalles Academicos', icon: 'pi pi-fw pi-search',
                     items: [
                         {
-                            label: 'Detalles', icon: 'pi pi-fw pi-bookmark', to: '/admin/anioacademico',
+                            label: 'Detalles', icon: 'pi pi-fw pi-cog', to: '/admin/anioacademico',
                         },
                         {
-                            label: 'Cursos', icon: 'pi pi-fw pi-bookmark', to: '/admin/curso',
+                            label: 'Cursos', icon: 'pi pi-fw pi-folder-open', to: '/admin/curso',
                         },
                         {
-                            label: 'Grado', icon: 'pi pi-fw pi-bookmark', to: '/admin/grado',
+                            label: 'Grado', icon: 'pi pi-fw pi-server', to: '/admin/grado',
                         },
                     ]
                  },
@@ -104,10 +104,10 @@ export default {
                     label: 'Dashboard Profesor', icon: 'pi pi-fw pi-search',
                     items: [
                         {
-                            label: 'Lista de Asistencia', icon: 'pi pi-fw pi-bookmark', to: '/admin/asistencia',
+                            label: 'Lista de Asistencia', icon: 'pi pi-fw pi-list', to: '/admin/asistencia',
                         },
                         {
-                            label: 'Registro de Notas', icon: 'pi pi-fw pi-bookmark', to: '/admin/nota',
+                            label: 'Registro de Notas', icon: 'pi pi-fw pi-book', to: '/admin/nota',
                         }
                     ]
                  },
@@ -115,13 +115,13 @@ export default {
                     label: 'Gestion de Lugar', icon: 'pi pi-fw pi-search',
                     items: [
                         {
-                            label: 'Departamento', icon: 'pi pi-fw pi-bookmark', to: '/admin/departamento',
+                            label: 'Departamento', icon: 'pi pi-fw pi-map-marker', to: '/admin/departamento',
                         },
                         {
-                            label: 'Provincia', icon: 'pi pi-fw pi-bookmark', to: '/admin/provincia',
+                            label: 'Provincia', icon: 'pi pi-fw pi-map-marker', to: '/admin/provincia',
                         },
                         {
-                            label: 'Distrito', icon: 'pi pi-fw pi-bookmark', to: '/admin/distrito',
+                            label: 'Distrito', icon: 'pi pi-fw pi-map-marker', to: '/admin/distrito',
                         }
                     ]
                  },
@@ -129,10 +129,10 @@ export default {
                     label:'Gestion Matricula', icon: 'pi pi-fw pi-search',
                     items: [
                         {
-                            label: 'Matricula', icon: 'pi pi-fw pi-bookmark', to: '/admin/matricula',
+                            label: 'Matricula', icon: 'pi pi-fw pi-check-square', to: '/admin/matricula',
                         },
                         {
-                            label: 'Matriculados', icon: 'pi pi-fw pi-bookmark', to: '/admin/matriculados',
+                            label: 'Matriculados', icon: 'pi pi-fw pi-list', to: '/admin/matriculados',
                         }                       
                     ]
                  },
@@ -140,10 +140,10 @@ export default {
                     label:'Usuario', icon: 'pi pi-fw pi-search',
                     items: [
                         {
-                            label: 'Usuarios Registrados', icon: 'pi pi-fw pi-bookmark', to: '/admin/usuario',
+                            label: 'Usuarios Registrados', icon: 'pi pi-fw pi-users', to: '/admin/usuario',
                         },
                         {
-                            label: 'Tipo de Usuario', icon: 'pi pi-fw pi-bookmark', to: '/admin/tipousuario',
+                            label: 'Tipo de Usuario', icon: 'pi pi-fw pi-user-edit', to: '/admin/tipousuario',
                         }                      
                     ]
                  }				

@@ -81,7 +81,6 @@
           <Dropdown id="mat_estado" v-model="matricula.mat_estado" :options="estado" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                        
           </Dropdown>
       </div>
-      {{matricula}}
       <h5>Datos del Apoderado</h5>
       <div class="formgrid grid">
         <div class="field col">

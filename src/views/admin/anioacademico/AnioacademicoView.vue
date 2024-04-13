@@ -73,7 +73,6 @@
                 <Dropdown id="anio_estado" v-model="anioacademico.anio_estado" :options="statusAnoi" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                        
                 </Dropdown>
             </div>
-            {{anioacademico}}
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialogAnio"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarAnioacademico" />

@@ -39,7 +39,7 @@
             <div class="field">
                 <label for="dape_rgst">Fecha de Registro</label>
                 <InputText id="dape_rgst" v-model.trim="departamento.dape_rgst" required="true" autofocus :class="{'p-invalid': submitted && !departamento.dape_rgst}" />
-            </div>            
+            </div>
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarDepartamento" />

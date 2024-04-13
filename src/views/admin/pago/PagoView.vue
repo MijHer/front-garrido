@@ -101,7 +101,7 @@ export default {
     closeBasic() {
         this.displayModal = false;
     },
-    printdate() {
+    printdate() {        
         const date = new Date().toLocaleDateString();
         this.date=date;
     },
