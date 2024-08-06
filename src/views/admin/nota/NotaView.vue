@@ -1,6 +1,6 @@
 <template>
   <div class="card" v-if="profesores">
-    <h1>Registro de Notas</h1>
+    <h1>Registro de Notas (pantalla principal de notas)</h1>
     <DataTable :value="profesores.cursos" responsiveLayout="scroll">
       <Column field="cur_nom" header="Curso" :sortable="true" style="min-width:10rem"></Column>
       <Column field="pivot.grado.gra_nom" header="Grado" :sortable="true" style="min-width:10rem"></Column>
@@ -11,6 +11,7 @@
           </template>
       </Column>
     </DataTable>
+    <!-- DIALOG PARA REGISTRAR LAS NOTAS HACIENDO USO DEL MODAL*/ -->
     <Dialog v-model:visible="notasDialog" :style="{width: '950px'}" header="Registrar Notas" :modal="true" class="p-fluid">
       <div class="field">
         <label for="profesor">profesor</label>
@@ -43,6 +44,8 @@
             <th>nota 2</th>
             <th>nota 3</th>
             <th>nota 4</th>
+            <th>nota 5</th>
+            <th>nota 6</th>
             <th>promedio</th>
           </tr>
         </thead>
@@ -54,17 +57,19 @@
             <td><InputText id="nota2" v-model.trim="alumno.nota2" autofocus  /></td>
             <td><InputText id="nota3" v-model.trim="alumno.nota3" autofocus  /></td>
             <td><InputText id="nota4" v-model.trim="alumno.nota4" autofocus  /></td>
+            <td><InputText id="nota5" v-model.trim="alumno.nota5" autofocus  /></td>
+            <td><InputText id="nota6" v-model.trim="alumno.nota6" autofocus  /></td>
             <td><InputText id="promedio" v-model.trim="alumno.promedio" autofocus  /></td>
           </tr>
         </tbody>
       </table>
       <div class="field">
-        <label for="textarea">Observación</label>
-        <Textarea id="textarea" v-model="value10" rows="3" />
+        <label for="obs">Observación</label>
+        <Textarea id="obs" v-model="obs" rows="3" />
       </div>
       <template #footer>
           <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="cancelarNotas"/>
-          <Button label="Registrar Notas" icon="pi pi-check" class="p-button-text" @click="guardarNotas" />
+          <Button label="Guardar Notas" icon="pi pi-check" class="p-button-text" @click="guardarNotas" />
       </template>
     </Dialog>
   </div>
@@ -103,6 +108,7 @@ export default {
     cancelarNotas() {
       this.notasDialog = false;
     },
+    //SE MUESTRA EN EL MODAL DE REGISTRO DE NOTAS
     async registrarNotas(datos) {
       console.log(datos);
       this.curso_id = datos.id;
@@ -113,21 +119,37 @@ export default {
       this.hora = this.time;
       this.fecha = this.date;
       this.sec = datos.pivot.seccion;
-      const alu = await alumnoService.listarAlumnosCursoGradoSeccion(this.curso_id, this.grado_id, this.seccion);
+      const alu = await alumnoService.listarAlumnosCursoGradoSecciones(this.curso_id, this.grado_id, this.seccion);
       this.alumnos = alu.data;
       this.notasDialog = true;
     },
+    // GUARDA LAS NOTAS INSERTADAS EN EL MODAL DE REGISTRO DE NOTAS
+    async guardarNotas() {
+      const notas = {curso_id:this.curso_id, 
+                      grado_id:this.grado_id, 
+                      sec:this.sec, 
+                      profesor_id:this.profesor_id, 
+                      anioacademico_id:this.anioacademico_id, 
+                      hora:this.hora, 
+                      fecha:this.fecha, 
+                      alumnos:this.alumnos, 
+                      obs:this.obs, 
+                      promedio:this.promedio };
+      await alumnoService.guardarNotas(notas);
+    },
     printTime() {
-      const time = new Date().toLocaleTimeString();
-      this.time = time;
+      const time = new Date();
+      const formattedTime = new Intl.DateTimeFormat('default', {
+        hour:'2-digit',
+        minute:'2-digit',
+        second:'2-digit',
+        hour12: false
+      }).format(time);
+      this.time = formattedTime;
     },
     printDate() {
       const date = new Date().toLocaleDateString();
       this.date = date;
-    },
-    async guardarNotas() {
-      const notas = {curso_id:this.curso_id, grado_id:this.grado_id, sec:this.sec, profesor_id:this.profesor_id, anioacademico_id:this.anioacademico_id, hora:this.hora, fecha:this.fecha, alumnos:this.alumnos, obs:this.obs, promedio:this.promedio };
-      await alumnoService.guardarNotas(notas);
     }
   },
 }

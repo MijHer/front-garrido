@@ -14,8 +14,8 @@
                         <span class="text-600 font-medium">Iniciar Sesion</span>
                     </div>
                     <div class="w-full md:w-10 mx-auto">
-                        <label for="email1" class="block text-900 text-xl font-medium mb-2">Correo</label>
-                        <InputText id="email1" v-model="usuario.email" type="text" class="w-full mb-3" autofocus placeholder="Correo" style="padding:1rem;" />
+                        <label for="email1" class="block text-900 text-xl font-medium mb-2">Usuario</label>
+                        <InputText id="email1" v-model="usuario.usu_dni" type="text" class="w-full mb-3" autofocus placeholder="Correo" style="padding:1rem;" />
                 
                         <label for="password1" class="block text-900 font-medium text-xl mb-2">Contraseña</label>
                         <Password id="password1" v-model="usuario.password" placeholder="Contraseña" :toggleMask="true" class="w-full mb-3" inputClass="w-full" inputStyle="padding:1rem"></Password>
@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       usuario: {
-        email: "",
+        usu_dni: "",
         password: ""
       },
       checked: false

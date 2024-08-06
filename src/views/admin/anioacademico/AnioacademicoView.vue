@@ -97,6 +97,7 @@ import * as anioacademicoService from '../../../services/anioacademico.service.j
 export default {
     data() {
         return {
+            submitted: false,
             anioacademicos: null,
             anioacademico: {},            
             filters: {},

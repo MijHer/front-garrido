@@ -85,7 +85,7 @@
                     <label for="pro_distrito">Distrito</label>
                     <!-- <InputText id="pro_distrito" v-model.trim="profesor.pro_distrito" required="true" autofocus :class="{'p-invalid': submitted && !profesor.pro_distrito}" />
                     <small class="p-error" v-if="submitted && !profesor.pro_distrito">Campo Requerido.</small> -->
-                    <Dropdown id="pro_distrito" v-model="profesor.pro_distrito" :options="distritos" optionLabel="dist_nom" :disabled="Estranjero()" optionValue="dist_nom" placeholder="Selecione distrito">                        
+                    <Dropdown id="pro_distrito" v-model="profesor.pro_distrito" :options="distritos" optionLabel="dist_nom"  optionValue="dist_nom" placeholder="Selecione distrito">                        
                     </Dropdown>
                 </div>                
                 <div class="field col">

@@ -21,7 +21,7 @@
         <Column field="alu_nmr_doc" header="DNI" :sortable="true" style="min-width:12rem"></Column>               
         <Column header="Detalles" :exportable="false" style="min-width:12rem">
             <template #body="slotProps">
-                <Button icon="pi pi-file" class="p-button-rounded p-button-warning mr-2" @click="verPago(slotProps.data)" />
+                <Button icon="pi pi-file" class="p-button-rounded p-button-warning mr-2" @click="verPago(slotProps.data)" />                
             </template>
         </Column>
     </DataTable>

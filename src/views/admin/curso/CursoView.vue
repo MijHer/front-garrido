@@ -174,6 +174,7 @@ import * as profesorService from '@/services/profesor.service'
 export default {
     data() {
         return {
+            submitted:false,
             cursos: null, //objeto para obtener la lista de cursos ya registrados en la tabla y mostraslos
             selectedCursos: null,
             selectedProfesores: null,

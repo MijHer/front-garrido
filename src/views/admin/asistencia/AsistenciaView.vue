@@ -1,6 +1,6 @@
 <template>
   <div class="card" v-if="profesores">
-    <h1>Registrar Asistencia</h1>    
+    <h1>Registrar Asistencia(pantalla principal muestra en data table)</h1>    
       <DataTable :value="profesores.cursos" responsiveLayout="scroll">
       <Column field="cur_nom" header="Curso" :sortable="true" style="min-width:10rem"></Column>
       <Column field="pivot.grado.gra_nom" header="Grado" :sortable="true" style="min-width:10rem"></Column>
@@ -12,7 +12,7 @@
       </Column>
     </DataTable>    
     <!-- DIALOG PARA ABRIR MODAL Y LLAMAR LA ASISTENCIA -->
-    <Dialog v-model:visible="asistenciaDialog" :style="{width: '950px'}" header="Registrar Asistencia" :modal="true" class="p-fluid">      
+    <Dialog v-model:visible="asistenciaDialog" :style="{width: '950px'}" header="Registrar Asistencia modal para llamar asistencia" :modal="true" class="p-fluid">      
       {{curso}}
       {{alumnoData}}      
       <div class="formgrid grid">        
@@ -131,8 +131,14 @@ export default {
       
     },
     printTime() {
-      const time = new Date().toLocaleTimeString();
-      this.time = time;
+      const time = new Date();
+      const formattedTime = new Intl.DateTimeFormat('default', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        }).format(time);
+      this.time = formattedTime;
     },
     printDate() {
       const date = new Date().toLocaleDateString();
