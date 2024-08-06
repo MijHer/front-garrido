@@ -106,8 +106,17 @@ export default {
         this.date=date;
     },
     printTime() {
-        const time = new Date().toLocaleTimeString();
-        this.time = time;
+        const time = new Date();
+        const formattedTime = new Intl.DateTimeFormat('default',
+            {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }
+        ).format(time);
+        
+        this.time = formattedTime;        
     },
     async guardarPago () {
         const { data } = await pagoService.guardarPagos(this.pago);

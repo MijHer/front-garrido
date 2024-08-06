@@ -56,6 +56,7 @@ import * as departamentoService from '../../../services/departamento.service'
 export default {
     data() {
         return {
+            submitted:false,
             departamentos: null,
             departamento: {},
             Dialog: false,

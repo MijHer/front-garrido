@@ -9,12 +9,12 @@
         <Button label="Buscar" @click="buscarPersona()" />
     </div>
     <!-- SE MUESTRA EL DIALOG SI EL DNI NO ES ECONTRADO -->
-      <Dialog header="DNI no existe" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :modal="true" :style="{width: '20vw'}">
-          <p>Ingrese nuevamente el DNI</p>
-          <template #footer>
-              <Button label="Aceptar" class="p-button-danger" @click="closeBasic" autofocus />
-          </template>
-      </Dialog>
+    <Dialog header="DNI no existe" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :modal="true" :style="{width: '20vw'}">
+        <p>Ingrese nuevamente el DNI</p>
+        <template #footer>
+            <Button label="Aceptar" class="p-button-danger" @click="closeBasic" autofocus />
+        </template>
+    </Dialog>
       <!-- DIALOG SE MUESTRA CUANDO EL DNI DEL ALUMNO ES ECONTRADO -->
     <Dialog v-model:visible="Dialog" :style="{width: '900px'}" header="Datos del Alumno" :modal="true" class="p-fluid">
       <div class="formgrid grid">
@@ -28,7 +28,7 @@
         </div>
         <div class="field col">
             <label for="mat_fecha">Fecha de Matricula</label>
-            <InputText id="mat_fecha" v-model="matricula.mat_fecha"  required="true" rows="3" cols="20" />
+            <InputText id="mat_fecha" readonly v-model="matricula.mat_fecha"  required="true" rows="3" cols="20" />
         </div>
       </div>
       <div class="field">
@@ -200,8 +200,15 @@ export default {
         this.date = date;
       },
       printTime() {
-        const time = new Date().toLocaleTimeString();
-        this.time = time;
+        const time = new Date();
+        const formattedTime = new Intl.DateTimeFormat('default', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        }).format(time);
+        
+        this.time = formattedTime;
       },
       async guardarMatricula() {
         let datos;

@@ -4,13 +4,11 @@
         <ConfirmDialog></ConfirmDialog>
         <Toolbar class="mb-4">
             <template #start>
-                <Button label="Registar Apoderado" icon="pi pi-plus" class="p-button-success mr-2" @click="abrirDialog" />
-                <Button label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />
+                <Button label="Registar Apoderado" icon="pi pi-plus" class="p-button-success mr-2" @click="abrirDialog" />                
             </template>
-
-            <template #end>
-                <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block" />
-                <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)"  />
+            <template #end>                
+                <Button label="Excel" icon="pi pi-upload" class="p-button-primary mr-2" @click="exportToExcel($event)"  />
+				<Button label="PDF" icon="pi pi-upload" class="p-button-help" @click="exportToPDF($event)"  />				
             </template>
         </Toolbar>
         <DataTable ref="dt" :value="apoderados" v-model:selection="selectedApoderados" dataKey="id" 
@@ -25,7 +23,7 @@
                         <InputText v-model="filters['global'].value" placeholder="Buscar..." />
                     </span>
                 </div>
-            </template>
+            </template>			
             <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
             <Column field="apo_nom" header="Nombres" :sortable="true" style="min-width:10rem" class="mayusc"></Column>
             <Column field="apo_app" header="A. Paterno" :sortable="true" style="min-width:10rem"></Column>
@@ -85,7 +83,7 @@
                 <div class="field col">
                     <label for="apo_fnac">Fecha de nacimiento</label>
                     <!-- <InputText id="apo_dir" v-model="apoderado.apo_fnac" required="true" /> -->
-                    <Calendar id="apo_fnac" v-model="apoderado.apo_fnac" :showIcon="true"  hourFormat="12" dateFormat="dd/mm/yy" />
+                    <Calendar id="apo_fnac" v-model="apoderado.apo_fnac" :showIcon="true" />
                 </div>
                 <div class="field col">
                     <label for="apo_vinculo">Vínculo</label>
@@ -94,22 +92,23 @@
                 </div>
                 <div class="field col">
                     <label for="apo_grado_inst">Grado de instrucción</label>
-                    <InputText id="apo_grado_inst" v-model.trim="apoderado.apo_grado_inst" required="true" autofocus :class="[{'p-invalid': submitted && !apoderado.apo_grado_inst}, 'mayusc']" />
+                    <Dropdown id="apo_grado_inst" v-model="apoderado.apo_grado_inst" :options="instruccion" optionLabel="label" optionValue="value" placeholder="Grado de Instruccion"></Dropdown>
                     <small class="p-error" v-if="submitted && !apoderado.apo_grado_inst">Grado de instrucción requerido.</small>
                 </div>
             </div>
             <div class="formgrid grid">
                 <div class="field col">
                     <label for="apo_estado">Estado</label>                    
-                    <Dropdown id="apo_estado" v-model="apoderado.apo_estado" :options="status" optionLabel="label" optionValue="value" placeholder="Selecione Estado">                                            
+                    <Dropdown id="apo_estado" v-model="apoderado.apo_estado" :options="status" optionLabel="label" optionValue="value" placeholder="Selecione Estado">
                     </Dropdown>
                 </div>              
             </div>
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardaApoderado" />
-            </template>
+            </template>        
         </Dialog>
+        
         <!-- DIALOG PARA MOSTRAR DATOS DEL APODERADO -->
         <Dialog v-model:visible="verDialog" :style="{width: '1000px', text: 'center'}" header="Datos del Apoderado" :modal="true" class="p-fluid">
             <div class="card">
@@ -181,6 +180,9 @@
 import { FilterMatchMode } from 'primevue/api';
 import * as apoderadoService from '../../../services/apoderado.service';
 import { capitalize } from '@vue/shared';
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 export default {
     data() {       
@@ -197,12 +199,18 @@ export default {
             status: [
                     {label: 'Activo', value: 1},
                     {label: 'Inactivo', value: 0}
-                ]                
+                ],
+            instruccion: [
+                {label: 'Primaria', value: 'Primaria'},
+                {label: 'Secundaria', value: 'Secundaria'},
+                {label: 'Tecnico Superior', value: 'Tecnico Superior'},
+                {label: 'Universitario', value: 'Universitario'}
+            ]
         }
     },
     created() {
         this.initFilters();
-    },
+    },	
     mounted() {        
         this.listaApoderado()
     },
@@ -218,6 +226,7 @@ export default {
         },
         cerrarDialog() {
             this.dialog = false;
+			this.submitted = false;
         },
         async guardaApoderado() {
             this.submitted = true;
@@ -269,8 +278,50 @@ export default {
             this.filters = {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
             }
+        },
+        exportToPDF() {
+            const doc = new jsPDF();
+            // Define las cabeceras personalizadas y el orden de las columnas
+            const headers = [['ID', 'Nombre', 'A. Paterno', 'A. Materno', 'Vínculo', 'DNI', 'Estado']];            
+            // Prepara los datos para la exportación
+            const dataToExport = this.apoderados.map(row => [
+                row.id || '',
+                row.apo_nom || '',
+                row.apo_app || '',
+                row.apo_apm || '',
+                row.apo_vinculo || '',
+                row.apo_dni || '',
+                row.apo_estado === 1 ? 'Activo' : 'Inactivo'
+            ]);
+            // Genera la tabla en el PDF
+            doc.autoTable({
+                head: headers,
+                body: dataToExport
+            });
+            // Descarga el archivo PDF
+            doc.save('apoderados.pdf');
+        },
+        exportToExcel() {
+            // Define las cabeceras personalizadas y el orden de las columnas
+            const headers = ['Nombre', 'A. Paterno', 'A. Materno', 'Vínculo', 'DNI', 'Estado'];            
+            // Prepara los datos para la exportación
+            const dataToExport = this.apoderados.map(row => ({            
+                'Nombre': row.apo_nom || '',
+                'A. Paterno': row.apo_app || '',
+                'A. Materno': row.apo_apm || '',
+                'Vínculo': row.apo_vinculo || '',
+                'DNI': row.apo_dni || '',
+                'Estado': row.apo_estado === 1 ? 'Activo' : 'Inactivo'
+            }));
+            // Crea una hoja de cálculo
+            const worksheet = XLSX.utils.json_to_sheet(dataToExport, { header: headers });            
+            // Crea un libro de trabajo
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Apoderados");
+            // Convierte el libro de trabajo a un archivo Excel y descarga
+            XLSX.writeFile(workbook, "apoderados.xlsx");
         }
-    },
+    },    
 }
 </script>
 
