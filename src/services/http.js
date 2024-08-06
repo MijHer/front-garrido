@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const urlbase = "https://colegiogarrido.edu.pe:8000/api";
+const urlbase = "https://colegiogarrido.edu.pe/api";
 //const urlbase = "https://appbackgarrido.herokuapp.com/api";
 
 export function http()
