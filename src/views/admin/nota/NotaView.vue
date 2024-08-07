@@ -50,9 +50,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(alumno,index) in alumnos" :key="index">
-            <td>{{alumno.alumno.alu_nom}}</td>
-            <td>{{alumno.alumno.alu_app}}{{alumno.alumno.alu_apm}}</td>
+          <tr v-for="alumno in alumnos" :key="alumno.alumno_id">
+            <td>{{alumno.alu_nom}}</td>
+            <td>{{alumno.alu_app}} {{alumno.alu_apm}}</td>
             <td><InputText id="nota1" v-model.trim="alumno.nota1" autofocus  /></td>
             <td><InputText id="nota2" v-model.trim="alumno.nota2" autofocus  /></td>
             <td><InputText id="nota3" v-model.trim="alumno.nota3" autofocus  /></td>
@@ -156,5 +156,47 @@ export default {
 </script>
 
 <style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+  }
 
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  tr:hover {
+    background-color: #ddd;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  /* Adjusting width for specific columns */
+  th:nth-child(1), td:nth-child(1) {
+    width: 15%;
+  }
+  
+  th:nth-child(2), td:nth-child(2) {
+    width: 20%;
+  }
 </style>

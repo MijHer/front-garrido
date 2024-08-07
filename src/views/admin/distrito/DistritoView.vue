@@ -11,7 +11,7 @@
     <DataTable ref="dt" :value="distritos" v-model:selection="selectedDistritos" dataKey="id" 
         :paginator="true" :rows="10" :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Distritos" responsiveLayout="scroll">
         <template #header>
             <div class="table-header flex flex-column md:flex-row md:justiify-content-between">
                 <h5 class="mb-2 md:m-0 p-as-md-center">Distritos</h5>

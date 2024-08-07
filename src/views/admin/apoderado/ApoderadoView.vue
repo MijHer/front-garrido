@@ -14,7 +14,7 @@
         <DataTable ref="dt" :value="apoderados" v-model:selection="selectedApoderados" dataKey="id" 
             :paginator="true" :rows="10" :filters="filters"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Apoderados" responsiveLayout="scroll">
             <template #header>
                 <div class="table-header flex flex-column md:flex-row md:justiify-content-between">
                     <h5 class="mb-2 md:m-0 p-as-md-center">Lista de Apoderados</h5>
@@ -25,11 +25,12 @@
                 </div>
             </template>			
             <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-            <Column field="apo_nom" header="Nombres" :sortable="true" style="min-width:10rem" class="mayusc"></Column>
+            <Column field="apo_nom" header="Nombres" :sortable="true" style="min-width:10rem" class="mayusc"></Column>            
             <Column field="apo_app" header="A. Paterno" :sortable="true" style="min-width:10rem"></Column>
-            <Column field="apo_apm" header="A. Materno" :sortable="true" style="min-width:10rem"></Column>            
-            <Column field="apo_vinculo" header="Vínculo" :sortable="true" style="min-width:10rem"></Column>            
+            <Column field="apo_apm" header="A. Materno" :sortable="true" style="min-width:10rem"></Column>
             <Column field="apo_dni" header="DNI" :sortable="true" style="min-width:10rem"></Column>
+            <Column field="apo_telf" header="Telefono" :sortable="true" style="min-width:10rem"></Column>
+            <Column field="apo_dir" header="Direccion" :sortable="true" style="min-width:10rem"></Column>            
             <Column field="apo_estado" header="Estado" :sortable="true" style="min-width:10rem">
                 <template #body="slotProps">
                     {{slotProps.data.apo_estado == 1?"Activo":"Inactivo"}}
@@ -180,9 +181,9 @@
 import { FilterMatchMode } from 'primevue/api';
 import * as apoderadoService from '../../../services/apoderado.service';
 import { capitalize } from '@vue/shared';
-import * as XLSX from 'xlsx';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import * as XLSX from 'xlsx'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 
 export default {
     data() {       
@@ -279,28 +280,45 @@ export default {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
             }
         },
-        exportToPDF() {
+        //reporte en pdf
+        async exportToPDF() {
             const doc = new jsPDF();
-            // Define las cabeceras personalizadas y el orden de las columnas
-            const headers = [['ID', 'Nombre', 'A. Paterno', 'A. Materno', 'Vínculo', 'DNI', 'Estado']];            
+            const logoBase64 = await fetch('/images/logo-garrido.base64')
+                .then(response => response.text());
+            doc.addImage(logoBase64, 'PNG', 10, 10, 30, 20);
+            // Título y sub titulo
+            doc.setFontSize(8);
+            doc.setFont('Helvetica', 'normal');
+            doc.text('Institucion Educativa Particular', 85, 15);
+            doc.setFontSize(8);
+            doc.setFont('Helvetica', 'normal');
+            doc.text('Andres Fernandez Garrido', 87, 20);
+            doc.setFontSize(14);
+            doc.setFont('Helvetica', 'bold');
+            doc.text('Lista de Apoderados', 80, 28);
+            // Cabeceras y orden de las columnas
+            const headers = [['Nombre', 'A. Paterno', 'A. Materno', 'Vínculo', 'DNI', 'Teléfono', 'Dirección', 'Estado']];
             // Prepara los datos para la exportación
             const dataToExport = this.apoderados.map(row => [
-                row.id || '',
                 row.apo_nom || '',
                 row.apo_app || '',
                 row.apo_apm || '',
                 row.apo_vinculo || '',
                 row.apo_dni || '',
+                row.apo_telf || '',
+                row.apo_dir || '',
                 row.apo_estado === 1 ? 'Activo' : 'Inactivo'
             ]);
-            // Genera la tabla en el PDF
+            // Generando la tabla en el PDF
             doc.autoTable({
                 head: headers,
-                body: dataToExport
+                body: dataToExport,
+                startY: 40 // Ajusta la posición de inicio de la tabla según la altura del título y el logo
             });
-            // Descarga el archivo PDF
+            // Descarga archivo PDF
             doc.save('apoderados.pdf');
         },
+        //reporte en excel
         exportToExcel() {
             // Define las cabeceras personalizadas y el orden de las columnas
             const headers = ['Nombre', 'A. Paterno', 'A. Materno', 'Vínculo', 'DNI', 'Estado'];            
