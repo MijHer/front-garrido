@@ -2,7 +2,7 @@
 	<div class="layout-topbar">
 		<router-link to="/" class="layout-topbar-logo">
 			<img alt="Logo" :src="topbarImage()" />
-			<span style="color:#6EB6D1;">FERNANDO GARRIDO</span>
+			<span style="color:#6EB6D1;">ANDRES FERNANDEZ GARRIDO</span>
 		</router-link>
 		<button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle">
 			<i class="pi pi-bars"></i>
@@ -35,46 +35,35 @@
 		</ul>
 		<Dialog header="Datos del Perfil" v-model:visible="DialogPerfil" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '45vw'}"  :modal="true">
 			<div class="formgrid grid">
-				<div class="field col">
-					<label for="name">Nombre</label>          
-					<p style="min-width:10rem" v-text="users.name"></p>
-				</div>
-				<div class="field col">
-					<label for="usu_dni">Apellido Paterno</label>
-					<p style="min-width:10rem" v-text="users.usu_dni"></p>
-				</div>
-				<div class="field col">
-					<label for="usu_telf">Apellido Materno</label>
-					<p style="min-width:10rem" v-text="users.usu_telf"></p>					
+				<div class="field col custom-field">
+					<label for="nombre" class="custom-label">Nombre</label>
+					<label class="custom-value" v-text="users.name"></label>
 				</div>
 			</div>
 			<div class="formgrid grid">
-				<div class="field col">
-					<label for="usu_dni">DNI</label>
-					<p style="min-width:10rem" v-text="users.usu_dni"></p>
+				<div class="field col custom-field">
+					<label for="usu_dni" class="custom-label">DNI</label>
+					<label class="custom-value" v-text="users.usu_dni"></label>
 				</div>
-				<div class="field col">
-					<label for="usu_telf">Teléfono</label>
-					<p style="min-width:10rem" v-text="users.usu_telf"></p>					
+				<div class="field col custom-field">
+					<label for="usu_telf" class="custom-label">Telefono</label>
+					<label class="custom-value" v-text="users.usu_telf"></label>
 				</div>
-				<div class="field col">
-					<label for="email">Correo</label>
-					<p style="min-width:10rem" v-text="users.email"></p>
-				</div>				
+				<div class="field col custom-field">
+					<label for="email" class="custom-label">Correo</label>
+					<label class="custom-value" v-text="users.email"></label>
+				</div>			 -->
 			</div>
 			<div class="formgrid grid">
-				<div class="field col">
-					<label for="usu_user">Usuario</label>
-					<p style="min-width:10rem" v-text="users.usu_user"></p>
+				<div class="field col custom-field">
+					<label for="usu_user" class="custom-label">Usuario</label>
+					<label class="custom-value" v-text="users.usu_user"></label>
 				</div>
-				<div class="field col">
-					<label for="usu_dir">Dirección</label>
-					<p style="min-width:10rem" v-text="users.usu_dir"></p>
+				<div class="field col custom-field">
+					<label for="usu_dir" class="custom-label">Direccion</label>
+					<label class="custom-value" v-text="users.usu_dir"></label>
 				</div>
-				<div class="field col">					
-				</div>				
 			</div>			
-			{{users}}
             <template #footer>
                 <Button label="Cerrar" icon="pi pi-times" @click="cerrarDialog" class="p-button-text" />
             </template>

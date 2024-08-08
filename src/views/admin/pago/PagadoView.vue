@@ -60,11 +60,15 @@
     </Dialog>
     <!-- DIALOG PARA VER LOS PAGOS RELIZADOS POR EL ALUMNO -->
     <Dialog header="PAGOS REALZADOS DE PENSIONES" v-model:visible="verDialog" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '60vw'}" :modal="true">
-        <div class="formgrid grid">
+        <!-- <div class="formgrid grid">
             <div class="field">
                 <label  for="alumno_id">Alumno</label>
                 <p v-text="nombreAlu"></p>
             </div> 
+        </div> -->
+        <div class="field col custom-field">
+          <label for="alumno" class="custom-label">Alumno</label>
+          <label class="custom-value">{{ nombreAlu }}</label>
         </div>
         <div v-if="alumno">
             <DataTable :value="alumno.pagos" responsiveLayout="scroll">

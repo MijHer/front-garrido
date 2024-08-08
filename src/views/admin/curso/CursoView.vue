@@ -61,7 +61,6 @@
             <label for="cur_registro">Fecha de Registro</label>
             <InputText id="cur_registro" v-model.trim="curso.cur_registro" required="true" autofocus :class="{'p-invalid': submitted && !curso.cur_registro}" />            
         </div>
-        {{curso}}
         <template #footer>
             <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
             <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarCurso" />
@@ -126,7 +125,6 @@
                     </Dropdown>            
                 </div>
             </div>
-            {{pivot}}
             <div>
                 <!-- BOTON PARA AGREGAR DOCENTES AL CURSO -->
                 <Button label="Agregar docente al curso" class="p-button-success" @click="agregarAsignacion" /> <br> 

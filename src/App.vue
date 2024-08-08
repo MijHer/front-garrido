@@ -28,6 +28,7 @@ import AppFooter from './AppFooter.vue';
 import Dashboard from '@/components/Dashboard.vue';
 
 export default {
+    
     emits: ['change-theme'],
     data() {
         return {
@@ -239,7 +240,7 @@ export default {
             }];
         },
         logo() {
-            return (this.$appState.darkTheme) ? "images/logo-white.svg" : "images/logo.svg";
+            return (this.$appState.darkTheme) ? "" : "";
         }
     },
     beforeUpdate() {

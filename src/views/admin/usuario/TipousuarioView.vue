@@ -40,8 +40,6 @@
             <label for="tipo_nom">Nombre</label>
             <Dropdown id="tipo_nom" v-model="tipousuario.tipo_nom" :options="tiposusers" optionLabel="label" optionValue="value" placeholder="Selecione Tipo Usuario" autofocus>            
             </Dropdown>
-            <!-- <InputText id="tipo_nom" v-model.trim="tipousuario.tipo_nom" required="true" autofocus :class="{'p-invalid': submitted && !tipousuario.tipo_nom}" />
-            <small class="p-error" v-if="submitted && !tipousuario.tipo_nom == '' ">Nombre es requerido.</small> -->
         </div>
         <div class="field">
             <label for="tipo_descripcion">Descripción</label>
