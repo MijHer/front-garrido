@@ -64,20 +64,7 @@
             <label for="alumno_id">Alumno</label>
             <InputText id="alumno_id" readonly v-bind:value="matricula.alumno.alu_nom + ' ' +matricula.alumno.alu_app + ' ' + matricula.alumno.alu_apm"  required="true" rows="3" cols="20" />         
         </div>
-        <div class="formgrid grid">            
-            <div class="field col">
-                <label for="mat_nivel">Nivel</label>
-                <Dropdown id="mat_nivel" v-model="matricula.mat_nivel" :options="nivel" optionLabel="label" optionValue="value" placeholder="Selecione Nivel Academico">                        
-                </Dropdown>            
-            </div>
-            <div class="field col">
-                <label for="mat_repit">Repetitivo</label>
-                <Dropdown id="mat_repit" v-model="matricula.mat_repit" :options="repite" optionLabel="label" optionValue="value" placeholder="Selecione">                        
-                </Dropdown> 
-            </div>
-        </div>
         <div class="formgrid grid">
-            <!-- ----- -->
             <div class="field col">
                 <label for="grado_id">Grado</label>
                 <Dropdown id="grado_id" v-model="matricula.grado_id" :options="grados" :optionLabel="(grados) => grados.gra_nom +' - '+ grados.gra_seccion + ' - ' + grados.gra_nivel" optionValue="id" placeholder="Selecione Grado Academico">                        
@@ -88,12 +75,18 @@
                 <Dropdown id="grado_id" disabled v-model="matricula.grado_id" :options="grados" optionLabel="gra_seccion" optionValue="id" placeholder="Selecione Grado Academico">                        
                 </Dropdown>
             </div>
-            <!-- ----- 
             <div class="field col">
-                <label for="grado_id">Grado</label>
-                <Dropdown id="grado_id" v-model="matricula.grado_id" :options="grados" optionLabel="gra_nom" optionValue="id" placeholder="Selecione Grado Academico">                        
-                </Dropdown>
-            </div> -->
+                <label for="mat_nivel">Nivel</label>
+                <Dropdown id="mat_nivel" v-model="matricula.mat_nivel" :options="nivel" optionLabel="label" optionValue="value" placeholder="Selecione Nivel Academico">                        
+                </Dropdown>            
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col">
+                <label for="mat_repit">Repetitivo</label>
+                <Dropdown id="mat_repit" v-model="matricula.mat_repit" :options="repite" optionLabel="label" optionValue="value" placeholder="Selecione">                        
+                </Dropdown> 
+            </div>
             <div class="field col">
             <label for="anioacademico_id">Año Academico</label>
             <Dropdown id="anioacademico_id" v-model="matricula.anioacademico_id" :options="anioacademicos" optionLabel="anio_nom" optionValue="id" placeholder="Seleccione Año Academico">

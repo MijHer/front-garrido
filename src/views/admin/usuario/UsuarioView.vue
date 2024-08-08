@@ -3,9 +3,6 @@
     <Toast />
         <ConfirmDialog></ConfirmDialog>
     <Toolbar class="mb-4">
-      <!-- <template #start>
-          <Button label="Nuevo Usuario" icon="pi pi-plus" class="p-button-success mr-2" @click="abrirDialog" />
-      </template> -->
       <template #end>
         <Button label="Excel" icon="pi pi-upload" class="p-button-primary mr-2" @click="exportToExcel($event)"  />
 				<Button label="PDF" icon="pi pi-upload" class="p-button-help" @click="exportToPDF($event)"  />	
@@ -98,7 +95,6 @@
           <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
           <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarUsers" />
       </template>
-      {{user}}
     </Dialog>     
   </div>
 </template>

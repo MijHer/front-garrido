@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-      <h1>Lista de Pagos Realizados</h1>
+      <h1>Lista de Pagos Realizadosss</h1>
       <Toolbar class="mb-4">      
         <template #end>
             <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block" />

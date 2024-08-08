@@ -1,6 +1,6 @@
 <template>
   <div class="card" v-if="profesores">
-    <h1>Registrar Asistencia(pantalla principal muestra en data table)</h1>    
+    <h1>Registrar Asistencia</h1>    
       <DataTable :value="profesores.cursos" responsiveLayout="scroll">
       <Column field="cur_nom" header="Curso" :sortable="true" style="min-width:10rem"></Column>
       <Column field="pivot.grado.gra_nom" header="Grado" :sortable="true" style="min-width:10rem"></Column>
@@ -12,26 +12,25 @@
       </Column>
     </DataTable>    
     <!-- DIALOG PARA ABRIR MODAL Y LLAMAR LA ASISTENCIA -->
-    <Dialog v-model:visible="asistenciaDialog" :style="{width: '850px'}" header="Registrar Asistencia modal para llamar asistencia" :modal="true" class="p-fluid">      
-      {{alumnoData}}      
-      <div class="formgrid grid">        
+    <Dialog v-model:visible="asistenciaDialog" :style="{width: '850px'}" header="Registrar Asistencia" :modal="true" class="p-fluid">
+      <!-- <div class="formgrid grid">        
         <div class="field col">
           <label for="anioacademico">Año Academico</label>
           <InputText id="anioacademico" v-model.trim="anioacademico_id" autofocus  />
         </div>
-      </div>
+      </div> -->
       <div class="formgrid grid">
-        <div class="field col">
-          <label for="curso">Curso</label>
-          <InputText id="curso" v-model.trim="curso_id" autofocus  />
+        <div class="field col custom-field">
+          <label for="curso" class="custom-label">Curso</label>
+          <label class="custom-value">{{ curNombre }}</label>
         </div>
-        <div class="field col">
-          <label for="grado">Grado</label>
-          <InputText id="grado" v-model.trim="grado_id" autofocus  />
+        <div class="field col custom-field">
+          <label for="grado" class="custom-label">Grado</label>
+          <label class="custom-value">{{ graNom }}</label>
         </div>
-        <div class="field col">
-          <label for="seccion">Seccion</label>
-          <InputText id="seccion" v-model.trim="seccion" autofocus  />
+        <div class="field col custom-field">
+          <label for="seccion" class="custom-label">Seccion</label>
+          <label class="custom-value">{{ secNombre }}</label>
         </div>
       </div>
       <div class="formgrid grid">        
@@ -47,12 +46,12 @@
       <table class="table">
         <thead>
           <tr>
-            <th>nombre</th>
-            <th>apellido</th>
-            <th>asistio</th>
-            <th>tarde</th>
-            <th>falto</th>
-            <th>permiso</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Asistio</th>
+            <th>Tarde</th>
+            <th>Falto</th>
+            <th>Permiso</th>
           </tr>
         </thead>
         <tbody>
@@ -109,7 +108,9 @@ export default {
       mostrar: [],
       time: '',
       date: '',
-      graNom: ''
+      graNom: '',
+      secNombre: '',
+      curNombre: ''
     }
   },
   created() {
@@ -151,6 +152,9 @@ export default {
       this.seccion = curs.pivot.seccion;
       this.hora = this.time;
       this.fecha = this.date;
+      this.graNom = curs.pivot.grado.gra_nom;
+      this.secNombre = curs.pivot.seccion;
+      this.curNombre = curs.cur_nom;
       const alu = await alumnoService.listarAlumnosCursoGradoSeccion(this.curso_id, this.grado_id, this.seccion);
       this.alumnos = alu.data;
       this.alumnoData = [];

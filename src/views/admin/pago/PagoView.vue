@@ -49,7 +49,6 @@
                 <label >Apoderado</label>
                 <InputText id="matricula_id" readonly v-bind:value="alumno.apoderado.apo_nom" required="true" rows="3" cols="20" />                
             </div>            
-            {{pago}}       
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cerrarDialog"/>
                 <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="guardarPago" />

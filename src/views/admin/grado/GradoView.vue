@@ -114,7 +114,6 @@
                 <Button label="Agregar curso" class="p-button-success" @click="agregarAsignacion" /> <br> 
             </div>
         </div>
-        {{pivot}}
         <h5>Lista de Cursos Asignados: {{graNom}}</h5>
         <DataTable :value="cursos" responsiveLayout="scroll">           
             <Column field="cur_nom" header="Curso" style="min-width:8rem">                

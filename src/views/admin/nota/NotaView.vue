@@ -12,27 +12,36 @@
       </Column>
     </DataTable>
     <!-- DIALOG PARA REGISTRAR LAS NOTAS HACIENDO USO DEL MODAL*/ -->
-    <Dialog v-model:visible="notasDialog" :style="{width: '950px'}" header="Registrar Notas" :modal="true" class="p-fluid">
-      <div class="field">
-        <label for="profesor">profesor</label>
-        <InputText id="profesor" v-model.trim="profesor_id" autofocus />
-      </div>
+    <Dialog v-model:visible="notasDialog" :style="{width: '950px'}" header="Registrar Notas" :modal="true" class="p-fluid">      
       <div class="formgrid grid">
         <div class="field col">
-          <label for="anioacademico_id">Año</label>
-          <InputText id="anioacademico_id" v-model.trim="anioacademico_id" autofocus />
+          <label for="profesor">Profesor</label>
+          <InputText id="profesor" readonly v-model.trim="profesores.pro_nom" autofocus />
         </div>
         <div class="field col">
           <label for="fecha">Fecha</label>
-          <InputText id="fecha" v-model.trim="fecha" autofocus />
+          <InputText id="fecha" readonly v-model.trim="fecha" autofocus />
         </div>
         <div class="field col">
           <label for="hora">Hora</label>
-          <InputText id="hora" v-model.trim="hora" autofocus />
+          <InputText id="hora" readonly v-model.trim="hora" autofocus />
+        </div>
+      </div>
+      <div hidden>
+        <InputText id="anioacademico_id" v-model.trim="anioacademico_id" hidden autofocus />
+      </div>
+      <div class="formgrid grid">
+        <div class="field col custom-field">
+          <label for="anioacademico_id" class="custom-label">Curso</label>
+          <label class="custom-value">{{ cursoNombre }}</label>
+        </div>
+        <div class="field col custom-field">
+          <label for="anioacademico_id" class="custom-label">Grado</label>
+          <label class="custom-value">{{ gradoNombre }}</label>
         </div>
         <div class="field col">
-          <label for="hora">seccion</label>
-          <InputText id="seccion" v-model.trim="sec" autofocus />
+          <label for="hora">Seccion</label>
+          <InputText id="seccion" readonly v-model.trim="sec" autofocus />
         </div>
       </div>
       <table>
@@ -90,7 +99,9 @@ export default {
       grado_id: '',
       seccion: '',
       date: '',
-      time: ''
+      time: '',
+      cursoNombre: '',
+      gradoNombre: ''
     }
   },
   mounted() {
@@ -119,8 +130,11 @@ export default {
       this.hora = this.time;
       this.fecha = this.date;
       this.sec = datos.pivot.seccion;
+      this.cursoNombre = datos.cur_nom;
+      this.gradoNombre = datos.pivot.grado.gra_nom;
       const alu = await alumnoService.listarAlumnosCursoGradoSecciones(this.curso_id, this.grado_id, this.seccion);
       this.alumnos = alu.data;
+      this.anio_nombre = datos.anio_nom;
       this.notasDialog = true;
     },
     // GUARDA LAS NOTAS INSERTADAS EN EL MODAL DE REGISTRO DE NOTAS
@@ -198,5 +212,20 @@ export default {
   
   th:nth-child(2), td:nth-child(2) {
     width: 20%;
+  }
+  .custom-field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .custom-label {
+      margin-bottom: 0.5rem;
+  }
+
+  .custom-value {
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      padding: 0.740rem 0.75rem;
+      background-color: #ffffff;
   }
 </style>
