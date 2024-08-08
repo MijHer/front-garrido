@@ -7,15 +7,15 @@
             <Button label="Nuevo Curso" icon="pi pi-plus" class="p-button-success mr-2" @click="nuevoCurso" />            
         </template>
         <template #end>
-            <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block" />
-            <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)"  />
+            <Button label="Excel" icon="pi pi-upload" class="p-button-primary mr-2" @click="exportToExcel($event)"  />
+			<Button label="PDF" icon="pi pi-upload" class="p-button-help" @click="exportToPDF($event)"  />
         </template>
     </Toolbar>
     <!-- TABLA PARA MOSTRAR LA LISTA DE LOS CURSOS -->
     <DataTable ref="dt" :value="cursos" v-model:selection="selectedCursos" dataKey="id" 
         :paginator="true" :rows="10" :filters="filters"
         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Cursos Registrados" responsiveLayout="scroll">
         <template #header>
             <div class="table-header flex flex-column md:flex-row md:justiify-content-between">
                 <h5 class="mb-2 md:m-0 p-as-md-center">Lista de Cursos</h5>
@@ -170,6 +170,9 @@ import * as cursoService from '@/services/curso.service'
 import * as gradoService from '@/services/grado.service'
 import * as anioacademicoService from '@/services/anioacademico.service'
 import * as profesorService from '@/services/profesor.service'
+import * as XLSX from 'xlsx'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 
 export default {
     data() {
@@ -339,6 +342,59 @@ export default {
             this.filters = {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
             }
+        },
+        //reporte en pdf
+        async exportToPDF() {
+            const doc = new jsPDF();
+            const logoBase64 = await fetch('/images/logo-garrido.base64')
+                .then(response => response.text());
+            doc.addImage(logoBase64, 'PNG', 10, 10, 30, 20);
+            // Título y sub titulo
+            doc.setFontSize(8);
+            doc.setFont('Helvetica', 'normal');
+            doc.text('Institucion Educativa Particular', 85, 15);
+            doc.setFontSize(8);
+            doc.setFont('Helvetica', 'normal');
+            doc.text('Andres Fernandez Garrido', 87, 20);
+            doc.setFontSize(14);
+            doc.setFont('Helvetica', 'bold');
+            doc.text('Lista de Cursos Registrados', 72, 28);
+            // Cabeceras y orden de las columnas
+            const headers = [['Nombre', 'Descripcion', 'Fecha de Registro', 'Estado']];
+            // Prepara los datos para la exportación
+            const dataToExport = this.cursos.map(row => [
+                row.cur_nom || '',
+                row.cur_descripcion || '',
+                row.cur_registro || '',
+                row.cur_estado === 1 ? 'Activo' : 'Inactivo'
+            ]);
+            // Generando la tabla en el PDF
+            doc.autoTable({
+                head: headers,
+                body: dataToExport,
+                startY: 40 // Ajusta la posición de inicio de la tabla según la altura del título y el logo
+            });
+            // Descarga archivo PDF
+            doc.save('cursos.pdf');
+        },
+        //reporte en excel
+        exportToExcel() {
+            // Define las cabeceras personalizadas y el orden de las columnas
+            const headers = ['Nombre', 'Descripcion', 'Fecha de Registro', 'Estado'];            
+            // Prepara los datos para la exportación
+            const dataToExport = this.cursos.map(row => ({            
+                'Nombre': row.cur_nom || '',
+                'Descripcion': row.cur_descripcion || '',
+                'Fecha de Registro': row.cur_registro || '',
+                'Estado': row.cur_estado === 1 ? 'Activo' : 'Inactivo'
+            }));
+            // Crea una hoja de cálculo
+            const worksheet = XLSX.utils.json_to_sheet(dataToExport, { header: headers });            
+            // Crea un libro de trabajo
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Cursos");
+            // Convierte el libro de trabajo a un archivo Excel y descarga
+            XLSX.writeFile(workbook, "cursos.xlsx");
         }
     },
 }

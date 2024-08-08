@@ -8,15 +8,15 @@
                 <Button label="Crear Grado Academico" icon="pi pi-plus" class="p-button-success mr-2" @click="gradoNuevo" />
             </template>
             <template #end>
-                <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block" />
-                <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)"  />
+                <Button label="Excel" icon="pi pi-upload" class="p-button-primary mr-2" @click="exportToExcel($event)"  />
+				<Button label="PDF" icon="pi pi-upload" class="p-button-help" @click="exportToPDF($event)"  />
             </template>
         </Toolbar>
         <!-- TABLA PARA MOTRAR LA LISTA DE LOS GRADOS -->
         <DataTable ref="dt" :value="grados" v-model:selection="selectedGrados" dataKey="id" 
             :paginator="true" :rows="10" :filters="filters"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" responsiveLayout="scroll">
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} Grados" responsiveLayout="scroll">
             <template #header>
                 <div class="table-header flex flex-column md:flex-row md:justiify-content-between">
                     <h5 class="mb-2 md:m-0 p-as-md-center">Lista de Grados</h5>
@@ -146,6 +146,10 @@ import { FilterMatchMode } from 'primevue/api'
 import * as gradoService from '@/services/grado.service'
 import * as cursoService from '@/services/curso.service'
 import * as anioacademicoService from '@/services/anioacademico.service'
+import * as XLSX from 'xlsx'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
+
 
 export default {
     data() {
@@ -278,6 +282,61 @@ export default {
             this.filters = {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
             }
+        },
+        //reporte en pdf
+        async exportToPDF() {
+            const doc = new jsPDF();
+            const logoBase64 = await fetch('/images/logo-garrido.base64')
+                .then(response => response.text());
+            doc.addImage(logoBase64, 'PNG', 10, 10, 30, 20);
+            // Título y sub titulo
+            doc.setFontSize(8);
+            doc.setFont('Helvetica', 'normal');
+            doc.text('Institucion Educativa Particular', 85, 15);
+            doc.setFontSize(8);
+            doc.setFont('Helvetica', 'normal');
+            doc.text('Andres Fernandez Garrido', 87, 20);
+            doc.setFontSize(14);
+            doc.setFont('Helvetica', 'bold');
+            doc.text('Lista de Grados Academicos', 70, 28);
+            // Cabeceras y orden de las columnas
+            const headers = [['Nombre', 'Nivel', 'Seccion', 'Fecha de Registro', 'Estado']];
+            // Prepara los datos para la exportación
+            const dataToExport = this.grados.map(row => [
+                row.gra_nom || '',
+                row.gra_nivel || '',
+                row.gra_seccion || '',
+                row.gra_registro || '',
+                row.gra_estado === 1 ? 'Activo' : 'Inactivo'
+            ]);
+            // Generando la tabla en el PDF
+            doc.autoTable({
+                head: headers,
+                body: dataToExport,
+                startY: 40 // Ajusta la posición de inicio de la tabla según la altura del título y el logo
+            });
+            // Descarga archivo PDF
+            doc.save('grados.pdf');
+        },
+        //reporte en excel
+        exportToExcel() {
+            // Define las cabeceras personalizadas y el orden de las columnas
+            const headers = ['Nombre', 'Nivel', 'Seccion', 'Fecha de Registro', 'Estado'];            
+            // Prepara los datos para la exportación
+            const dataToExport = this.grados.map(row => ({            
+                'Nombre': row.gra_nom || '',
+                'Nivel': row.gra_nivel || '',
+                'Seccion': row.gra_seccion || '',
+                'Fecha de Registro': row.gra_registro || '',
+                'Estado': row.gra_estado === 1 ? 'Activo' : 'Inactivo'
+            }));
+            // Crea una hoja de cálculo
+            const worksheet = XLSX.utils.json_to_sheet(dataToExport, { header: headers });            
+            // Crea un libro de trabajo
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Grados");
+            // Convierte el libro de trabajo a un archivo Excel y descarga
+            XLSX.writeFile(workbook, "grados.xlsx");
         }
     },
 }

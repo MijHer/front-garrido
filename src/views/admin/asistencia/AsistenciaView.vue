@@ -12,8 +12,7 @@
       </Column>
     </DataTable>    
     <!-- DIALOG PARA ABRIR MODAL Y LLAMAR LA ASISTENCIA -->
-    <Dialog v-model:visible="asistenciaDialog" :style="{width: '950px'}" header="Registrar Asistencia modal para llamar asistencia" :modal="true" class="p-fluid">      
-      {{curso}}
+    <Dialog v-model:visible="asistenciaDialog" :style="{width: '850px'}" header="Registrar Asistencia modal para llamar asistencia" :modal="true" class="p-fluid">      
       {{alumnoData}}      
       <div class="formgrid grid">        
         <div class="field col">
@@ -253,4 +252,46 @@ export default {
         }
 	}
 }
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+  }
+
+  .table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .table th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .table tr:hover {
+    background-color: #ddd;
+  }
+
+  .table input[type="text"] {
+    width: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .table th:nth-child(1), .table td:nth-child(1) {
+    width: 20%;
+  }
+  
+  .table th:nth-child(2), .table td:nth-child(2) {
+    width: 20%;
+  }
 </style>
